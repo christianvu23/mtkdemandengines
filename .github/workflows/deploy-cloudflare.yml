@@ -14,7 +14,8 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          # Node >=22: test runner tự expand glob "tests/**/*.test.js" (Node 20 nhận glob như chuỗi thường → CI hỏng).
+          node-version: '22'
 
       # Cổng chặn: không deploy nếu logic chấm điểm/dedup bị hỏng.
       # Bài học từ CMCTS — một lần redesign làm hỏng tab "Đã lưu" mà không ai bắt được.
