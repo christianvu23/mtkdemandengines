@@ -1,0 +1,22 @@
+# Cloudflare Workers — Demand Engine (client duyệt lead)
+#
+# Đây là Worker CHỈ phục vụ static assets (chưa có mã Worker).
+# Vì không có `main`, KHÔNG khai báo `binding` trong [assets] — Cloudflare chỉ chấp nhận
+# binding khi có Worker script.
+#
+# Khi thêm backend (route /api/demand/*), bỏ comment `main` và thêm lại binding.
+
+name = "mtkdemandengines"
+compatibility_date = "2026-08-09"
+
+# main = "worker.js"
+
+[assets]
+directory = "./public"
+# App một trang: mọi đường dẫn không khớp file tĩnh đều trả index.html
+not_found_handling = "single-page-application"
+
+# Cron cho Hunter/Qualifier — bật khi worker.js đã có.
+# [triggers]
+# crons = ["*/30 * * * *"]   # nguồn nóng: 30 phút
+# crons = ["0 */6 * * *"]    # nguồn nguội: 6 giờ
