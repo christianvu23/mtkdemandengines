@@ -3,577 +3,217 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Demand Engine — Duyệt lead</title>
+<title>Demand Engine — Chạm lead marketing trước khi hết hạn</title>
+<meta name="description" content="Hệ thống quét và chấm điểm nhu cầu thuê marketing, branding, social tại Việt Nam. Lead được chấm trên thang 100 điểm, có hạn dùng 24–72 giờ, máy đề xuất — người bấm quyết định.">
+<meta property="og:title" content="Demand Engine — Chạm lead marketing trước khi hết hạn">
+<meta property="og:description" content="Quét nhu cầu thuê content, quay dựng, thiết kế, branding, ads, PR, sự kiện trên khắp Việt Nam. Chấm điểm minh bạch trên thang 100. Máy đề xuất, người bấm.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mtkdemandengines.christianvu23.workers.dev/">
+<meta name="theme-color" content="#2563EB">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Demand Engine","applicationCategory":"BusinessApplication","operatingSystem":"Web","description":"Quét và chấm điểm nhu cầu thuê marketing, branding, social tại Việt Nam trên thang 100 điểm, ưu tiên độ tươi của lead.","offers":{"@type":"Offer","price":"0","priceCurrency":"VND"}}
+</script>
 <style>
-  /* Bảng màu: bản tham chiếu đã validate của skill dataviz.
-     Khai báo giá trị dark dưới CẢ media query lẫn [data-theme] để nút chuyển chế độ luôn thắng. */
+  /* Design system: design-system/demand-engine/MASTER.md + pages/landing.md
+     Minimal Single Column — một CTA, whitespace rộng, KHÔNG bịa số liệu. */
   :root {
     color-scheme: light;
-    --surface-1: #fcfcfb;
-    --plane: #f9f9f7;
-    --ink-1: #0b0b0b;
-    --ink-2: #52514e;
-    --ink-muted: #898781;
-    --grid: #e1e0d9;
-    --baseline: #c3c2b7;
-    --border: rgba(11,11,11,0.10);
-    --accent: #2a78d6;
-    --track: #cde2fb;
-    --tier-a: #184f95; --tier-b: #2a78d6; --tier-c: #5598e7; --tier-d: #86b6ef;
-    --good: #0ca30c; --warning: #fab219; --serious: #ec835a; --critical: #d03b3b;
-    --shadow: 0 1px 2px rgba(11,11,11,.05), 0 4px 12px rgba(11,11,11,.04);
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:where(:not([data-theme="light"])) {
-      color-scheme: dark;
-      --surface-1: #1a1a19; --plane: #0d0d0d;
-      --ink-1: #ffffff; --ink-2: #c3c2b7; --ink-muted: #898781;
-      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
-      --accent: #3987e5; --track: #0d366b;
-      --tier-a: #cde2fb; --tier-b: #9ec5f4; --tier-c: #6da7ec; --tier-d: #3987e5;
-      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 4px 12px rgba(0,0,0,.3);
-    }
+    --bg: #F8FAFC; --surface: #FFFFFF;
+    --ink-1: #0F172A; --ink-2: #475569; --ink-muted: #94A3B8;
+    --border: #E2E8F0; --border-strong: #CBD5E1;
+    --accent: #2563EB; --accent-ink: #FFFFFF; --accent-soft: #EFF6FF;
+    --good: #16A34A; --pending: #D97706;
+    --font-head: "Outfit", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-body: "Work Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   }
   :root[data-theme="dark"] {
     color-scheme: dark;
-    --surface-1: #1a1a19; --plane: #0d0d0d;
-    --ink-1: #ffffff; --ink-2: #c3c2b7; --ink-muted: #898781;
-    --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
-    --accent: #3987e5; --track: #0d366b;
-    --tier-a: #cde2fb; --tier-b: #9ec5f4; --tier-c: #6da7ec; --tier-d: #3987e5;
-    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 4px 12px rgba(0,0,0,.3);
+    --bg: #0F172A; --surface: #1E293B;
+    --ink-1: #F1F5F9; --ink-2: #94A3B8; --ink-muted: #64748B;
+    --border: rgba(148,163,184,.18); --border-strong: rgba(148,163,184,.42);
+    --accent: #3B82F6; --accent-ink: #FFFFFF; --accent-soft: #172554;
   }
-
   * { box-sizing: border-box; }
-  body {
-    margin: 0; background: var(--plane); color: var(--ink-1);
-    font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
-    -webkit-font-smoothing: antialiased;
-  }
-  .wrap { max-width: 1180px; margin: 0 auto; padding: 20px 20px 64px; }
-
-  /* ---------- Header ---------- */
-  header { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 4px; }
-  h1 { font-size: 20px; font-weight: 650; margin: 0; letter-spacing: -.01em; }
-  .sub { color: var(--ink-2); font-size: 13px; margin: 2px 0 20px; }
-  .spacer { flex: 1; }
-  .badge {
-    font-size: 11px; font-weight: 650; letter-spacing: .04em; text-transform: uppercase;
-    padding: 3px 8px; border-radius: 999px; border: 1px solid var(--border);
-    color: var(--ink-2); background: var(--surface-1);
-  }
-  .badge.demo { color: #7a4a00; background: #fff4dd; border-color: #f0d9a8; }
-  :root[data-theme="dark"] .badge.demo { color: #fab219; background: #2a2410; border-color: #4a3d15; }
-  .badge.live { color: #0a5c0a; background: #e6f6e6; border-color: #b6e0b6; }
-  :root[data-theme="dark"] .badge.live { color: #0ca30c; background: #10240f; border-color: #1c4a1c; }
-
-  button, select, input {
-    font: inherit; color: var(--ink-1); background: var(--surface-1);
-    border: 1px solid var(--border); border-radius: 8px; padding: 7px 11px; cursor: pointer;
-  }
-  button:hover, select:hover { border-color: var(--baseline); }
-  button.primary { background: var(--accent); color: #fff; border-color: transparent; font-weight: 600; }
-  button.primary:hover { filter: brightness(1.08); }
-  button.ghost { background: transparent; }
-
-  /* ---------- KPI (stat tiles) ---------- */
-  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px,1fr)); gap: 12px; margin-bottom: 18px; }
-  .tile {
-    background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px;
-    padding: 14px 16px; box-shadow: var(--shadow);
-  }
-  .tile .label { font-size: 12px; color: var(--ink-2); margin-bottom: 6px; }
-  .tile .value { font-size: 30px; font-weight: 650; line-height: 1.1; letter-spacing: -.02em; }
-  .tile .note { font-size: 12px; color: var(--ink-muted); margin-top: 4px; display: flex; align-items: center; gap: 5px; }
-  .dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
-
-  /* ---------- Bộ lọc: một hàng trên danh sách ---------- */
-  .filters {
-    display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 16px;
-    padding: 10px 12px; background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px;
-  }
-  .filters label { font-size: 12px; color: var(--ink-2); margin-right: 2px; }
-  .chip {
-    font-size: 12px; padding: 5px 10px; border-radius: 999px;
-    border: 1px solid var(--border); background: transparent; color: var(--ink-2);
-  }
-  .chip[aria-pressed="true"] { background: var(--accent); color: #fff; border-color: transparent; font-weight: 600; }
-
-  /* ---------- Danh sách lead ---------- */
-  .list { display: flex; flex-direction: column; gap: 10px; }
-  .card {
-    background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px;
-    padding: 14px 16px; box-shadow: var(--shadow); cursor: pointer;
-    display: grid; grid-template-columns: 52px 1fr auto; gap: 14px; align-items: start;
-  }
-  .card:hover { border-color: var(--baseline); }
-  .tierbox {
-    width: 52px; height: 52px; border-radius: 10px; display: grid; place-items: center;
-    color: #fff; font-weight: 700; font-size: 19px; line-height: 1;
-  }
-  /* Ô hạng: chữ phải đủ tương phản trên NỀN CỦA CHÍNH NÓ, không dùng một màu chữ cho cả 4 bậc.
-     Hai bậc nhạt nhất ở chế độ sáng (C, D) phải đổi sang mực tối. */
-  .t-C, .t-D { color: #0b0b0b; }
-  :root[data-theme="dark"] .tierbox { color: #0b0b0b; }
-  .tierbox small { display: block; font-size: 10px; font-weight: 600; opacity: .85; margin-top: 3px; }
-  .t-A { background: var(--tier-a); } .t-B { background: var(--tier-b); }
-  .t-C { background: var(--tier-c); } .t-D { background: var(--tier-d); }
-
-  .card h3 { margin: 0 0 5px; font-size: 15px; font-weight: 600; line-height: 1.35; }
-  .meta { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; font-size: 12px; color: var(--ink-2); }
-  .tag { padding: 2px 7px; border-radius: 6px; background: var(--plane); border: 1px solid var(--border); }
-  .right { text-align: right; display: flex; flex-direction: column; gap: 6px; align-items: flex-end; min-width: 130px; }
-  .countdown { font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 5px; justify-content: flex-end; }
-
-  /* Meter: fill = accent, track = bậc nhạt hơn cùng ramp; đầu dữ liệu bo 4px, neo vào baseline */
-  .meter { width: 100%; height: 6px; background: var(--track); border-radius: 3px; overflow: hidden; margin-top: 9px; }
-  .meter > i { display: block; height: 100%; background: var(--accent); border-radius: 0 4px 4px 0; }
-
-  /* ---------- Panel chi tiết ---------- */
-  .backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.35); display: none; }
-  .backdrop.open { display: block; }
-  .drawer {
-    position: fixed; top: 0; right: 0; height: 100%; width: min(480px, 100%);
-    background: var(--surface-1); border-left: 1px solid var(--border);
-    transform: translateX(100%); transition: transform .18s ease; overflow-y: auto; padding: 20px;
-  }
-  .drawer.open { transform: none; }
-  .drawer h2 { font-size: 17px; margin: 0 0 4px; line-height: 1.35; }
-  .bd { margin-top: 6px; }
-  .bd-row { display: grid; grid-template-columns: 132px 1fr 38px; gap: 10px; align-items: center; margin-bottom: 7px; font-size: 12px; }
-  .bd-row .n { color: var(--ink-2); }
-  .bd-row .v { text-align: right; color: var(--ink-1); font-weight: 600; font-variant-numeric: tabular-nums; }
-  .bd-bar { height: 6px; background: var(--track); border-radius: 3px; overflow: hidden; }
-  .bd-bar > i { display: block; height: 100%; background: var(--accent); border-radius: 0 4px 4px 0; }
-  /* Dòng phạt: track trung tính để màu cảnh báo không bị nền cùng ramp nuốt mất */
-  .bd-bar.neg { background: var(--grid); }
-  .bd-bar.neg > i { background: var(--critical); }
-  pre.raw {
-    white-space: pre-wrap; font: 13px/1.55 system-ui, sans-serif; background: var(--plane);
-    border: 1px solid var(--border); border-radius: 8px; padding: 11px; color: var(--ink-2); margin: 0;
-  }
-  .sec { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--ink-muted); margin: 18px 0 7px; font-weight: 650; }
-  .actions { display: flex; gap: 8px; flex-wrap: wrap; }
-  .empty { text-align: center; padding: 48px 20px; color: var(--ink-2); }
-  .warn {
-    background: #fff4dd; border: 1px solid #f0d9a8; color: #6b4200;
-    padding: 10px 13px; border-radius: 10px; font-size: 13px; margin-bottom: 16px;
-  }
-  :root[data-theme="dark"] .warn { background: #2a2410; border-color: #4a3d15; color: #e8c87a; }
+  body { margin: 0; background: var(--bg); color: var(--ink-1); font: 16px/1.6 var(--font-body); -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 24px 20px 64px; }
   a { color: var(--accent); }
-  table.tbl { width: 100%; border-collapse: collapse; font-size: 12px; }
-  table.tbl th, table.tbl td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--grid); }
-  table.tbl th { color: var(--ink-muted); font-weight: 600; }
-  table.tbl td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+
+  header { display: flex; align-items: center; gap: 10px; }
+  .brand { display: flex; align-items: center; gap: 9px; font-family: var(--font-head); font-weight: 600; font-size: 17px; }
+  .spacer { flex: 1; }
+  .toplink { font-size: 14px; font-weight: 500; text-decoration: none; color: var(--ink-2); padding: 8px 12px; border: 1px solid var(--border-strong); border-radius: 10px; transition: border-color .16s ease-out, color .16s ease-out; }
+  .toplink:hover { border-color: var(--accent); color: var(--ink-1); }
+  button.icon-btn {
+    font: inherit; background: transparent; color: var(--ink-1); border: 1px solid var(--border-strong);
+    border-radius: 10px; padding: 8px 10px; cursor: pointer; display: inline-flex; align-items: center;
+    transition: border-color .16s ease-out;
+  }
+  button.icon-btn:hover { border-color: var(--accent); }
+  :root[data-theme="dark"] .only-light { display: none; }
+  :root:not([data-theme="dark"]) .only-dark { display: none; }
+
+  .hero { padding: 88px 0 72px; text-align: center; }
+  .eyebrow {
+    display: inline-block; font-family: var(--font-head); font-size: 12px; font-weight: 600; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--accent); border: 1px solid var(--accent);
+    border-radius: 999px; padding: 4px 14px; margin-bottom: 22px;
+  }
+  h1 {
+    font-family: var(--font-head); font-size: clamp(34px, 6vw, 52px); font-weight: 700;
+    line-height: 1.12; letter-spacing: -.02em; margin: 0 0 18px;
+  }
+  h1 .accent { color: var(--accent); }
+  .lead { font-size: 17px; color: var(--ink-2); max-width: 560px; margin: 0 auto 32px; }
+  .cta {
+    display: inline-block; background: var(--accent); color: var(--accent-ink); text-decoration: none;
+    font-family: var(--font-head); font-weight: 600; font-size: 16px; padding: 14px 32px; border-radius: 12px;
+    transition: background-color .16s ease-out;
+  }
+  .cta:hover { background: #1D4ED8; }
+  :root[data-theme="dark"] .cta:hover { background: #60A5FA; color: #0F172A; }
+  .cta-note { font-size: 13px; color: var(--ink-muted); margin-top: 12px; }
+
+  section { padding: 40px 0; border-top: 1px solid var(--border); }
+  h2 { font-family: var(--font-head); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-muted); margin: 0 0 24px; }
+  .benefits { display: grid; gap: 28px; }
+  .benefit { display: grid; grid-template-columns: 44px 1fr; gap: 16px; }
+  .benefit .ic {
+    width: 44px; height: 44px; border-radius: 12px; background: var(--accent-soft);
+    display: grid; place-items: center; color: var(--accent);
+  }
+  .benefit h3 { font-family: var(--font-head); font-size: 17px; font-weight: 600; margin: 0 0 6px; }
+  .benefit p { margin: 0; font-size: 14.5px; color: var(--ink-2); }
+
+  .status { display: grid; gap: 10px; }
+  .status .row {
+    display: flex; gap: 12px; align-items: flex-start; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; font-size: 14px;
+  }
+  .status .row svg { flex: none; margin-top: 2px; }
+  .done { color: var(--good); }
+  .soon { color: var(--pending); }
+  .status .honest { font-size: 12.5px; color: var(--ink-muted); margin-top: 6px; }
+
+  .final { text-align: center; padding: 56px 0; }
+  .final p { color: var(--ink-2); margin: 0 0 24px; font-size: 15px; }
+  footer { border-top: 1px solid var(--border); padding-top: 22px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; font-size: 13px; color: var(--ink-muted); }
+  footer .spacer { flex: 1; }
+
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  @media (max-width: 560px) {
+    .hero { padding: 56px 0 48px; }
+    .benefit { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <h1>Demand Engine</h1>
-    <span class="badge demo" id="modeBadge">Demo</span>
+    <div class="brand">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.75" stroke-linecap="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="9"></circle>
+        <circle cx="12" cy="12" r="4.5" opacity=".55"></circle>
+        <circle cx="12" cy="12" r="1" fill="var(--accent)"></circle>
+      </svg>
+      Demand Engine
+    </div>
     <div class="spacer"></div>
-    <button class="ghost" id="themeBtn" title="Đổi sáng/tối">◐</button>
-    <button class="ghost" id="tableBtn" title="Xem dạng bảng">Bảng</button>
-    <button id="connectBtn">Kết nối dữ liệu thật</button>
-    <button class="primary" id="mergeBtn">Nạp lead mới</button>
+    <button class="icon-btn" id="themeBtn" aria-label="Đổi chế độ sáng tối">
+      <svg class="only-light" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg>
+      <svg class="only-dark" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>
+    </button>
+    <a class="toplink" href="/app.html">Dashboard</a>
   </header>
-  <p class="sub" id="subline">Đang xem dữ liệu mẫu để review giao diện — chưa nối Supabase.</p>
 
-  <div class="warn" id="warnBox" style="display:none"></div>
+  <main>
+    <div class="hero">
+      <span class="eyebrow">Demand Engine · Việt Nam</span>
+      <h1>Lead marketing có hạn dùng.<br><span class="accent">Chạm trước khi hết hạn.</span></h1>
+      <p class="lead">Hệ thống quét nhu cầu thuê content, quay dựng, thiết kế, branding, ads, PR và sự kiện — chấm điểm từng lead trên thang 100, và chỉ giữ lại những cơ hội còn chạm được.</p>
+      <a class="cta" href="/app.html">Vào dashboard</a>
+      <p class="cta-note">Chạy thử ngay với dữ liệu mẫu — không cần đăng ký.</p>
+    </div>
 
-  <section class="kpis" id="kpis"></section>
+    <section aria-label="Ba lợi ích chính">
+      <h2>Vì sao hệ thống này tồn tại</h2>
+      <div class="benefits">
+        <div class="benefit">
+          <div class="ic">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg>
+          </div>
+          <div>
+            <h3>Tốc độ là lợi thế duy nhất</h3>
+            <p>Một bài đăng tìm người làm marketing thường chỉ sống 24–72 giờ. Mỗi lead được tính độ tươi theo giờ, tự ẩn khi hết hạn — bạn luôn nhìn thấy cơ hội còn chạm được, không phải danh sách cũ.</p>
+          </div>
+        </div>
+        <div class="benefit">
+          <div class="ic">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10m6 10V4m6 16v-7m4 7H2"></path></svg>
+          </div>
+          <div>
+            <h3>Điểm 100 minh bạch, không hộp đen</h3>
+            <p>Mỗi lead chấm trên 6 trục — độ tươi, khả năng liên hệ, độ cụ thể, khớp dịch vụ, tín hiệu ngân sách, hình thức hợp tác — trừ phạt cạnh tranh. Dashboard cho xem từng điểm thành phần.</p>
+          </div>
+        </div>
+        <div class="benefit">
+          <div class="ic">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 12a4 4 0 1 0-4-4v4h4z"></path><path d="M5 20c0-3 3-5 7-5s7 2 7 5"></path></svg>
+          </div>
+          <div>
+            <h3>Máy đề xuất, người bấm</h3>
+            <p>Hệ thống không bao giờ tự liên hệ ai. Xếp hạng và gợi ý là của máy; quyết định chạm lead là của bạn — và mọi quyết định được ghi vào nhật ký kiểm toán.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-  <div class="filters">
-    <label>Hạng</label>
-    <button class="chip" data-f="tier" data-v="A" aria-pressed="false">A</button>
-    <button class="chip" data-f="tier" data-v="B" aria-pressed="false">B</button>
-    <button class="chip" data-f="tier" data-v="C" aria-pressed="false">C</button>
-    <button class="chip" data-f="tier" data-v="D" aria-pressed="false">D</button>
-    <span style="width:10px"></span>
-    <label>Nguồn</label>
-    <select id="srcSel"><option value="">Tất cả</option></select>
-    <label>Nhu cầu</label>
-    <select id="needSel"><option value="">Tất cả</option></select>
-    <span class="spacer"></span>
-    <button class="chip" id="freshOnly" aria-pressed="true">Chỉ còn hạn</button>
-    <button class="chip" id="uncontacted" aria-pressed="false">Chưa liên hệ</button>
-  </div>
+    <section aria-label="Trạng thái thật của hệ thống">
+      <h2>Trạng thái thật — không phóng đại</h2>
+      <div class="status">
+        <div class="row">
+          <svg class="done" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>
+          <span><strong>Đã chạy:</strong> tầng dữ liệu trên Supabase — schema, phân quyền, hàm lọc trùng và chấm điểm, trigger bảo vệ quyết định của người dùng.</span>
+        </div>
+        <div class="row">
+          <svg class="done" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>
+          <span><strong>Đã kiểm chứng:</strong> 78 test cho logic chấm điểm, đọc ngân sách tiếng Việt, trích liên hệ, tách link theo khuôn và chống trùng nội dung.</span>
+        </div>
+        <div class="row">
+          <svg class="soon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg>
+          <span><strong>Đang xây:</strong> tầng quét từng nguồn (bắt đầu từ các sàn freelance Việt Nam) và cổng nạp tay — tầng vận chuyển, API và máy chủ MCP đã dựng xong, chờ chạy trên dữ liệu thật. Bảng lead hiện ở chế độ dữ liệu mẫu.</span>
+        </div>
+      </div>
+      <p class="honest">Chúng tôi không trưng bày con số chưa tồn tại. Đây là đúng trạng thái hiện tại của hệ thống.</p>
+    </section>
 
-  <div id="tableView" style="display:none; background:var(--surface-1); border:1px solid var(--border); border-radius:12px; padding:12px; margin-bottom:16px;"></div>
-  <div class="list" id="list"></div>
+    <section class="final" aria-label="Kêu gọi hành động">
+      <p>Xem cách một lead được chấm điểm — với 8 lead mẫu ngay trong trình duyệt.</p>
+      <a class="cta" href="/app.html">Vào dashboard</a>
+    </section>
+  </main>
+
+  <footer>
+    <span>Demand Engine</span>
+    <span aria-hidden="true">·</span>
+    <span>Máy đề xuất, người bấm</span>
+    <div class="spacer"></div>
+    <span>2026</span>
+  </footer>
 </div>
-
-<div class="backdrop" id="backdrop"></div>
-<aside class="drawer" id="drawer" aria-label="Chi tiết lead"></aside>
-
 <script>
-// ===========================================================================
-// Demand Engine — client duyệt lead
-// Chạy được ở 2 chế độ:
-//   DEMO  — dữ liệu mẫu trong bộ nhớ, không cần mạng (dùng để review giao diện)
-//   LIVE  — nối Supabase, đăng nhập GitHub, đọc bảng demand_leads qua RLS
-// Không dùng localStorage/sessionStorage (không được hỗ trợ trong artifact).
-// ===========================================================================
-
-const CAU_HINH = {
-  // Project riêng của Demand Engine (tách khỏi CMCTS)
-  supabaseUrl: 'https://dlzhcfrojibpscozdmrx.supabase.co',
-  // KHOÁ ANON — đúng loại để nhúng client. RLS mới là lớp bảo vệ thật, không phải khoá này.
-  // ⛔ TUYỆT ĐỐI không thay bằng service_role key: nó BỎ QUA toàn bộ RLS.
-  //    Service key chỉ được nằm trong secret của Worker phía server, không bao giờ trong file này.
-  supabaseKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRsemhjZnJvamlicHNjb3pkbXJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYyNjYzODEsImV4cCI6MjEwMTg0MjM4MX0.uIUW9sGAA9CyyRemLtB4ap0z8qMM8g8jc16eO6fTGLI',
-  cdn: 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm',
-};
-
-const NHAN_TRUC = {
-  doTuoi: 'Độ tươi', khaNangLienHe: 'Khả năng liên hệ', doCuThe: 'Độ cụ thể',
-  doKhopDichVu: 'Khớp dịch vụ', tinHieuNganSach: 'Tín hiệu ngân sách',
-  hinhThuc: 'Hình thức hợp tác', phatCanhTranh: 'Phạt cạnh tranh',
-};
-const TRAN_TRUC = { doTuoi:25, khaNangLienHe:20, doCuThe:20, doKhopDichVu:15, tinHieuNganSach:12, hinhThuc:8, phatCanhTranh:10 };
-const NHAN_NHU_CAU = {
-  content:'Content', video:'Quay dựng', design:'Thiết kế', branding:'Branding',
-  ads:'Quảng cáo', sales:'Bán hàng', community:'Cộng đồng', pr:'PR/Báo chí', event:'Sự kiện',
-};
-const NHAN_TRANG_THAI = {
-  moi: 'Mới', quan_tam: 'Quan tâm', da_lien_he: 'Đã liên hệ',
-  dang_trao_doi: 'Đang trao đổi', chot: 'Đã chốt', bo: 'Bỏ qua',
-};
-const NHAN_NGUON = {
-  vlance:'vLance', freelancerviet:'FreelancerViet', fb_group:'Facebook Group',
-  fb_manual:'Facebook (nạp tay)', topcv:'TopCV', vietnamworks:'VietnamWorks', vieclam24h:'Vieclam24h',
-};
-
-// --------------------------------------------------------------- Dữ liệu mẫu
-const gio = (n) => new Date(Date.now() - n * 3600e3).toISOString();
-const hetHan = (n) => new Date(Date.now() + n * 3600e3).toISOString();
-
-const DEMO = [
-  { id:'d1', tier:'A', score:94, source:'vlance', title:'Cần quay dựng video TikTok + thiết kế banner cho shop mỹ phẩm',
-    raw_text:'Shop mỹ phẩm bên mình cần tìm bạn quay dựng video TikTok và thiết kế banner, khoảng 10 video mỗi tháng, hợp tác lâu dài hàng tháng. Deadline lô đầu vào cuối tuần này. Ngân sách 5-10tr/tháng tuỳ khối lượng. Liên hệ Zalo 0901234567.',
-    nhu_cau:['video','design'], khu_vuc:'TP.HCM', hinh_thuc:'retainer', posted_at:gio(1), expires_at:hetHan(46),
-    contact_zalo:'0901234567', budget_text:'5-10tr/tháng', do_canh_tranh:2, status:null,
-    score_breakdown:{doTuoi:25,khaNangLienHe:20,doCuThe:17,doKhopDichVu:15,tinHieuNganSach:12,hinhThuc:8,phatCanhTranh:-2},
-    source_url:'https://vlance.vn/du-an/demo-1' },
-  { id:'d2', tier:'A', score:81, source:'freelancerviet', title:'Tìm bạn xây kênh TikTok từ 0 cho trung tâm tiếng Anh',
-    raw_text:'Trung tâm tiếng Anh cần bạn xây kênh TikTok từ số 0, lên kịch bản và quản trị fanpage. Cam kết 3 tháng, có thể gia hạn. Ngân sách thoả thuận theo năng lực. Gọi 0912345678 hoặc email tuyendung@abc.edu.vn',
-    nhu_cau:['content','video'], khu_vuc:'Hà Nội', hinh_thuc:'retainer', posted_at:gio(4), expires_at:hetHan(20),
-    contact_phone:'0912345678', contact_email:'tuyendung@abc.edu.vn', budget_text:'thoả thuận', do_canh_tranh:5, status:null,
-    score_breakdown:{doTuoi:21,khaNangLienHe:20,doCuThe:14,doKhopDichVu:15,tinHieuNganSach:7,hinhThuc:8,phatCanhTranh:-5},
-    source_url:'https://freelancerviet.vn/viec/demo-2' },
-  { id:'d3', tier:'B', score:72, source:'fb_manual', title:'Quán cafe cần người chạy ads Facebook dịp khai trương',
-    raw_text:'Quán cafe mới mở ở Cầu Giấy cần bạn chạy ads Facebook cho sự kiện khai trương tuần sau. Ngân sách ads 15tr, phí dịch vụ trao đổi thêm. Inbox mình nhé.',
-    nhu_cau:['ads','event'], khu_vuc:'Hà Nội', hinh_thuc:'du_an', posted_at:gio(3), expires_at:hetHan(45),
-    contact_url:'https://facebook.com/demo', budget_text:'15tr ngân sách ads', do_canh_tranh:9, status:null,
-    score_breakdown:{doTuoi:21,khaNangLienHe:11,doCuThe:15,doKhopDichVu:15,tinHieuNganSach:12,hinhThuc:6,phatCanhTranh:-5},
-    source_url:'https://facebook.com/groups/demo/posts/3' },
-  { id:'d4', tier:'B', score:66, source:'vlance', title:'Thiết kế bộ nhận diện thương hiệu cho startup nội thất',
-    raw_text:'Startup nội thất cần thiết kế logo và bộ nhận diện thương hiệu cơ bản. Deadline 3 tuần. Ngân sách 20tr. Gửi portfolio qua email hello@noithat.vn',
-    nhu_cau:['design','branding'], khu_vuc:'Không rõ', hinh_thuc:'du_an', posted_at:gio(9), expires_at:hetHan(159),
-    contact_email:'hello@noithat.vn', budget_text:'20tr', do_canh_tranh:14, status:'quan_tam',
-    score_breakdown:{doTuoi:18,khaNangLienHe:11,doCuThe:11,doKhopDichVu:15,tinHieuNganSach:12,hinhThuc:6,phatCanhTranh:-8},
-    source_url:'https://vlance.vn/du-an/demo-4' },
-  { id:'d5', tier:'A', score:78, source:'fb_manual', title:'Spa cần bạn quản trị fanpage + livestream bán hàng',
-    raw_text:'Spa ở Bình Thạnh cần bạn quản trị fanpage và hỗ trợ livestream bán hàng, 3 buổi/tuần, hợp tác lâu dài. Ngân sách 8tr/tháng. Zalo 0987654321.',
-    nhu_cau:['content','sales'], khu_vuc:'TP.HCM', hinh_thuc:'retainer', posted_at:gio(2), expires_at:hetHan(5),
-    contact_zalo:'0987654321', budget_text:'8tr/tháng', do_canh_tranh:3, status:null,
-    score_breakdown:{doTuoi:25,khaNangLienHe:20,doCuThe:14,doKhopDichVu:15,tinHieuNganSach:12,hinhThuc:8,phatCanhTranh:-2},
-    source_url:'https://facebook.com/groups/demo/posts/5' },
-  { id:'d6', tier:'C', score:52, source:'topcv', title:'Tuyển Nhân viên Marketing tổng hợp — full time',
-    raw_text:'Làm việc tại văn phòng, giờ hành chính, có bảo hiểm xã hội, lương 12-15tr. Ứng tuyển qua TopCV.',
-    nhu_cau:['content'], khu_vuc:'Hà Nội', hinh_thuc:'tuyen_dung', posted_at:gio(30), expires_at:hetHan(300),
-    contact_url:'https://topcv.vn/demo', budget_text:'12-15tr', do_canh_tranh:40, status:null,
-    score_breakdown:{doTuoi:8,khaNangLienHe:11,doCuThe:11,doKhopDichVu:12,tinHieuNganSach:12,hinhThuc:1,phatCanhTranh:-10},
-    source_url:'https://topcv.vn/demo' },
-  { id:'d7', tier:'B', score:63, source:'freelancerviet', title:'Nhà hàng cần chụp ảnh món ăn + viết bài PR',
-    raw_text:'Nhà hàng cần chụp ảnh menu mới khoảng 25 món và viết 3 bài PR đăng báo. Deadline trong tháng. Ngân sách 12tr. LH 0356789012.',
-    nhu_cau:['video','pr'], khu_vuc:'TP.HCM', hinh_thuc:'du_an', posted_at:gio(14), expires_at:hetHan(154),
-    contact_phone:'0356789012', budget_text:'12tr', do_canh_tranh:6, status:'da_lien_he',
-    score_breakdown:{doTuoi:14,khaNangLienHe:20,doCuThe:17,doKhopDichVu:15,tinHieuNganSach:12,hinhThuc:6,phatCanhTranh:-5},
-    source_url:'https://freelancerviet.vn/viec/demo-7' },
-  { id:'d8', tier:'D', score:0, source:'vlance', title:'Tuyển lập trình viên backend NodeJS',
-    raw_text:'Làm việc tại văn phòng, full time, có bảo hiểm. Yêu cầu 3 năm kinh nghiệm NodeJS.',
-    nhu_cau:[], khu_vuc:'Hà Nội', hinh_thuc:'tuyen_dung', posted_at:gio(20), expires_at:hetHan(140),
-    budget_text:null, do_canh_tranh:11, status:null, canh_bao:['ngoai_pham_vi'],
-    score_breakdown:{doTuoi:14,khaNangLienHe:0,doCuThe:3,doKhopDichVu:0,tinHieuNganSach:4,hinhThuc:1,phatCanhTranh:-8},
-    source_url:'https://vlance.vn/du-an/demo-8' },
-];
-
-// ------------------------------------------------------------------ Trạng thái
-const S = {
-  mode: 'demo', leads: DEMO.slice(), sb: null, user: null,
-  loc: { tier: new Set(), source: '', need: '', freshOnly: true, uncontacted: false },
-  tableView: false,
-};
-
-// ------------------------------------------------------------------- Tiện ích
-const $ = (s) => document.querySelector(s);
-const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const conHan = (l) => !l.expires_at || new Date(l.expires_at) > new Date();
-
-function conLaiGio(l) {
-  if (!l.expires_at) return null;
-  return (new Date(l.expires_at) - Date.now()) / 3600e3;
-}
-/** Trạng thái khẩn: màu LUÔN đi kèm chữ + chấm, không bao giờ chỉ dựa vào màu. */
-function mucKhan(l) {
-  const h = conLaiGio(l);
-  if (h == null) return { mau: 'var(--ink-muted)', chu: 'không rõ hạn' };
-  if (h <= 0) return { mau: 'var(--ink-muted)', chu: 'đã hết hạn' };
-  if (h <= 2) return { mau: 'var(--critical)', chu: `còn ${Math.max(1, Math.round(h * 60))} phút` };
-  if (h <= 6) return { mau: 'var(--warning)', chu: `còn ${h.toFixed(1)} giờ` };
-  if (h <= 24) return { mau: 'var(--serious)', chu: `còn ${Math.round(h)} giờ` };
-  return { mau: 'var(--good)', chu: `còn ${Math.round(h / 24)} ngày` };
-}
-const tienVN = (n) => n == null ? null : (n >= 1e6 ? `${(n/1e6).toFixed(n % 1e6 ? 1 : 0)}tr` : `${Math.round(n/1e3)}k`);
-
-function locLeads() {
-  return S.leads.filter((l) => {
-    if (S.loc.tier.size && !S.loc.tier.has(l.tier)) return false;
-    if (S.loc.source && l.source !== S.loc.source) return false;
-    if (S.loc.need && !(l.nhu_cau || []).includes(S.loc.need)) return false;
-    if (S.loc.freshOnly && !conHan(l)) return false;
-    if (S.loc.uncontacted && l.status && l.status !== 'moi') return false;
-    return true;
-  }).sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
-}
-
-// --------------------------------------------------------------------- Render
-function veKpi() {
-  const con = S.leads.filter(conHan);
-  const sapHet = con.filter((l) => { const h = conLaiGio(l); return h != null && h <= 6; });
-  const hangA = con.filter((l) => l.tier === 'A');
-  const chuaCham = con.filter((l) => !l.status || l.status === 'moi');
-  const tiles = [
-    { label: 'Lead còn hạn', value: con.length, note: `${S.leads.length} tổng đã thu thập`, mau: null },
-    { label: 'Hạng A', value: hangA.length, note: 'điểm ≥ 75 — ưu tiên chạm', mau: 'var(--tier-a)' },
-    { label: 'Sắp hết hạn', value: sapHet.length, note: 'còn dưới 6 giờ', mau: 'var(--warning)' },
-    { label: 'Chưa liên hệ', value: chuaCham.length, note: 'chờ bạn quyết định', mau: 'var(--accent)' },
-  ];
-  $('#kpis').innerHTML = tiles.map((t) => `
-    <div class="tile">
-      <div class="label">${t.label}</div>
-      <div class="value">${t.value}</div>
-      <div class="note">${t.mau ? `<span class="dot" style="background:${t.mau}"></span>` : ''}${t.note}</div>
-    </div>`).join('');
-}
-
-function veThe(l) {
-  const k = mucKhan(l);
-  const nc = (l.nhu_cau || []).map((n) => `<span class="tag">${NHAN_NHU_CAU[n] || n}</span>`).join('');
-  const lh = l.contact_zalo ? `Zalo ${l.contact_zalo}` : l.contact_phone ? l.contact_phone
-           : l.contact_email ? l.contact_email : l.contact_url ? 'có link' : '⚠ chưa có liên hệ';
-  return `
-  <article class="card" data-id="${l.id}">
-    <div class="tierbox t-${l.tier}">${l.tier}<small>${l.score}</small></div>
-    <div>
-      <h3>${esc(l.title)}</h3>
-      <div class="meta">
-        <span class="tag">${NHAN_NGUON[l.source] || l.source}</span>
-        ${l.khu_vuc && l.khu_vuc !== 'Không rõ' ? `<span class="tag">${esc(l.khu_vuc)}</span>` : ''}
-        ${nc}
-        ${l.budget_text ? `<span class="tag">${esc(l.budget_text)}</span>` : ''}
-      </div>
-      <div class="meter" title="Điểm ${l.score}/100"><i style="width:${Math.max(0, Math.min(100, l.score))}%"></i></div>
-    </div>
-    <div class="right">
-      <div class="countdown" style="color:${k.mau}"><span class="dot" style="background:${k.mau}"></span>${k.chu}</div>
-      <div style="font-size:12px;color:var(--ink-2)">${esc(lh)}</div>
-      ${l.status ? `<span class="badge">${esc(NHAN_TRANG_THAI[l.status] || l.status)}</span>` : ''}
-    </div>
-  </article>`;
-}
-
-function veDanhSach() {
-  const ds = locLeads();
-  $('#list').innerHTML = ds.length
-    ? ds.map(veThe).join('')
-    : `<div class="empty">Không có lead nào khớp bộ lọc.</div>`;
-  veBang(ds);
-}
-
-/** Bảng dữ liệu — kênh truy cập thay thế, bắt buộc theo yêu cầu accessibility. */
-function veBang(ds) {
-  $('#tableView').style.display = S.tableView ? 'block' : 'none';
-  if (!S.tableView) return;
-  $('#tableView').innerHTML = `
-    <table class="tbl"><thead><tr>
-      <th>Hạng</th><th class="num">Điểm</th><th>Tiêu đề</th><th>Nguồn</th><th>Khu vực</th><th>Còn lại</th><th>Liên hệ</th>
-    </tr></thead><tbody>
-    ${ds.map((l) => `<tr>
-      <td>${l.tier}</td><td class="num">${l.score}</td><td>${esc(l.title)}</td>
-      <td>${NHAN_NGUON[l.source] || l.source}</td><td>${esc(l.khu_vuc || '')}</td>
-      <td>${mucKhan(l).chu}</td>
-      <td>${esc(l.contact_zalo || l.contact_phone || l.contact_email || (l.contact_url ? 'link' : '—'))}</td>
-    </tr>`).join('')}
-    </tbody></table>`;
-}
-
-function moChiTiet(id) {
-  const l = S.leads.find((x) => String(x.id) === String(id));
-  if (!l) return;
-  const bd = l.score_breakdown || {};
-  const hang = Object.keys(NHAN_TRUC).filter((k) => k in bd).map((k) => {
-    const v = bd[k]; const tran = TRAN_TRUC[k] || 1; const am = v < 0;
-    const pct = Math.min(100, Math.abs(v) / tran * 100);
-    return `<div class="bd-row">
-      <span class="n">${NHAN_TRUC[k]}</span>
-      <span class="bd-bar ${am ? 'neg' : ''}"><i style="width:${pct}%"></i></span>
-      <span class="v">${v > 0 ? v : v}</span>
-    </div>`;
-  }).join('');
-  const k = mucKhan(l);
-  $('#drawer').innerHTML = `
-    <div style="display:flex;gap:10px;align-items:flex-start">
-      <div class="tierbox t-${l.tier}">${l.tier}<small>${l.score}</small></div>
-      <div style="flex:1"><h2>${esc(l.title)}</h2>
-        <div class="meta"><span class="tag">${NHAN_NGUON[l.source] || l.source}</span>
-        <span style="color:${k.mau}">● ${k.chu}</span></div>
-      </div>
-      <button class="ghost" id="closeDrawer">✕</button>
-    </div>
-
-    <div class="sec">Phân rã điểm (thang 100)</div>
-    <div class="bd">${hang || '<span style="font-size:12px;color:var(--ink-muted)">Chưa có phân rã</span>'}</div>
-
-    <div class="sec">Liên hệ</div>
-    <div class="meta">
-      ${l.contact_zalo ? `<span class="tag">Zalo ${esc(l.contact_zalo)}</span>` : ''}
-      ${l.contact_phone ? `<span class="tag">${esc(l.contact_phone)}</span>` : ''}
-      ${l.contact_email ? `<span class="tag">${esc(l.contact_email)}</span>` : ''}
-      ${l.contact_url ? `<a class="tag" href="${esc(l.contact_url)}" target="_blank" rel="noopener">Mở link</a>` : ''}
-      ${!(l.contact_zalo||l.contact_phone||l.contact_email||l.contact_url) ? '<span class="tag">⚠ Chưa có đường liên hệ — cần làm giàu</span>' : ''}
-    </div>
-
-    <div class="sec">Nội dung gốc</div>
-    <pre class="raw">${esc(l.raw_text)}</pre>
-    ${l.source_url ? `<p style="font-size:12px;margin:8px 0 0"><a href="${esc(l.source_url)}" target="_blank" rel="noopener">Xem bài gốc ↗</a></p>` : ''}
-
-    <div class="sec">Bạn quyết định</div>
-    <div class="actions">
-      <button data-st="quan_tam">Quan tâm</button>
-      <button data-st="da_lien_he">Đã liên hệ</button>
-      <button data-st="bo">Bỏ qua</button>
-    </div>
-    <p style="font-size:12px;color:var(--ink-muted);margin-top:14px">
-      Máy chỉ đề xuất và xếp hạng. Mọi thay đổi trạng thái đều do bạn bấm, và được ghi vào nhật ký kiểm toán.
-    </p>`;
-  $('#drawer').classList.add('open');
-  $('#backdrop').classList.add('open');
-  $('#closeDrawer').onclick = dongChiTiet;
-  $('#drawer').querySelectorAll('[data-st]').forEach((b) => {
-    b.onclick = () => datTrangThai(l, b.dataset.st);
-  });
-}
-function dongChiTiet() {
-  $('#drawer').classList.remove('open');
-  $('#backdrop').classList.remove('open');
-}
-
-async function datTrangThai(l, st) {
-  l.status = st;
-  if (S.mode === 'live' && S.sb) {
-    const { error } = await S.sb.from('demand_leads').update({ status: st, reviewed_at: new Date().toISOString() }).eq('id', l.id);
-    if (error) return baoLoi(`Không cập nhật được: ${error.message}`);
-  }
-  veKpi(); veDanhSach(); dongChiTiet();
-}
-
-function baoLoi(msg) {
-  $('#warnBox').style.display = 'block';
-  $('#warnBox').textContent = msg;
-}
-
-// ------------------------------------------------------------- Chế độ LIVE
-async function ketNoi() {
-  baoLoi('Đang tải thư viện Supabase…');
-  let createClient;
-  try {
-    ({ createClient } = await import(CAU_HINH.cdn));
-  } catch (e) {
-    return baoLoi('Không tải được thư viện Supabase từ CDN (có thể do môi trường xem chặn mạng ngoài). Chế độ Demo vẫn dùng bình thường để review giao diện.');
-  }
-  S.sb = createClient(CAU_HINH.supabaseUrl, CAU_HINH.supabaseKey);
-  const { data: { session } } = await S.sb.auth.getSession();
-  if (!session) {
-    const { error } = await S.sb.auth.signInWithOAuth({ provider: 'github', options: { redirectTo: location.href } });
-    if (error) return baoLoi(`Đăng nhập thất bại: ${error.message}`);
-    return;
-  }
-  S.user = session.user;
-  await taiLead();
-}
-
-async function taiLead() {
-  const { data, error } = await S.sb.from('demand_leads').select('*').order('score', { ascending: false }).limit(500);
-  if (error) return baoLoi(`Không đọc được dữ liệu: ${error.message}. Kiểm tra vai trò trong app_users đã được phê duyệt chưa.`);
-  S.mode = 'live';
-  S.leads = data || [];
-  $('#modeBadge').textContent = 'Live';
-  $('#modeBadge').className = 'badge live';
-  $('#subline').textContent = `Đang nối Supabase — ${S.leads.length} lead. Tài khoản: ${S.user?.email || ''}`;
-  $('#warnBox').style.display = 'none';
-  if (S.leads.length === 0) baoLoi('Kết nối thành công nhưng bảng demand_leads đang trống — chưa có scraper nào chạy.');
-  dungBoLoc(); veKpi(); veDanhSach();
-}
-
-async function napLeadMoi() {
-  if (S.mode !== 'live' || !S.sb) return baoLoi('Cần "Kết nối dữ liệu thật" trước khi nạp lead.');
-  const { data, error } = await S.sb.rpc('merge_demand_inbox');
-  if (error) return baoLoi(`Nạp thất bại: ${error.message}`);
-  const r = Array.isArray(data) ? data[0] : data;
-  baoLoi(`Nạp xong — thêm mới ${r.them_moi}, bị chặn ${r.bi_chan}, đã có ${r.da_co}, trùng nội dung ${r.trung_noi_dung}, hết hạn ${r.het_han}.`);
-  await taiLead();
-}
-
-// ------------------------------------------------------------------- Bộ lọc
-function dungBoLoc() {
-  const nguon = [...new Set(S.leads.map((l) => l.source))];
-  $('#srcSel').innerHTML = '<option value="">Tất cả</option>' +
-    nguon.map((s) => `<option value="${s}">${NHAN_NGUON[s] || s}</option>`).join('');
-  const needs = [...new Set(S.leads.flatMap((l) => l.nhu_cau || []))];
-  $('#needSel').innerHTML = '<option value="">Tất cả</option>' +
-    needs.map((n) => `<option value="${n}">${NHAN_NHU_CAU[n] || n}</option>`).join('');
-}
-
-// ---------------------------------------------------------------- Sự kiện
-document.addEventListener('click', (e) => {
-  const chip = e.target.closest('.chip[data-f="tier"]');
-  if (chip) {
-    const v = chip.dataset.v; const on = chip.getAttribute('aria-pressed') === 'true';
-    chip.setAttribute('aria-pressed', String(!on));
-    on ? S.loc.tier.delete(v) : S.loc.tier.add(v);
-    return veDanhSach();
-  }
-  const card = e.target.closest('.card');
-  if (card) return moChiTiet(card.dataset.id);
-});
-$('#backdrop').onclick = dongChiTiet;
-$('#srcSel').onchange = (e) => { S.loc.source = e.target.value; veDanhSach(); };
-$('#needSel').onchange = (e) => { S.loc.need = e.target.value; veDanhSach(); };
-$('#freshOnly').onclick = (e) => {
-  S.loc.freshOnly = !S.loc.freshOnly;
-  e.currentTarget.setAttribute('aria-pressed', String(S.loc.freshOnly));
-  veKpi(); veDanhSach();
-};
-$('#uncontacted').onclick = (e) => {
-  S.loc.uncontacted = !S.loc.uncontacted;
-  e.currentTarget.setAttribute('aria-pressed', String(S.loc.uncontacted));
-  veDanhSach();
-};
-$('#themeBtn').onclick = () => {
+// ?theme=dark|light chỉ phục vụ kiểm tra nhanh / chụp ảnh verify.
+const _themeParam = new URLSearchParams(location.search).get('theme');
+document.documentElement.dataset.theme =
+  (_themeParam === 'dark' || _themeParam === 'light') ? _themeParam
+  : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+document.getElementById('themeBtn').onclick = () => {
   document.documentElement.dataset.theme =
     document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
 };
-$('#tableBtn').onclick = () => { S.tableView = !S.tableView; veDanhSach(); };
-$('#connectBtn').onclick = ketNoi;
-$('#mergeBtn').onclick = napLeadMoi;
-
-// Đồng hồ đếm ngược sống — lead là tài sản có hạn dùng, giao diện phải thể hiện điều đó
-setInterval(() => { if (!$('#drawer').classList.contains('open')) { veKpi(); veDanhSach(); } }, 60000);
-
-dungBoLoc(); veKpi(); veDanhSach();
 </script>
 </body>
 </html>
