@@ -217,9 +217,12 @@
 // ===========================================================================
 
 const CAU_HINH = {
-  supabaseUrl: 'https://emkwknwcyyewevmmoxzj.supabase.co',
-  // Khoá publishable — an toàn để nhúng client, RLS mới là lớp bảo vệ thật.
-  supabaseKey: 'sb_publishable__P8JmeH4UesOlmEuj2YEAw_QfNzSj_C',
+  // Project riêng của Demand Engine (tách khỏi CMCTS)
+  supabaseUrl: 'https://dlzhcfrojibpscozdmrx.supabase.co',
+  // KHOÁ ANON — đúng loại để nhúng client. RLS mới là lớp bảo vệ thật, không phải khoá này.
+  // ⛔ TUYỆT ĐỐI không thay bằng service_role key: nó BỎ QUA toàn bộ RLS.
+  //    Service key chỉ được nằm trong secret của Worker phía server, không bao giờ trong file này.
+  supabaseKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRsemhjZnJvamlicHNjb3pkbXJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYyNjYzODEsImV4cCI6MjEwMTg0MjM4MX0.uIUW9sGAA9CyyRemLtB4ap0z8qMM8g8jc16eO6fTGLI',
   cdn: 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm',
 };
 

@@ -28,11 +28,12 @@ Hệ quả: trục thời gian (`posted_at` / `expires_at` / TTL theo nguồn) l
 
 | Tầng | Trạng thái |
 |---|---|
-| Schema + RLS + trigger + `merge_demand_inbox()` | ✅ **Đã áp thật** lên Supabase `emkwknwcyyewevmmoxzj`, đã kiểm chứng bằng dữ liệu mẫu |
+| Nền tảng phân quyền (`app_users`, `vai_tro`, `co_quyen_*`) | ✅ **Đã áp thật** lên project riêng `dlzhcfrojibpscozdmrx` |
+| Schema + RLS + trigger + `merge_demand_inbox()` | ✅ **Đã áp thật**, đã kiểm chứng 5 nhánh lọc bằng dữ liệu mẫu |
 | Logic thuần `src/core/` | ✅ 6 module, **39 test pass** |
 | Scraper từng nguồn `src/sources/` | ❌ chưa làm |
 | Worker + cron | ❌ chưa làm |
-| UI dashboard | ❌ chưa làm |
+| UI duyệt lead `public/index.html` | ✅ chạy được, đã soi ảnh render 2 chế độ màu |
 | Learner | ❌ chưa làm (cần ≥2 tuần dữ liệu thật trước) |
 
 ---
@@ -48,7 +49,10 @@ src/core/                 Logic thuần — không I/O, unit-test được
   tuoi.js                 Tuổi lead, TTL, điểm độ tươi
   rubric-lead.js          Chấm 100 điểm + xếp hạng A/B/C/D
   router-lead.js          Định tuyến push/enrich/hold/suppress + luật bảo toàn
-db/migrations/            SQL hợp nhất, idempotent
+db/migrations/
+  ..._00_nen_tang_phan_quyen.sql   Extension + app_users + phân quyền — CHẠY TRƯỚC
+  ..._demand_engine_v1.sql        Schema demand_* (phụ thuộc file trên)
+public/index.html         Client duyệt lead (demo + live)
 tests/                    39 test (node:test, không cần cài gì thêm)
 ```
 

@@ -1,7 +1,7 @@
 -- ============================================================================
 -- DEMAND ENGINE v1 — Schema hợp nhất (idempotent)
 --
--- ĐÃ ÁP LÊN project emkwknwcyyewevmmoxzj ngày 09/08/2026 dưới 3 migration:
+-- ĐÃ ÁP LÊN project dlzhcfrojibpscozdmrx ngày 09/08/2026 dưới 3 migration:
 --   20260809… demand_engine_ham_ho_tro_va_bang
 --   20260809… demand_engine_audit_trigger_va_merge
 --   20260809… demand_engine_rls

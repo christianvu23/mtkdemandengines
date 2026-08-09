@@ -106,7 +106,7 @@ Cách này chỉ deploy phần giao diện. Khi thêm Worker backend sau này th
 Sau khi có URL thật, phải khai báo nó với Supabase, nếu không đăng nhập GitHub sẽ
 quay về sai chỗ:
 
-Supabase dashboard → project `emkwknwcyyewevmmoxzj` → **Authentication** → **URL Configuration**
+Supabase dashboard → project `dlzhcfrojibpscozdmrx` (mtkdemandengines) → **Authentication** → **URL Configuration**
 → thêm URL Worker vào **Redirect URLs**.
 
 ---
