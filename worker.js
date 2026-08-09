@@ -9,6 +9,7 @@
 // ============================================================================
 
 import { napNhieuLead } from './src/core/nap-lead.js';
+import { bocLinkBai } from './src/core/boc-link.js';
 import { lay, kiemTraTransport } from './src/transport/index.js';
 
 const JSON_HEADERS = { 'Content-Type': 'application/json; charset=utf-8' };
@@ -113,10 +114,13 @@ async function xuLyNap(request, env) {
 /**
  * Hunter — phương án 🅑. Quét các nguồn đang bật, không phải nap_tay.
  *
- * ⚠️ TRẠNG THÁI: đường ống chạy được, nhưng bước TÁCH BÀI từ trang danh sách
- * còn phụ thuộc `cau_hinh.regex_link_bai` — thứ CHƯA điền được vì phiên xây dựng
- * không có credential để xem HTML thật của vLance/FreelancerViet.
- * Nguồn nào chưa có regex thì bị bỏ qua có chủ ý, kèm lý do, thay vì đoán bừa.
+ * Tách link bài bằng SUY LUẬN THEO KHUÔN đường dẫn (src/core/boc-link.js), nên
+ * không cần khai regex trước cho từng nguồn. Nguồn nào đã biết khuôn thật thì
+ * điền `cau_hinh.regex_link_bai` và nó được ưu tiên hơn suy luận.
+ *
+ * ⚠️ CHƯA chạy trên HTML thật của vLance/FreelancerViet (phiên xây dựng bị 403).
+ * Lần chạy đầu phải xem trường `cach_tach_link` và `khuon` trong kết quả trả về
+ * để xác nhận nó bắt đúng thứ cần bắt.
  */
 async function xuLyQuet(request, env) {
   const url = new URL(request.url);
@@ -131,13 +135,7 @@ async function xuLyQuet(request, env) {
 
   for (const ng of nguonList) {
     const urlDS = ng.cau_hinh?.url_danh_sach;
-    const regex = ng.cau_hinh?.regex_link_bai;
-
     if (!urlDS) { ketQua.push({ nguon: ng.ma, bo_qua: 'chưa cấu hình url_danh_sach' }); continue; }
-    if (!regex) {
-      ketQua.push({ nguon: ng.ma, bo_qua: 'chưa có regex_link_bai — cần xem HTML thật trước, không đoán' });
-      continue;
-    }
 
     const kq = await lay(urlDS, ng.transport, env);
     if (!kq.ok) {
@@ -149,9 +147,22 @@ async function xuLyQuet(request, env) {
       continue;
     }
 
-    // Tách link bài từ nội dung, cắt theo TRẦN CỨNG của nguồn
-    const links = [...new Set(String(kq.noiDung).match(new RegExp(regex, 'g')) ?? [])]
-      .slice(0, ng.tran_lead_moi_dot ?? 40);
+    // Tách link bài: suy luận theo khuôn đường dẫn, KHÔNG cần regex khai trước.
+    // Nguồn nào đã biết khuôn thật thì cau_hinh.regex_link_bai sẽ được ưu tiên.
+    const boc = bocLinkBai(kq.noiDung, urlDS, {
+      regexBatBuoc: ng.cau_hinh?.regex_link_bai ?? null,
+      tran: ng.tran_lead_moi_dot ?? 40,
+    });
+    const links = boc.links;
+
+    if (!links.length) {
+      ketQua.push({ nguon: ng.ma, bo_qua: `không tách được link bài (${boc.cachChon})`, thong_ke: boc.thongKe });
+      await ghiQueryLog(env, {
+        query: urlDS, method: ng.transport, source: ng.ma, run_label: runLabel,
+        so_lead_moi: 0, ghi_chu: `Không tách được link: ${boc.cachChon}`, created_by: 'worker',
+      });
+      continue;
+    }
 
     const thoDS = [];
     for (const link of links) {
@@ -170,10 +181,11 @@ async function xuLyQuet(request, env) {
     });
     await ghiQueryLog(env, {
       query: urlDS, method: ng.transport, source: ng.ma, run_label: runLabel,
-      so_lead_moi: payloads.length, ghi_chu: `${links.length} link, bỏ ${boQua.length}`, created_by: 'worker',
+      so_lead_moi: payloads.length, ghi_chu: `${links.length} link (${boc.cachChon} ${boc.khuon ?? ''}), bỏ ${boQua.length}`, created_by: 'worker',
     });
 
-    ketQua.push({ nguon: ng.ma, transport: kq.nguon, da_lui: !!kq.daLui, so_link: links.length, so_lead: payloads.length });
+    ketQua.push({ nguon: ng.ma, transport: kq.nguon, da_lui: !!kq.daLui,
+      cach_tach_link: boc.cachChon, khuon: boc.khuon, so_link: links.length, so_lead: payloads.length });
   }
 
   return traLoi({ run_label: runLabel, ket_qua: ketQua });

@@ -18,6 +18,9 @@ jobs:
 
       # Cổng chặn: không deploy nếu logic chấm điểm/dedup bị hỏng.
       # Bài học từ CMCTS — một lần redesign làm hỏng tab "Đã lưu" mà không ai bắt được.
+      - name: Cai dependency
+        run: npm ci || npm install
+
       - name: Chay test truoc khi deploy
         run: npm test
 

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Evaluations cho demand-engine-mcp-server.
+
+  GHI CHÚ VỀ CÁCH CHỌN CÂU HỎI — đọc trước khi thêm câu mới:
+
+  Hướng dẫn của skill yêu cầu đáp án phải ỔN ĐỊNH theo thời gian. Điều đó loại bỏ
+  hai nhóm câu hỏi mà thoạt nhìn có vẻ hợp lý:
+
+  1. Câu hỏi dựa trên DỮ LIỆU TRONG CSDL — bảng demand_leads hiện đang trống
+     (chưa scraper nào chạy), và khi có dữ liệu thì nó thay đổi mỗi ngày.
+  2. Câu hỏi về ĐIỂM hoặc HẠNG tổng — rubric tính 25/100 điểm cho độ tươi, nên
+     điểm của cùng một bài GIẢM DẦN theo thời gian thực. Đáp án sẽ sai sau vài giờ.
+
+  Vì vậy toàn bộ 10 câu dưới đây nhắm vào các đầu ra BẤT BIẾN THEO THỜI GIAN của
+  demand_score_text: bóc tách ngân sách, liên hệ, khu vực, phân loại nhu cầu, hình
+  thức hợp tác, và các trục điểm không phụ thuộc thời gian.
+
+  Mọi đáp án đã được CHẠY THẬT qua server ngày 09/08/2026, không phải suy luận.
+-->
+<evaluation>
+
+  <qa_pair>
+    <question>Dùng công cụ chấm điểm của Demand Engine cho mẩu tin sau: "Cần bạn quay dựng video cho shop mỹ phẩm. Ngân sách 5-10tr/tháng tuỳ khối lượng." Hệ thống bóc ra ngân sách tối đa là bao nhiêu đồng? Trả lời bằng số nguyên, không dấu phân cách.</question>
+    <answer>10000000</answer>
+  </qa_pair>
+
+  <qa_pair>
+    <question>Chấm mẩu tin: "Shop cần bạn làm content fanpage hàng tháng, liên hệ qua zalo 0901234567 nhé bạn." Số Zalo mà hệ thống trích ra là gì?</question>
+    <answer>0901234567</answer>
+  </qa_pair>
+
+  <qa_pair>
+    <question>Chấm mẩu tin: "Tuyển nhân viên Marketing toàn thời gian, làm việc tại văn phòng, có bảo hiểm xã hội, lương 12tr." Trường hình thức hợp tác mà hệ thống suy ra có giá trị là gì?</question>
+    <answer>tuyen_dung</answer>
+  </qa_pair>
+
+  <qa_pair>
+    <question>Chấm mẩu tin: "Quán cafe của mình ở Bình Thạnh cần bạn làm content và chụp ảnh món, hợp tác lâu dài nhé." Hệ thống đoán khu vực là gì?</question>
+    <answer>TP.HCM</answer>
+  </qa_pair>
+
+  <qa_pair>
+    <question>Chấm mẩu tin: "Cần bạn quay dựng video TikTok và thiết kế banner cho shop, khoảng 10 video mỗi tháng." Hệ thống nhận ra bao nhiêu nhóm nhu cầu khác nhau? Trả lời bằng một chữ số.</question>
+    <answer>2</answer>
+  </qa_pair>
+
+  <qa_pair>
+    <question>Chấm mẩu tin: "Tuyển lập trình viên backend NodeJS, làm việc tại văn phòng, yêu cầu 3 năm kinh nghiệm." Cảnh báo đầu tiên mà hệ thống đưa ra có mã là gì?</question>
+    <answer>ngoai_pham_vi</answer>
+  </qa_pair>
+
+  <qa_pair>
+    <question>Chấm mẩu tin chỉ để lại email, không có số điện thoại: "Trung tâm cần bạn làm content và thiết kế ấn phẩm hàng tháng, gửi hồ sơ về tuyendung@abc.edu.vn nhé." Trong phân rã điểm, trục khaNangLienHe được bao nhiêu điểm?</question>
+    <answer>11</answer>
+  </qa_pair>
+
+  <qa_pair>
+    <question>Chấm mẩu tin hoàn toàn không có đường liên hệ: "Quán mình cần bạn làm content và thiết kế cho fanpage, bạn nào quan tâm comment bên dưới mình xem." Trong phân rã điểm, trục khaNangLienHe được bao nhiêu điểm?</question>
+    <answer>0</answer>
+  </qa_pair>
+
+  <qa_pair>
+    <question>Chấm mẩu tin: "Cần bạn chạy quảng cáo Facebook cho shop thời trang, lương thoả thuận theo năng lực. LH 0912345678". Trong phân rã điểm, trục tinHieuNganSach được bao nhiêu điểm?</question>
+    <answer>7</answer>
+  </qa_pair>
+
+  <qa_pair>
+    <question>Chấm mẩu tin: "Cần thiết kế bộ nhận diện thương hiệu cho startup. Đã có 12 chào giá. LH 0987654321". Trong phân rã điểm, giá trị của trục phatCanhTranh là bao nhiêu? Trả lời kèm dấu.</question>
+    <answer>-8</answer>
+  </qa_pair>
+
+</evaluation>
