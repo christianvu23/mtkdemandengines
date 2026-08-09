@@ -1,22 +1,28 @@
-# Cloudflare Workers — Demand Engine (client duyệt lead)
+# Cloudflare Workers — Demand Engine
 #
-# Đây là Worker CHỈ phục vụ static assets (chưa có mã Worker).
-# Vì không có `main`, KHÔNG khai báo `binding` trong [assets] — Cloudflare chỉ chấp nhận
-# binding khi có Worker script.
-#
-# Khi thêm backend (route /api/demand/*), bỏ comment `main` và thêm lại binding.
+# Worker phục vụ static assets (public/) + API backend (worker.js).
+# Assets được phục vụ trước; request không khớp file tĩnh mới rơi vào Worker.
 
 name = "mtkdemandengines"
+main = "worker.js"
 compatibility_date = "2026-08-09"
-
-# main = "worker.js"
 
 [assets]
 directory = "./public"
-# App một trang: mọi đường dẫn không khớp file tĩnh đều trả index.html
+binding = "ASSETS"
 not_found_handling = "single-page-application"
 
-# Cron cho Hunter/Qualifier — bật khi worker.js đã có.
+# Cron — CHỈ bật sau khi:
+#   1. /api/demand/kiem-tra-transport trả ok cho transport đang dùng
+#   2. cau_hinh.regex_link_bai đã điền cho từng nguồn (cần xem HTML thật)
 # [triggers]
-# crons = ["*/30 * * * *"]   # nguồn nóng: 30 phút
-# crons = ["0 */6 * * *"]    # nguồn nguội: 6 giờ
+# crons = ["*/30 * * * *"]
+
+# Secret (nạp bằng `npx wrangler secret put <TEN>`, KHÔNG commit):
+#   SUPABASE_URL              https://dlzhcfrojibpscozdmrx.supabase.co
+#   SUPABASE_SERVICE_KEY      service_role key — bỏ qua RLS, chỉ để ở đây
+#   DEMAND_TOKEN              khoá tự đặt, bảo vệ cổng nạp
+#   CLOUDFLARE_ACCOUNT_ID     cho transport browser_run
+#   CLOUDFLARE_API_TOKEN      cho transport browser_run
+#   BRIGHTDATA_API_KEY        cho transport unlocker
+#   BRIGHTDATA_UNLOCKER_ZONE  cho transport unlocker

@@ -135,3 +135,71 @@ Supabase dashboard → project `dlzhcfrojibpscozdmrx` (mtkdemandengines) → **A
 | `workers.dev subdomain not configured` | Vào Workers & Pages bật subdomain workers.dev một lần |
 | Actions fail ở bước `npm test` | Logic bị hỏng — **đừng bỏ qua bước này**, đọc log test |
 | Trang trắng | Mở DevTools Console; file là self-contained nên lỗi thường do CDN Supabase bị chặn |
+
+---
+
+## Nạp secret cho Worker (sau khi deploy lần đầu)
+
+```bash
+npx wrangler secret put SUPABASE_URL            # https://dlzhcfrojibpscozdmrx.supabase.co
+npx wrangler secret put SUPABASE_SERVICE_KEY    # service_role — CHỈ ở đây, không bao giờ trong public/
+npx wrangler secret put DEMAND_TOKEN            # khoá bạn tự đặt, bảo vệ cổng nạp
+npx wrangler secret put CLOUDFLARE_ACCOUNT_ID   # cho transport browser_run
+npx wrangler secret put CLOUDFLARE_API_TOKEN    # cho transport browser_run
+npx wrangler secret put BRIGHTDATA_API_KEY      # cho transport unlocker
+npx wrangler secret put BRIGHTDATA_UNLOCKER_ZONE
+```
+
+### Việc BẮT BUỘC làm ngay sau đó
+
+Các transport `browser_run` và `unlocker` được viết theo tài liệu chính thức nhưng
+**chưa từng chạy thật lần nào**. Kiểm tra trước khi tin:
+
+```bash
+curl -H "X-Demand-Token: <DEMAND_TOKEN>" \
+  https://<worker>.workers.dev/api/demand/kiem-tra-transport
+```
+
+Mỗi transport phải trả `ok: true`. Cái nào `false` thì đọc trường `loi`.
+
+---
+
+## Cổng nạp tay — dùng ngay được, không cần scraper
+
+Đây là phương án 🅐. Thấy bài phù hợp trong nhóm Facebook/Zalo thì đẩy vào:
+
+```bash
+curl -X POST https://<worker>.workers.dev/api/demand/nap \
+  -H "X-Demand-Token: <DEMAND_TOKEN>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "source": "fb_manual",
+    "url": "https://facebook.com/groups/xxx/posts/yyy",
+    "noiDung": "Shop mỹ phẩm cần bạn quay dựng video TikTok, 10 video/tháng, hợp tác lâu dài. Ngân sách 5-10tr/tháng. Zalo 0901234567"
+  }'
+```
+
+Trả về ngay điểm, hạng, nhu cầu đã phân loại, liên hệ và ngân sách đã bóc tách.
+Lead vào `demand_inbox`; **bạn vẫn phải bấm "Nạp lead mới"** trên giao diện để đưa
+vào bảng chính — máy không tự làm thay.
+
+> Gợi ý: bọc lệnh curl này thành một shortcut trên điện thoại (iOS Shortcuts /
+> Android Tasker) để chia sẻ thẳng từ app Facebook sang. Đó là cách biến cổng nạp
+> thành thao tác một chạm.
+
+## Quét tự động (🅑) — còn một việc chưa xong
+
+`POST /api/demand/quet` đã chạy được đường ống, **nhưng** mỗi nguồn cần
+`cau_hinh.regex_link_bai` để biết đâu là link bài trong trang danh sách. Trường này
+đang `null` cho vLance và FreelancerViet vì phiên xây dựng không có credential để
+xem HTML thật — và đoán bừa regex thì tệ hơn là để trống.
+
+Nguồn chưa có regex sẽ bị **bỏ qua kèm lý do rõ ràng**, không âm thầm trả 0 lead.
+
+Điền regex sau khi xem được HTML thật:
+
+```sql
+update demand_sources
+set cau_hinh = cau_hinh || jsonb_build_object('regex_link_bai', 'https://www\.vlance\.vn/du-an/[a-z0-9-]+')
+where ma = 'vlance';
+```
