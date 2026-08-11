@@ -1,0 +1,20 @@
+{
+  "workerUrl": "https://mtkdemandengines.christianvu23.workers.dev",
+  "nguon": [
+    {
+      "ma": "vlance",
+      "urlDanhSach": "https://www.vlance.vn/viec-lam-freelance",
+      "transport": "playwright",
+      "tran": 40,
+      "regexLinkBai": null,
+      "ghiChu": "Cloudflare 'Just a moment...' chặn cả Chrome thật — chưa cào được tự động. Nạp tay qua /api/demand/nap."
+    },
+    {
+      "ma": "freelancerviet",
+      "urlDanhSach": "https://freelancerviet.vn/viec-lam-freelance.html",
+      "transport": "playwright",
+      "tran": 40,
+      "regexLinkBai": "freelancerviet\\.vn/thong-tin-viec-freelance/"
+    }
+  ]
+}
