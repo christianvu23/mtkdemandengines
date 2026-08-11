@@ -6,6 +6,12 @@
 // Việc nạp vào bảng chính vẫn do Christian bấm nút trên giao diện — vì hàm merge
 // đòi JWT có quyền ghi, mà service_role thì auth.uid() rỗng. Đây là ràng buộc
 // CÓ CHỦ Ý, không phải hạn chế kỹ thuật cần vá.
+//
+// QUÉT = QUEUE, KHÔNG ĐỒNG BỘ: `/api/demand/quet` và cron chỉ LIỆT KÊ nguồn rồi
+// đẩy vào Cloudflare Queue (binding QUEUE_QUET). Handler `queue()` xử lý từng
+// nguồn; nguồn nào tách được link bài thì đẩy tiếp từng link thành job riêng.
+// Lý do: trước đây quét tuần tự 40 link × browser_run 45s ≈ 30 phút trong một
+// request — dễ vượt timeout của Worker. Queue tự lo concurrency và không bị chặn.
 // ============================================================================
 
 import { napNhieuLead } from './src/core/nap-lead.js';
@@ -112,83 +118,131 @@ async function xuLyNap(request, env) {
 
 // ------------------------------------------------------ POST /api/demand/quet
 /**
- * Hunter — phương án 🅑. Quét các nguồn đang bật, không phải nap_tay.
+ * Hunter — phương án 🅑. KHÔNG quét đồng bộ nữa.
  *
- * Tách link bài bằng SUY LUẬN THEO KHUÔN đường dẫn (src/core/boc-link.js), nên
- * không cần khai regex trước cho từng nguồn. Nguồn nào đã biết khuôn thật thì
- * điền `cau_hinh.regex_link_bai` và nó được ưu tiên hơn suy luận.
+ * Trước đây quét nguồn và từng link bài TUẦN TỰ ngay trong request → dễ vượt
+ * timeout của Worker (40 link × browser_run 45s ≈ 30 phút, Worker chỉ cho vài
+ * chục giây). Giờ request chỉ LIỆT KÊ nguồn đang bật rồi đẩy từng nguồn thành
+ * một job vào Cloudflare Queue; handler `queue()` xử lý từng job, và khi tách
+ * được link bài thì đẩy tiếp từng link thành job riêng — queue tự lo concurrency.
  *
- * ⚠️ CHƯA chạy trên HTML thật của vLance/FreelancerViet (phiên xây dựng bị 403).
- * Lần chạy đầu phải xem trường `cach_tach_link` và `khuon` trong kết quả trả về
- * để xác nhận nó bắt đúng thứ cần bắt.
+ * Cron bật = scheduled() gọi đúng hàm xếp queue này, nên API và cron dùng chung
+ * một đường. Hàm trả về ngay, không đợi quét xong.
  */
-async function xuLyQuet(request, env) {
-  const url = new URL(request.url);
-  const chiNguon = url.searchParams.get('nguon');
+export function chuanBiMessageQuetNguon(nguonList, runLabel) {
+  return (nguonList ?? [])
+    .filter((ng) => ng.cau_hinh?.url_danh_sach)
+    .map((ng) => ({
+      loai: 'quet_nguon',
+      run_label: runLabel,
+      ma_nguon: ng.ma,
+      transport: ng.transport,
+      url_danh_sach: ng.cau_hinh.url_danh_sach,
+      tran: ng.tran_lead_moi_dot ?? 40,
+      regex_link_bai: ng.cau_hinh?.regex_link_bai ?? null,
+      so_loi_lien_tiep: ng.so_loi_lien_tiep ?? 0,
+    }));
+}
 
+/** Đọc danh sách nguồn đang bật rồi xếp từng nguồn vào queue. Trả về ngay. */
+async function lenhQuet(env, chiNguon = null) {
   let dk = 'dang_bat=eq.true&transport=neq.nap_tay&select=*';
   if (chiNguon) dk += `&ma=eq.${encodeURIComponent(chiNguon)}`;
   const nguonList = await sb(env, `demand_sources?${dk}`);
 
   const runLabel = nhanPhien();
-  const ketQua = [];
-
-  for (const ng of nguonList) {
-    const urlDS = ng.cau_hinh?.url_danh_sach;
-    if (!urlDS) { ketQua.push({ nguon: ng.ma, bo_qua: 'chưa cấu hình url_danh_sach' }); continue; }
-
-    const kq = await lay(urlDS, ng.transport, env);
-    if (!kq.ok) {
-      ketQua.push({ nguon: ng.ma, loi: kq.loi });
-      await sb(env, `demand_sources?ma=eq.${ng.ma}`, {
-        method: 'PATCH',
-        body: { lan_loi_cuoi: new Date().toISOString(), so_loi_lien_tiep: (ng.so_loi_lien_tiep ?? 0) + 1 },
-      });
-      continue;
-    }
-
-    // Tách link bài: suy luận theo khuôn đường dẫn, KHÔNG cần regex khai trước.
-    // Nguồn nào đã biết khuôn thật thì cau_hinh.regex_link_bai sẽ được ưu tiên.
-    const boc = bocLinkBai(kq.noiDung, urlDS, {
-      regexBatBuoc: ng.cau_hinh?.regex_link_bai ?? null,
-      tran: ng.tran_lead_moi_dot ?? 40,
-    });
-    const links = boc.links;
-
-    if (!links.length) {
-      ketQua.push({ nguon: ng.ma, bo_qua: `không tách được link bài (${boc.cachChon})`, thong_ke: boc.thongKe });
-      await ghiQueryLog(env, {
-        query: urlDS, method: ng.transport, source: ng.ma, run_label: runLabel,
-        so_lead_moi: 0, ghi_chu: `Không tách được link: ${boc.cachChon}`, created_by: 'worker',
-      });
-      continue;
-    }
-
-    const thoDS = [];
-    for (const link of links) {
-      const ct = await lay(link, ng.transport, env);
-      if (ct.ok) {
-        thoDS.push({ source: ng.ma, url: link, noiDung: ct.noiDung, sourceQuery: urlDS });
-      }
-    }
-
-    const { payloads, boQua } = napNhieuLead(thoDS);
-    if (payloads.length) await dayVaoInbox(env, payloads, runLabel);
-
-    await sb(env, `demand_sources?ma=eq.${ng.ma}`, {
-      method: 'PATCH',
-      body: { lan_quet_cuoi: new Date().toISOString(), so_loi_lien_tiep: 0 },
-    });
-    await ghiQueryLog(env, {
-      query: urlDS, method: ng.transport, source: ng.ma, run_label: runLabel,
-      so_lead_moi: payloads.length, ghi_chu: `${links.length} link (${boc.cachChon} ${boc.khuon ?? ''}), bỏ ${boQua.length}`, created_by: 'worker',
-    });
-
-    ketQua.push({ nguon: ng.ma, transport: kq.nguon, da_lui: !!kq.daLui,
-      cach_tach_link: boc.cachChon, khuon: boc.khuon, so_link: links.length, so_lead: payloads.length });
+  const messages = chuanBiMessageQuetNguon(nguonList, runLabel);
+  for (let i = 0; i < messages.length; i += 100) {
+    await env.QUEUE_QUET.sendBatch(messages.slice(i, i + 100));
   }
 
-  return traLoi({ run_label: runLabel, ket_qua: ketQua });
+  const biBo = (nguonList ?? [])
+    .filter((ng) => !ng.cau_hinh?.url_danh_sach)
+    .map((ng) => ({ nguon: ng.ma, bo_qua: 'chưa cấu hình url_danh_sach' }));
+
+  return {
+    run_label: runLabel,
+    da_xep_que: messages.length,
+    bi_bo: biBo,
+    chi_tiet: messages.map((m) => ({
+      nguon: m.ma_nguon, transport: m.transport, url_danh_sach: m.url_danh_sach,
+    })),
+  };
+}
+
+/** Job 'quet_nguon': lấy trang danh sách → tách link bài → đẩy từng link vào queue. */
+async function xuLyQuetNguon(m, env) {
+  if (!m.url_danh_sach) return { bo_qua: 'chưa cấu hình url_danh_sach' };
+
+  const kq = await lay(m.url_danh_sach, m.transport, env);
+  if (!kq.ok) {
+    await sb(env, `demand_sources?ma=eq.${m.ma_nguon}`, {
+      method: 'PATCH',
+      body: { lan_loi_cuoi: new Date().toISOString(), so_loi_lien_tiep: (m.so_loi_lien_tiep ?? 0) + 1 },
+    });
+    return { loi: kq.loi };
+  }
+
+  const boc = bocLinkBai(kq.noiDung, m.url_danh_sach, {
+    regexBatBuoc: m.regex_link_bai ?? null,
+    tran: m.tran ?? 40,
+  });
+
+  if (!boc.links.length) {
+    return { bo_qua: `không tách được link bài (${boc.cachChon})`, thong_ke: boc.thongKe };
+  }
+
+  // Mỗi link là một job riêng → queue tự lo concurrency, không bị timeout.
+  const jobBai = boc.links.map((link) => ({
+    loai: 'lay_bai',
+    run_label: m.run_label,
+    ma_nguon: m.ma_nguon,
+    transport: m.transport,
+    source_query: m.url_danh_sach,
+    url: link,
+  }));
+  for (let i = 0; i < jobBai.length; i += 100) {
+    await env.QUEUE_QUET.sendBatch(jobBai.slice(i, i + 100));
+  }
+
+  await sb(env, `demand_sources?ma=eq.${m.ma_nguon}`, {
+    method: 'PATCH',
+    body: { lan_quet_cuoi: new Date().toISOString(), so_loi_lien_tiep: 0 },
+  });
+
+  return {
+    transport: kq.nguon, da_lui: !!kq.daLui,
+    cach_tach_link: boc.cachChon, khuon: boc.khuon ?? null,
+    so_link: boc.links.length,
+  };
+}
+
+/** Job 'lay_bai': lấy nội dung bài → chấm điểm → đẩy vào demand_inbox. */
+async function xuLyLayBai(m, env) {
+  const ct = await lay(m.url, m.transport, env);
+  if (!ct.ok) return { loi: ct.loi };
+
+  const { payloads, boQua } = napNhieuLead([{
+    source: m.ma_nguon, url: m.url, noiDung: ct.noiDung, sourceQuery: m.source_query,
+  }]);
+
+  if (payloads.length) await dayVaoInbox(env, payloads, m.run_label);
+  await ghiQueryLog(env, {
+    query: m.source_query, method: m.transport, source: m.ma_nguon, run_label: m.run_label,
+    so_lead_moi: payloads.length,
+    ghi_chu: boQua.length ? `bỏ ${boQua.length}: ${boQua.map((b) => b.lyDo).join('; ').slice(0, 200)}` : null,
+    created_by: 'worker',
+  });
+
+  return { so_lead: payloads.length, bo_qua: boQua.length };
+}
+
+/** Điều phối một message của queue. Tách hàm để test được. */
+export async function xuLyMotMessage(m, env) {
+  if (!m || typeof m !== 'object') return { loi: 'Message không hợp lệ' };
+  if (m.loai === 'quet_nguon') return xuLyQuetNguon(m, env);
+  if (m.loai === 'lay_bai') return xuLyLayBai(m, env);
+  return { loi: `Không biết loại message: ${m.loai}` };
 }
 
 // -------------------------------------------------------------------- routes
@@ -206,7 +260,14 @@ export default {
 
     try {
       if (p === '/api/demand/nap' && request.method === 'POST') return await xuLyNap(request, env);
-      if (p === '/api/demand/quet' && request.method === 'POST') return await xuLyQuet(request, env);
+      if (p === '/api/demand/quet' && request.method === 'POST') {
+        if (!env.QUEUE_QUET) {
+          return traLoi({ loi: 'Worker chưa có binding QUEUE_QUET — cần bật Cloudflare Queues' }, 500);
+        }
+        const chiNguon = new URL(request.url).searchParams.get('nguon');
+        const ket = await lenhQuet(env, chiNguon);
+        return traLoi({ ...ket, buoc_tiep: 'Đã xếp vào queue — Worker xử lý từng nguồn, từng link ngoài request này.' });
+      }
 
       if (p === '/api/demand/kiem-tra-transport') {
         return traLoi({
@@ -229,11 +290,26 @@ export default {
     }
   },
 
-  // Cron — chỉ bật sau khi kiem-tra-transport xanh và regex_link_bai đã điền
+  // Queue consumer — nhận job quét. Không cần DEMAND_TOKEN (nội bộ).
+  async queue(batch, env) {
+    const ketQua = [];
+    for (const msg of batch.messages) {
+      try {
+        ketQua.push({ id: msg.id, ...(await xuLyMotMessage(msg.body, env)) });
+      } catch (e) {
+        // Retry theo max_retries của queue; log lỗi để dò nguyên nhân.
+        ketQua.push({ id: msg.id, loi: String(e?.message ?? e) });
+      }
+    }
+    return ketQua;
+  },
+
+  // Cron — chỉ bật sau khi kiem-tra-transport xanh và regex_link_bai đã điền.
+  // Giờ chỉ xếp queue, không quét đồng bộ nên không lo vượt timeout.
   async scheduled(event, env, ctx) {
     ctx.waitUntil(
-      xuLyQuet(new Request('https://cron/api/demand/quet'), env).catch((e) =>
-        console.log('Cron quét lỗi:', e.message),
+      lenhQuet(env).catch((e) =>
+        console.log('Cron xếp queue lỗi:', e.message),
       ),
     );
   },

@@ -20,6 +20,19 @@ not_found_handling = "single-page-application"
 # [triggers]
 # crons = ["*/30 * * * *"]
 
+# Queue — quét KHÔNG đồng bộ: /api/demand/quet và cron chỉ xếp job vào đây,
+# consumer (handler `queue` trong worker.js) xử lý từng nguồn, từng link.
+# Cần bật Cloudflare Queues (GA, có trên Workers Paid). Tạo queue cùng tên:
+#   npx wrangler queues create demand-queue
+[[queues.producers]]
+binding = "QUEUE_QUET"
+queue = "demand-queue"
+
+[[queues.consumers]]
+queue = "demand-queue"
+max_batch_size = 20
+max_retries = 3
+
 # Secret (nạp bằng `npx wrangler secret put <TEN>`, KHÔNG commit):
 #   SUPABASE_URL              https://dlzhcfrojibpscozdmrx.supabase.co
 #   SUPABASE_SERVICE_KEY      service_role key — bỏ qua RLS, chỉ để ở đây
