@@ -21,6 +21,10 @@
 const UA_TRINH_DUYET =
   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36';
 
+export const TIMEOUT_TRUCTIEP_MS = 30_000;
+export const TIMEOUT_BROWSERRUN_MS = 45_000;
+export const TIMEOUT_UNLOCKER_MS = 60_000;
+
 /** Lỗi có nên thử lại không (mạng/5xx/429 thì có, 4xx khác thì không). */
 export function nenThuLai(status) {
   return status === 429 || status === 408 || (status >= 500 && status < 600);
@@ -44,7 +48,7 @@ async function thuLaiCoLui(fn, soLan = 3) {
 
 // ---------------------------------------------------------------- truc_tiep
 /** Worker fetch() thẳng. Miễn phí. Chỉ hợp nguồn không chặn bot. */
-export async function layTrucTiep(url, { timeoutMs = 20000 } = {}) {
+export async function layTrucTiep(url, { timeoutMs = TIMEOUT_TRUCTIEP_MS } = {}) {
   return thuLaiCoLui(async () => {
     const ac = new AbortController();
     const t = setTimeout(() => ac.abort(), timeoutMs);
@@ -73,7 +77,7 @@ export async function layTrucTiep(url, { timeoutMs = 20000 } = {}) {
  * Tài liệu: developers.cloudflare.com/browser-run/quick-actions/
  * Giá (changelog CF): Workers Paid gồm 10 giờ browser/tháng, vượt $0.09/giờ.
  */
-export async function layQuaBrowserRun(url, env, { timeoutMs = 45000 } = {}) {
+export async function layQuaBrowserRun(url, env, { timeoutMs = TIMEOUT_BROWSERRUN_MS } = {}) {
   if (!env?.CLOUDFLARE_ACCOUNT_ID || !env?.CLOUDFLARE_API_TOKEN) {
     return { ok: false, nguon: 'browser_run', loi: 'Thiếu CLOUDFLARE_ACCOUNT_ID hoặc CLOUDFLARE_API_TOKEN' };
   }
@@ -112,7 +116,7 @@ export async function layQuaBrowserRun(url, env, { timeoutMs = 45000 } = {}) {
  * Dùng data_format 'markdown' vì cùng lý do với browser_run ở trên.
  * Rẻ hơn Browser API (tính theo request thành công, không theo băng thông).
  */
-export async function layQuaUnlocker(url, env, { timeoutMs = 60000 } = {}) {
+export async function layQuaUnlocker(url, env, { timeoutMs = TIMEOUT_UNLOCKER_MS } = {}) {
   if (!env?.BRIGHTDATA_API_KEY || !env?.BRIGHTDATA_UNLOCKER_ZONE) {
     return { ok: false, nguon: 'unlocker', loi: 'Thiếu BRIGHTDATA_API_KEY hoặc BRIGHTDATA_UNLOCKER_ZONE' };
   }
