@@ -174,7 +174,7 @@ async function lenhQuet(env, chiNguon = null) {
 async function xuLyQuetNguon(m, env) {
   if (!m.url_danh_sach) return { bo_qua: 'chưa cấu hình url_danh_sach' };
 
-  const kq = await lay(m.url_danh_sach, m.transport, env);
+  const kq = await lay(m.url_danh_sach, m.transport, env, { noiDungNapTay: null, choPhepLui: true, transportFallback: m.cau_hinh?.transport_fallback ?? null });
   if (!kq.ok) {
     await sb(env, `demand_sources?ma=eq.${m.ma_nguon}`, {
       method: 'PATCH',
@@ -219,7 +219,7 @@ async function xuLyQuetNguon(m, env) {
 
 /** Job 'lay_bai': lấy nội dung bài → chấm điểm → đẩy vào demand_inbox. */
 async function xuLyLayBai(m, env) {
-  const ct = await lay(m.url, m.transport, env);
+  const ct = await lay(m.url, m.transport, env, { noiDungNapTay: null, choPhepLui: true, transportFallback: m.cau_hinh?.transport_fallback ?? null });
   if (!ct.ok) return { loi: ct.loi };
 
   const { payloads, boQua } = napNhieuLead([{

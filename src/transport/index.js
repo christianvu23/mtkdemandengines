@@ -164,14 +164,22 @@ export const TRANSPORT_HOP_LE = ['truc_tiep', 'browser_run', 'unlocker', 'nap_ta
  * Lấy nội dung theo transport đã cấu hình cho nguồn, có ĐƯỜNG LÙI.
  * Thứ tự lùi cố ý: rẻ → đắt. Không bao giờ tự lùi SANG nap_tay (cần người).
  */
-export async function lay(url, transport, env, { noiDungNapTay = null, choPhepLui = true } = {}) {
+export async function lay(url, transport, env, { noiDungNapTay = null, choPhepLui = true, transportFallback = null } = {}) {
   if (transport === 'nap_tay') return layTuNapTay(noiDungNapTay);
 
-  const thuTu = choPhepLui
-    ? { truc_tiep: ['truc_tiep', 'browser_run', 'unlocker'],
-        browser_run: ['browser_run', 'unlocker'],
-        unlocker: ['unlocker', 'browser_run'] }[transport] ?? [transport]
-    : [transport];
+  let thuTu;
+  if (choPhepLui) {
+    if (transportFallback && Array.isArray(transportFallback) && transportFallback.length > 0) {
+      thuTu = transportFallback;
+    } else {
+      thuTu = { truc_tiep: ['truc_tiep', 'browser_run', 'unlocker'],
+                browser_run: ['browser_run', 'unlocker'],
+                unlocker: ['unlocker', 'browser_run'],
+                nap_tay: [] }[transport] ?? [];
+    }
+  } else {
+    thuTu = [transport];
+  }
 
   let cuoi = { ok: false, nguon: transport, loi: 'Chưa thử transport nào' };
   for (const t of thuTu) {
