@@ -30,7 +30,7 @@ export function nenThuLai(status) {
   return status === 429 || status === 408 || (status >= 500 && status < 600);
 }
 
-async function thuLaiCoLui(fn, soLan = 3) {
+export async function thuLaiCoLui(fn, soLan = 3) {
   let loiCuoi;
   for (let i = 0; i < soLan; i++) {
     try {
