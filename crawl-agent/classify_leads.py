@@ -12,7 +12,15 @@ from datetime import datetime
 
 # API config
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
-MODEL = "gpt-4o-mini"  # Rẻ và nhanh
+ALIBABA_API_KEY = os.getenv("ALIBABA_API_KEY", "")  # DashScope API key
+
+# Model config
+MODEL = "gpt-4o-mini"  # OpenAI
+ALIBABA_MODEL = "qwen3.8-max"  # Alibaba DashScope token-plan (cheap & fast)
+
+# API endpoints
+OPENAI_ENDPOINT = "https://api.openai.com/v1/chat/completions"
+ALIBABA_ENDPOINT = "https://token-plan.ap-southeast-1.maas.aliyuncs.com/compatible-mode/v1/chat/completions"
 
 # Classification prompt
 CLASSIFY_PROMPT = """Bạn là chuyên gia phân loại job postings trong lĩnh vực marketing/branding.
@@ -50,11 +58,27 @@ Trả về JSON format:
 CHỈ trả về JSON, không thêm text khác."""
 
 
-def classify_job(job: dict, api_key: str) -> dict:
-    """Classify một job dùng OpenAI API."""
+def classify_job(job: dict, api_key: str = "", provider: str = "auto") -> dict:
+    """Classify một job dùng LLM API.
     
+    Args:
+        job: Job data dict
+        api_key: API key (OpenAI or Alibaba)
+        provider: "openai", "alibaba", or "auto" (detect from api_key format)
+    """
+    
+    # Auto-detect provider from api_key format
+    if provider == "auto":
+        # Alibaba token-plan keys start with "sk-sp-"
+        if api_key.startswith("sk-sp-"):
+            provider = "alibaba"
+        elif api_key.startswith("sk-"):
+            provider = "openai"
+        else:
+            provider = "alibaba"  # Default to Alibaba
+    
+    # If no API key, use rule-based
     if not api_key:
-        # Fallback: rule-based classification
         return classify_rule_based(job)
     
     try:
@@ -66,14 +90,27 @@ def classify_job(job: dict, api_key: str) -> dict:
             source=job.get('source', 'unknown')
         )
         
-        response = httpx.post(
-            "https://api.openai.com/v1/chat/completions",
-            headers={
+        # Select endpoint and model based on provider
+        if provider == "openai":
+            endpoint = OPENAI_ENDPOINT
+            model = MODEL
+            headers = {
                 "Authorization": f"Bearer {api_key}",
                 "Content-Type": "application/json",
-            },
+            }
+        else:  # alibaba
+            endpoint = ALIBABA_ENDPOINT
+            model = ALIBABA_MODEL
+            headers = {
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json",
+            }
+        
+        response = httpx.post(
+            endpoint,
+            headers=headers,
             json={
-                "model": MODEL,
+                "model": model,
                 "messages": [
                     {"role": "user", "content": prompt}
                 ],
@@ -105,7 +142,7 @@ def classify_job(job: dict, api_key: str) -> dict:
             'confidence': classification.get('confidence', 0.5),
             'score': classification.get('score', 50),
             'reason': classification.get('reason', ''),
-            'method': 'ai',
+            'method': provider,
         }
         
     except Exception as e:
