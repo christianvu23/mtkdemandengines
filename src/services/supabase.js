@@ -74,7 +74,19 @@ export async function ghiQueryLog(env, dòng) {
 export async function kiemTraTransport(env, urlThu = 'https://example.com') {
   const { url, key } = getSupabaseConfig(env);
   if (!url || !key) {
-    return { ghi_chu: 'Thiếu credential Supabase', ket_qua: false };
+    // Debug: check what keys exist in env
+    const envKeys = env ? Object.keys(env).filter(k => k.includes('SUPABASE') || k.includes('DEMAND') || k.includes('CLOUDFLARE')) : [];
+    return { 
+      ghi_chu: 'Thiếu credential Supabase', 
+      ket_qua: false,
+      debug: {
+        hasUrl: !!url,
+        hasKey: !!key,
+        envKeys: envKeys,
+        envHasSupabaseUrl: env?.SUPABASE_URL ? 'exists' : 'missing',
+        envHasServiceKey: env?.SUPABASE_SERVICE_KEY ? 'exists' : 'missing'
+      }
+    };
   }
   try {
     const kq = await req(env, 'demand_sources?select=*');
