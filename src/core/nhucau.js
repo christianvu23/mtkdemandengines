@@ -150,8 +150,8 @@ export function phanLoaiNhuCau(text) {
 export function suyRaHinhThuc(text, preComputed) {
   const pl = preComputed ?? phanLoaiNhuCau(text);
   
-  // Ưu tiên freelancer signals
-  if (pl.freelancer) return 'freelance';
+  // Ưu tiên freelancer signals → map sang du_an vì DB check constraint chỉ chấp nhận: du_an, retainer, tuyen_dung, khong_ro
+  if (pl.freelancer) return 'du_an';
   
   // Full-time employee signals
   if (pl.toanThoiGian) return 'tuyen_dung';

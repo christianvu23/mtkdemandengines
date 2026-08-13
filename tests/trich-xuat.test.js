@@ -80,7 +80,7 @@ test('phanLoaiNhuCau nhận diện nhu cầu NGOÀI phạm vi dịch vụ', () =
 
 test('suyRaHinhThuc phân biệt retainer / dự án / tuyển in-house', () => {
   assert.equal(suyRaHinhThuc('hợp tác lâu dài hàng tháng'), 'retainer');
-  assert.equal(suyRaHinhThuc('cần freelance làm dự án này'), 'freelance'); // ưu tiên freelancer
+  assert.equal(suyRaHinhThuc('cần freelance làm dự án này'), 'du_an'); // freelancer → du_an (khớp DB constraint)
   assert.equal(suyRaHinhThuc('tuyển nhân viên full time làm việc tại văn phòng'), 'tuyen_dung');
   assert.equal(suyRaHinhThuc('cần người hỗ trợ'), 'khong_ro');
 });

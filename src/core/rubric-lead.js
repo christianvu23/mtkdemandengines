@@ -102,9 +102,9 @@ export function diemTinHieuNganSach(ns) {
 
 export function diemHinhThuc(hinhThuc) {
   // Ưu tiên freelancer/project-based - đúng nhu cầu Christian
-  if (hinhThuc === 'freelance') return TRONG_SO.hinhThuc; // 8
+  // Lưu ý: 'freelance' được map sang 'du_an' trong nhucau.js để khớp DB constraint
+  if (hinhThuc === 'du_an' || hinhThuc === 'freelance') return TRONG_SO.hinhThuc; // 8
   if (hinhThuc === 'retainer') return TRONG_SO.hinhThuc; // 8
-  if (hinhThuc === 'du_an') return 6;
   if (hinhThuc === 'tuyen_dung') return 1; // tuyển toàn thời gian — không hợp freelance
   return 4; // khong_ro
 }
