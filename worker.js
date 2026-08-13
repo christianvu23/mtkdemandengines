@@ -9,7 +9,7 @@
 
 // --- Imports: 3 modules mới thay vì code lẫn lộn ---
 import { xuLyMotMessage, xuLyQuetNguon, chuanBiMessageQuetNguon, xuLyLayBai } from './src/queue/handlers.js';
-import { kiemTraTransport } from './src/services/supabase.js';
+import { kiemTraTransport, layNguon } from './src/services/supabase.js';
 import { napNhieuLead } from './src/core/nap-lead.js';
 
 // --- Supply helpers previously inline (bộ dùng chung) ---
@@ -99,9 +99,8 @@ export default {
 
       if (p === '/api/demand/trang-thai') {
         // Fetch demand_sources + unprocessed inbox
-        // Sử dụng supabase direct (tạm lấy thô ở đây để giữ file ngắn)
-        // TODO: inject services/supabase namespace khi đã refactor xong
-        return traLoi({ nguon: [], inbox_cho_nap: 0, chi_tiet_inbox: [] });
+        const nguon = await layNguon(env);
+        return traLoi({ nguon: nguon || [], so_nguon: (nguon || []).length });
       }
 
       return traLoi({ loi: 'Không có route này' }, 404);
