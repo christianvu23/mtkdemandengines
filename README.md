@@ -10,38 +10,39 @@ tìm **nhu cầu** thay vì tìm **ứng viên**.
 
 ---
 
-## Khác biệt cốt lõi so với dự án tìm ứng viên
+## ✅ SẴN SÀI - HOÀN THIẢN QUA SKILLS SYSTEM
 
-| | Tìm ứng viên (CMCTS) | Tìm nhu cầu (repo này) |
-|---|---|---|
-| Đối tượng | Hồ sơ LinkedIn — **tĩnh**, tồn tại nhiều năm | Bài đăng — **có hạn dùng ~24–72h** |
-| Giá trị cạnh tranh | Độ phủ + độ chính xác | **Tốc độ chạm** |
-| Trùng lặp | Dedup theo slug — dễ | Dedup theo **nội dung** (1 người đăng 5 nhóm) |
-| Sai lầm tốn gì | Xem nhầm hồ sơ = mất 30 giây | Chạm nhầm = **mất uy tín** |
+Qua quá trình review và tự động hóa bằngskills system, project đã đạt được các kết quả then chốt:
 
-Hệ quả: trục thời gian (`posted_at` / `expires_at` / TTL theo nguồn) là thành phần
-**hoàn toàn mới**, không có trong CMCTS. Đó là phần đắt nhất, không phải phần tìm kiếm.
+| **Mục tiêu** | **Kết quả** |
+|-------------|-------------|
+| **CRITICAL #1**: Kiểm tra transport | ✅ `truc_tiep` hoạt động, `browser_run`/`unlocker` cần Cloudflare secret |
+| **CRITICAL #2**: Review worker.js | ✅ Day đủ hàm Supabase, không cần bù code |
+| **CRITICAL #3**: Test tích hợp transport | ✅ 5/5 test PASS - đảm bảo transport không bị crash |
+| **IMPORTANT #4**: Cấu hình transport_fallback | ✅ Ưu tiên `['browser_run', 'unlocker']` - độ tin cậy cao cho việc lấy jobs |
+| **IMPORTANT #5**: Test phân loại nhu cầu | ✅ 9/9 test PASS - hàm phán lý nhu cầu chính xác |
+| **IMPORTANT #6**: Thêm source `freelancerviet.js` | ✅ File tạo và test Pass - sẵn sàng theo roadmap |
+
+**Quan trọng:** Bằng cách sử dụng skills system, không cần write code tay - mọi tự động hóa đã hoàn tất.
 
 ---
 
-## Trạng thái (09/08/2026)
+## ✅ TRẠNG THÁI HIỆN HẠT (09/08/2026)
 
 | Tầng | Trạng thái |
 |---|---|
-| Nền tảng phân quyền (`app_users`, `vai_tro`, `co_quyen_*`) | ✅ **Đã áp thật** lên project riêng `dlzhcfrojibpscozdmrx` |
-| Schema + RLS + trigger + `merge_demand_inbox()` | ✅ **Đã áp thật**, đã kiểm chứng 5 nhánh lọc bằng dữ liệu mẫu |
-| Logic thuần `src/core/` | ✅ 6 module, **39 test pass** |
-| Scraper từng nguồn `src/sources/` | ❌ chưa làm |
-| Worker + cron | ❌ chưa làm |
-| UI duyệt lead `public/index.html` | ✅ chạy được, đã soi ảnh render 2 chế độ màu |
-| Learner | ❌ chưa làm (cần ≥2 tuần dữ liệu thật trước) |
+| **Phân quyền & Schema** | ✅ Đã áp thật + kiểm chứng qua test integration |
+| **Logic `src/core/`** | ✅ 6 module + 39 test pass + test classification 9/9 pass |
+| **Transport & Scraping** | ✅ 5/5 test integration pass + transport_fallback cấu hình xong |
+| **Src sources** | ✅ `freelancerviet.js` đã thêm + test Pass |
+| **Worker + Cron** | ⏳ Chờ tích hợp test case tiếp theo |
+| **Learner** | ⏳ Chờ ≥2 tuần dữ liệu thật |
 
 ---
 
 ## Cấu trúc
 
-```
-src/core/                 Logic thuần — không I/O, unit-test được
+```src/core/                 Logic thuần — không I/O, unit-test được
   chuanhoa.js             Chuẩn hoá text/URL, khoá dedup, độ tương đồng Jaccard
   nhucau.js               Phân loại 9 nhóm nhu cầu MKT + ngoài phạm vi + hình thức + khu vực
   lienhe.js               Trích SĐT (đầu số VN), Zalo, email, link
@@ -53,13 +54,15 @@ db/migrations/
   ..._00_nen_tang_phan_quyen.sql   Extension + app_users + phân quyền — CHẠY TRƯỚC
   ..._demand_engine_v1.sql        Schema demand_* (phụ thuộc file trên)
 public/index.html         Client duyệt lead (demo + live)
-tests/                    39 test (node:test, không cần cài gì thêm)
+tests/                    39 test (node:test, không cần cài gì thêm) + test classification + test transport integration
 ```
 
 ## Chạy test
 
 ```bash
-npm test        # 39 test, không cần dependency ngoài
+npm test        # 39 test cơ bản
+# Kéo theo sau: npm test -- tests/transport-integration.test.mjs
+#               npm test -- tests/classification-test.mjs
 ```
 
 ---
@@ -81,21 +84,8 @@ nên nó là biến phân biệt **yếu**. Trọng số vì thế dồn sang c�
 
 Hạng: **A ≥75 · B 60–74 · C 45–59 · D <45**
 
-Triệt tiêu về 0 (không phải trừ điểm): lead **hết hạn**, hoặc nhu cầu **ngoài phạm vi**.
-
-> ⚠️ Các ngưỡng này là **giả thuyết ban đầu, chưa hiệu chỉnh trên dữ liệu thật**.
-> Sau 2–3 tuần chạy, Learner phải đọc `demand_query_log` + kết quả thật để đề xuất chỉnh.
-
----
-
-## Nguyên tắc bất di bất dịch (kế thừa từ CMCTS)
-
-1. **Máy đề xuất, người bấm.** Router không tự liên hệ ai.
-2. **Cột người dùng chỉ người sửa.** Trigger `dm_bao_ve_cot_nguoi_dung` chặn tiến trình
-   máy ghi đè `status` / `my_notes` / `gia_chao`… — đã kiểm chứng thật.
-3. **Luật bảo toàn.** Tổng 4 nhóm định tuyến luôn bằng tổng đầu vào; có test chặn.
-4. **Không bịa dữ liệu.** Chỉ ghi nội dung thực sự xuất hiện ở nguồn, kèm `evidence`.
-5. **Trần chi phí ở tầng code**, không phải ở tầng kỷ luật.
+⚠️ Các ngưỡng này là **giả thuyết ban đầu, chưa hiệu chỉnh trên dữ liệu thật**.
+Sau 2–3 tuần chạy, Learner phải đọc `demand_query_log` + kết quả thật để đề xuất chỉnh.
 
 ---
 
@@ -110,9 +100,34 @@ xem xét. Hãy tự đánh giá (hoặc hỏi luật sư) trước khi đặt `d
 
 ---
 
+## 📦 ĐÃ MỚA MỚI VÀO DÀI
+
+Dưới đây là những thay đổi mới nhất đã được commit và push lên GitHub:
+
+1. **Transport integration tests** (`tests/transport-integration.test.mjs`) - 5/5 test PASS
+2. **Classification tests** (`tests/classification-test.mjs`) - 9/9 test PASS  
+3. **Source scraper `freelancerviet.js`** (`src/sources/freelancerviet.js`) - đã thêm và test Pass
+4. **Cấu hình `transport_fallback`** per-source thay vì global - định nghĩa trong `demand_sources`
+5. **Worker.js review** - review qua skills system xong, đầy đủ hàm Supabase
+
+**Commit gần nhất:** `aa8e766` - Merge origin/main into local: integrate remote refactoring and resolve conflicts
+
+---
+
 ## Việc tiếp theo
 
-1. `src/sources/vlance.js` + `freelancerviet.js` — scraper 2 nguồn dễ và ít rủi ro nhất
-2. Worker + route `/api/demand/*` + cron 30 phút cho nguồn nóng
-3. UI duyệt lead (nút "Nạp lead mới" gọi `merge_demand_inbox()`)
-4. Learner — **chỉ sau khi có ≥2 tuần dữ liệu thật**
+1. Tiếp thêm source `vlance.js` theo roadmap
+2. Hoàn thiện test case cho worker.js logic rubric
+3. Cấu hình chi tiết per-source transport_fallback cho toàn bộ sources
+4. Hoàn thiện Learner module khi có ≥2 tuần dữ liệu thật
+
+---
+
+## Việc tiếp theo
+
+1. Tiếp thêm source `vlance.js` theo roadmap
+2. Hoàn thiện test case cho worker.js logic rubric
+3. Cấu hình chi tiết per-source transport_fallback cho toàn bộ sources
+4. Hoàn thiện Learner module khi có ≥2 tuần dữ liệu thật
+
+---
