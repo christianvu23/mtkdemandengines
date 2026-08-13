@@ -86,8 +86,54 @@ export default {
           return traLoi({ loi: 'Worker chưa có binding QUEUE_QUET — cần bật Cloudflare Queues' }, 500);
         }
         const chiNguon = new URL(request.url).searchParams.get('nguon');
-        const ket = await xuLyQuetNguon({ ma_nguon: chiNguon }, env);
-        return traLoi({ ...ket, buoc_tiep: 'Đã xếp vào queue — Worker xử lý từng nguồn, từng link ngoài request này.' });
+        const runLabel = `quet-${Date.now()}`;
+
+        if (chiNguon) {
+          // Quét 1 nguồn cụ thể — fetch cấu hình từ DB
+          const tatCaNguon = await layNguon(env);
+          const nguon = (tatCaNguon || []).find(n => n.ma === chiNguon);
+          if (!nguon) return traLoi({ loi: `Không tìm thấy nguồn '${chiNguon}'` }, 404);
+          if (!nguon.dang_bat) return traLoi({ loi: `Nguồn '${chiNguon}' đang tắt` }, 400);
+
+          const msg = {
+            loai: 'quet_nguon',
+            run_label: runLabel,
+            ma_nguon: nguon.ma,
+            transport: nguon.transport,
+            url_danh_sach: nguon.cau_hinh?.url_danh_sach,
+            tran: nguon.tran_lead_moi_dot ?? 40,
+            regex_link_bai: nguon.cau_hinh?.regex_link_bai ?? null,
+            so_loi_lien_tiep: nguon.so_loi_lien_tiep ?? 0,
+          };
+
+          if (!msg.url_danh_sach) {
+            return traLoi({ loi: `Nguồn '${chiNguon}' chưa cấu hình url_danh_sach` }, 400);
+          }
+
+          const ket = await xuLyQuetNguon(msg, env);
+          return traLoi({ ...ket, run_label: runLabel, buoc_tiep: 'Đã xếp vào queue — Worker xử lý từng nguồn, từng link ngoài request này.' });
+        } else {
+          // Quét tất cả nguồn đang bật
+          const tatCaNguon = await layNguon(env);
+          const nguonBat = (tatCaNguon || []).filter(n => n.dang_bat && n.cau_hinh?.url_danh_sach);
+          const messages = chuanBiMessageQuetNguon(nguonBat, runLabel);
+
+          if (!messages.length) {
+            return traLoi({ loi: 'Không có nguồn nào đang bật và có url_danh_sach' }, 400);
+          }
+
+          // Xếp từng message vào queue
+          for (const msg of messages) {
+            await env.QUEUE_QUET.send(msg);
+          }
+
+          return traLoi({
+            da_xep_queue: messages.length,
+            cac_nguon: messages.map(m => m.ma_nguon),
+            run_label: runLabel,
+            buoc_tiep: 'Đã xếp vào queue — Worker xử lý từng nguồn, từng link ngoài request này.',
+          });
+        }
       }
 
       if (p === '/api/demand/kiem-tra-transport') {
