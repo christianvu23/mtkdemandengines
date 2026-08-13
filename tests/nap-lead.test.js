@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { napLead, napNhieuLead, goMarkdown, doanTieuDe, doDoCanhTranh } from '../src/core/nap-lead.js';
+import { napLead, napNhieuLead, goMarkdown, goFrontmatter, sachUrlTheoDoi, doanTieuDe, doDoCanhTranh } from '../src/core/nap-lead.js';
 import { nenThuLai, TRANSPORT_HOP_LE, layTuNapTay } from '../src/transport/index.js';
 
 const NOW = new Date('2026-08-09T12:00:00Z');
@@ -19,6 +19,29 @@ test('goMarkdown giữ chữ, bỏ cú pháp, và giữ nhãn của link', () =>
   assert.ok(!t.includes('https://a.vn/b'), 'phải bỏ URL trong link');
   assert.ok(!t.includes('!['), 'phải bỏ ảnh');
   assert.ok(!t.includes('#'));
+});
+
+test('goFrontmatter bỏ khối YAML frontmatter của browser_run', () => {
+  const fm = '---\ntitle: "Tuyển nhân viên"\nmeta:\n description: "mô tả"\n keywords: "a,b"\n---\n\nNội dung thật của bài.';
+  const t = goFrontmatter(fm);
+  assert.ok(!t.includes('title:'), 'phải bỏ frontmatter');
+  assert.ok(!t.includes('description:'), 'phải bỏ meta');
+  assert.ok(t.includes('Nội dung thật của bài'), 'phải giữ nội dung');
+});
+
+test('goMarkdown cũng bỏ frontmatter để raw_text không còn meta tiếng Anh', () => {
+  const fm = '---\ntitle: "X"\nmeta:\n og:description: "y"\n---\nNội dung.';
+  const t = goMarkdown(fm);
+  assert.ok(!t.includes('og:description'), 'raw_text phải sạch frontmatter');
+  assert.ok(t.includes('Nội dung'));
+});
+
+test('sachUrlTheoDoi bỏ tham số tracking nhưng giữ URL gốc', () => {
+  const u = sachUrlTheoDoi('https://vieclam24h.vn/viec-lam-abc-id123.html?open_from=0301_1_1&search_id=xyz');
+  assert.equal(u, 'https://vieclam24h.vn/viec-lam-abc-id123.html');
+  assert.equal(sachUrlTheoDoi('https://a.vn/b?utm_source=x'), 'https://a.vn/b');
+  assert.equal(sachUrlTheoDoi('https://a.vn/b'), 'https://a.vn/b');
+  assert.equal(sachUrlTheoDoi(null), null);
 });
 
 test('doanTieuDe ưu tiên heading, không có thì lấy câu đầu', () => {

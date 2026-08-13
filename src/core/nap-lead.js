@@ -10,9 +10,16 @@ import { trichLienHe } from './lienhe.js';
 import { docNganSach } from './ngansach.js';
 import { chamDiem } from './rubric-lead.js';
 
+/** Bỏ YAML frontmatter (browser_run hay trả về khối ---\ntitle:...\n--- ở đầu trang).
+ *  Nếu không bỏ, người dùng mở lead sẽ thấy meta/description/keywords tiếng Anh
+ *  thay vì nội dung bài — phải strip TRƯỚC khi chấm điểm và lưu raw_text. */
+export function goFrontmatter(md) {
+  return String(md ?? '').replace(/^\uFEFF?---\s*\n[\s\S]*?\n---\s*(?:\n|$)/, '');
+}
+
 /** Bỏ cú pháp markdown để phần chấm điểm nhìn thấy chữ, không nhìn thấy dấu. */
 export function goMarkdown(md) {
-  let s = String(md ?? '');
+  let s = goFrontmatter(md);
   // Strip HTML tags trước (tránh bị strip dấu > bởi regex bên dưới)
   s = s.replace(/<[^>]+>/g, ' ');
   return s
@@ -24,6 +31,17 @@ export function goMarkdown(md) {
     .replace(/\n{3,}/g, '\n\n')
     .replace(/[ \t]{2,}/g, ' ')
     .trim();
+}
+
+/** Bỏ tham số theo dõi khỏi URL hiển thị (utm_*, fbclid, search_id, open_from...).
+ *  Chỉ làm đẹp source_url lưu về; khoá dedup vẫn tính qua chuanHoaKey(). */
+export function sachUrlTheoDoi(url) {
+  const u = String(url ?? '').trim();
+  if (!u) return null;
+  const daRua = u
+    .replace(/[?&](utm_[^&]*|fbclid|gclid|ref|source|open_from|search_id)=[^&]*/g, '')
+    .replace(/\?$/, '');
+  return daRua || null;
 }
 
 /** Đoán tiêu đề: frontmatter title > heading markdown > câu đầu. */
@@ -128,7 +146,7 @@ export function napLead(dauVao, now = new Date()) {
     payload: {
       lead_key: key,
       source,
-      source_url: url ?? null,
+      source_url: sachUrlTheoDoi(url),
       source_query: sourceQuery ?? null,
       posted_at: postedAt ?? null,
       title: tieuDeCuoi,
