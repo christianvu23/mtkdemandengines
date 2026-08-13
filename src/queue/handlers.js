@@ -3,10 +3,9 @@
 // Nguyên tắc: đơn trách nhiệm duy nhất = xử lý 1 message/theo loại message
 
 import { lay } from '../transport/index.js';
-import { kiemTraTransport } from '../services/supabase.js';
+import { kiemTraTransport, capNghenguon, napVaoInbox } from '../services/supabase.js';
 import { napNhieuLead } from '../core/nap-lead.js';
 import { bocLinkBai } from '../core/boc-link.js';
-import { capNghenguon } from '../services/supabase.js';
 
 // --- Message type dispatch ---
 
@@ -53,13 +52,14 @@ export async function xuLyQuetNguon(m, env) {
     url: link,
   }));
 
-  for (let i = 0; i < jobBai.length; i += 100) {
-    // Gửi batch đến queue — worker.queue() sẽ xử lý từng job
-    // Giả sử env.QUEUE_QUET có sẵn; caller提供环境
-    // await env.QUEUE_QUET.sendBatch(jobBai.slice(i, i + 100));
-    // Lưu batch thay vì gửi ngay — handler xuLyMotMessage sẽ đợi
-    // Trong demo: chỉ trả về queue payloads
-    break; // chỉ lấy batch đầu để demo
+  // Gửi jobs vào queue — worker.queue() sẽ xử lý từng job, không bị timeout
+  let daGuiQueue = 0;
+  if (env?.QUEUE_QUET) {
+    for (let i = 0; i < jobBai.length; i += 100) {
+      const batch = jobBai.slice(i, i + 100).map(body => ({ body }));
+      await env.QUEUE_QUET.sendBatch(batch);
+      daGuiQueue += batch.length;
+    }
   }
 
   // Cập nhật nguồn đã quét
@@ -71,7 +71,7 @@ export async function xuLyQuetNguon(m, env) {
   return {
     transport: kq.nguon, da_lui: !!kq.daLui,
     cach_tach_link: boc.cachChon, khuon: boc.khuon ?? null,
-    so_link: boc.links.length,
+    so_link: boc.links.length, da_gui_queue: daGuiQueue,
   };
 }
 
@@ -88,11 +88,8 @@ export async function xuLyLayBai(m, env) {
   const { payloads, boQua } = napNhieuLead(ctPayloads);
 
   // Đẩy vào inbox (sử dụng services/supabase)
-  // NOTE: caller phải cung cấp env.SUPABASE_URL/env.SUPABASE_SERVICE_KEY
-  // hoặc dùng wrapper trong worker.js
   if (payloads.length) {
-    //await napVaoInbox(payloads, m.run_label); // TODO: enable when env available
-    // For now, just track
+    await napVaoInbox(payloads, m.run_label, env);
   }
 
   return { so_lead: payloads.length, bo_qua: boQua.length };
