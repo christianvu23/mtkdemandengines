@@ -5,16 +5,18 @@
       "ma": "vlance",
       "urlDanhSach": "https://www.vlance.vn/viec-lam-freelance",
       "transport": "playwright",
+      "transport_fallback": ["browser_run", "unlocker"],
       "tran": 40,
       "regexLinkBai": null,
-      "ghiChu": "Cloudflare 'Just a moment...' chặn cả Chrome thật — chưa cào được tự động. Nạp tay qua /api/demand/nap."
+      "ghiChu": "Cloudflare 'Just a moment...' chặn cả Chrome thật — fallback browser_run/unlocker cần Cloudflare secret. Chạy Playwright trên máy local là cứu cánh."
     },
     {
       "ma": "freelancerviet",
       "urlDanhSach": "https://freelancerviet.vn/viec-lam-freelance.html",
       "transport": "playwright",
-      "tran": 40,
-      "regexLinkBai": "freelancerviet\\.vn/thong-tin-viec-freelance/"
+      "transport_fallback": ["browser_run", "unlocker"],
+      "regexLinkBai": "freelancerviet\\.vn/thong-tin-viec-freelance/",
+      "ghiChu": "Chạy Playwright trên máy local rấtổ/cập. Fallback browser_run/unlocker có khi cần khi deploy ke Worker kèm Cloudflare secret."
     }
   ]
 }
