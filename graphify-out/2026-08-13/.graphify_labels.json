@@ -74,7 +74,5 @@
   "72": "test_alibaba_api.py",
   "73": "agent/deploy.md",
   "74": "PROPOSAL_FIX.md",
-  "75": "WRANGLER_CHECK.md",
-  "76": "add-new-sources.mjs",
-  "77": "submit-sample-leads.mjs"
+  "75": "WRANGLER_CHECK.md"
 }
