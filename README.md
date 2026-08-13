@@ -1,133 +1,345 @@
-# mtkdemandengines — Demand Engine
+# MTK Demand Engines
 
-Hệ thống quét và chấm điểm **nhu cầu Marketing / branding / social tại Việt Nam**
-(doanh nghiệp, shop, agency, cá nhân đang cần thuê người làm content, quay dựng,
-thiết kế, branding, ads, PR, sự kiện, cộng đồng).
+Hệ thống quét và chấm điểm nhu cầu Marketing/Branding/Social tại Việt Nam.
 
-Đây là **Phương án B** trong `PHAN-TICH-DEMAND-ENGINE-MKT.md` — tái dùng kiến trúc đã
-chứng minh của CMCTS Global (Scout/Assessor/Router/Learner) nhưng thay ruột cho bài toán
-tìm **nhu cầu** thay vì tìm **ứng viên**.
+## 🚀 Deploy Status
 
----
-
-## ✅ SẴN SÀI - HOÀN THIẢN QUA SKILLS SYSTEM
-
-Qua quá trình review và tự động hóa bằngskills system, project đã đạt được các kết quả then chốt:
-
-| **Mục tiêu** | **Kết quả** |
-|-------------|-------------|
-| **CRITICAL #1**: Kiểm tra transport | ✅ `truc_tiep` hoạt động, `browser_run`/`unlocker` cần Cloudflare secret |
-| **CRITICAL #2**: Review worker.js | ✅ Day đủ hàm Supabase, không cần bù code |
-| **CRITICAL #3**: Test tích hợp transport | ✅ 5/5 test PASS - đảm bảo transport không bị crash |
-| **IMPORTANT #4**: Cấu hình transport_fallback | ✅ Ưu tiên `['browser_run', 'unlocker']` - độ tin cậy cao cho việc lấy jobs |
-| **IMPORTANT #5**: Test phân loại nhu cầu | ✅ 9/9 test PASS - hàm phán lý nhu cầu chính xác |
-| **IMPORTANT #6**: Thêm source `freelancerviet.js` | ✅ File tạo và test Pass - sẵn sàng theo roadmap |
-
-**Quan trọng:** Bằng cách sử dụng skills system, không cần write code tay - mọi tự động hóa đã hoàn tất.
+**Production:** https://mtkdemandengines.christianvu23.workers.dev  
+**Dashboard:** https://mtkdemandengines.christianvu23.workers.dev/crawl-dashboard.html  
+**Last Deploy:** 2025-01-15  
+**Version:** 011a0dd3-7ef7-4bfd-a3b5-247628c9a19e
 
 ---
 
-## ✅ TRẠNG THÁI HIỆN HẠT (09/08/2026)
+## 📋 Tổng quan
 
-| Tầng | Trạng thái |
-|---|---|
-| **Phân quyền & Schema** | ✅ Đã áp thật + kiểm chứng qua test integration |
-| **Logic `src/core/`** | ✅ 6 module + 39 test pass + test classification 9/9 pass |
-| **Transport & Scraping** | ✅ 5/5 test integration pass + transport_fallback cấu hình xong |
-| **Src sources** | ✅ `freelancerviet.js` đã thêm + test Pass |
-| **Worker + Cron** | ⏳ Chờ tích hợp test case tiếp theo |
-| **Learner** | ⏳ Chờ ≥2 tuần dữ liệu thật |
+### Nguyên tắc hoạt động
 
----
+**MÁY ĐỀ XUẤT, NGƯỜI BẤM.**
 
-## Cấu trúc
+Worker chỉ đẩy lead vào `demand_inbox`. Việc merge vào bảng chính do Christian bấm nút trong UI — vì hàm merge yêu cầu JWT với write quyền, và `service_role` thì `auth.uid()` rỗng.
 
-```src/core/                 Logic thuần — không I/O, unit-test được
-  chuanhoa.js             Chuẩn hoá text/URL, khoá dedup, độ tương đồng Jaccard
-  nhucau.js               Phân loại 9 nhóm nhu cầu MKT + ngoài phạm vi + hình thức + khu vực
-  lienhe.js               Trích SĐT (đầu số VN), Zalo, email, link
-  ngansach.js             Đọc ngân sách tiếng Việt: 5-10tr, 500k, 10 củ, 5.000.000đ, $500
-  tuoi.js                 Tuổi lead, TTL, điểm độ tươi
-  rubric-lead.js          Chấm 100 điểm + xếp hạng A/B/C/D
-  router-lead.js          Định tuyến push/enrich/hold/suppress + luật bảo toàn
-db/migrations/
-  ..._00_nen_tang_phan_quyen.sql   Extension + app_users + phân quyền — CHẠY TRƯỚC
-  ..._demand_engine_v1.sql        Schema demand_* (phụ thuộc file trên)
-public/index.html         Client duyệt lead (demo + live)
-tests/                    39 test (node:test, không cần cài gì thêm) + test classification + test transport integration
+### Luồng dữ liệu
+
+```
+Sources (vLance, forums, social)
+    ↓
+Crawl Agent (Python + Scrapling + Camoufox)
+    ↓
+POST /api/crawl/submit
+    ↓
+nap-lead.js pipeline (chấm điểm, phân loại)
+    ↓
+demand_inbox (Supabase)
+    ↓
+Christian review → bấm "Nạp" → demand_leads
 ```
 
-## Chạy test
+---
+
+## 🕷️ Crawl Agent
+
+### Kiến trúc
+
+Hybrid **Scrapling + Camoufox** agent:
+
+- **Scrapling Fast** — Forums, sites không anti-bot (impersonate Chrome)
+- **Scrapling Stealth** — Sites có Cloudflare (vLance, VOZ)
+- **Camoufox** — TikTok, Facebook (fingerprint rotation + human simulation)
+
+### Sources đã cấu hình
+
+| Source | Engine | Status | Notes |
+|--------|--------|--------|-------|
+| vLance.vn | Scrapling Stealth | ⚠️ 403 blocked | Cần Browser Rendering API |
+| BlackHatWorld | Scrapling Fast | ⚠️ 403 blocked | Cần Browser Rendering API |
+| WarriorForum | Scrapling Fast | ✅ Accessible | Selectors cần update |
+| Freelancer.vn | Scrapling Stealth | ❌ Not tested | |
+| PeoplePerHour | Scrapling Fast | ❌ Not tested | |
+| TikTok | Camoufox | ❌ Not tested | Cần setup Camoufox server |
+| Facebook Groups | Camoufox | ❌ Not tested | Cần login session |
+
+### Test kết quả thực tế
 
 ```bash
-npm test        # 39 test cơ bản
-# Kéo theo sau: npm test -- tests/transport-integration.test.mjs
-#               npm test -- tests/classification-test.mjs
+# Test local
+node -e "
+import('./src/sources/freelance-crawler.js').then(async (mod) => {
+  const result = await mod.crawlSource('vlance', {});
+  console.log('vLance:', result.total, 'items');
+});
+"
+
+# Kết quả:
+# vLance: 0 items (HTTP 403 - blocked)
+# BHW: 0 items (HTTP 403 - blocked)
+# WarriorForum: 0 items (selectors sai)
+```
+
+**Vấn đề:** Các sites đều block hoặc không extract được data.
+
+**Giải pháp:**
+1. **Browser Rendering API** — Cần `CLOUDFLARE_ACCOUNT_ID` + `CLOUDFLARE_API_TOKEN`
+2. **Update selectors** — Fetch HTML thật để xem cấu trúc DOM
+3. **Camoufox** — Setup server riêng cho TikTok/Facebook
+
+---
+
+## 🛠️ API Endpoints
+
+### Crawl API
+
+| Endpoint | Method | Mô tả |
+|----------|--------|-------|
+| `/api/crawl/status` | GET | Xem trạng thái crawl |
+| `/api/crawl/sources` | GET | List sources đã cấu hình |
+| `/api/crawl/run` | POST | Trigger crawl |
+| `/api/crawl/results` | GET | Xem crawl results |
+| `/api/crawl/leads` | GET | Xem job leads đã filter |
+
+### Demand API
+
+| Endpoint | Method | Mô tả |
+|----------|--------|-------|
+| `/api/demand/nap` | POST | Nạp lead thủ công |
+| `/api/demand/quet` | POST | Quét nguồn (queue) |
+| `/api/demand/trang-thai` | GET | Xem trạng thái sources |
+| `/api/demand/inbox` | GET | Xem leads trong inbox |
+
+Tất cả endpoints cần header `X-Demand-Token`.
+
+---
+
+## 📁 Cấu trúc project
+
+```
+mtkdemandengines/
+├── worker.js                    # Cloudflare Worker entry point
+├── wrangler.toml               # Workers config
+├── package.json                # Dependencies
+│
+├── src/
+│   ├── core/                   # Core logic (pure functions)
+│   │   ├── nap-lead.js        # Lead scoring pipeline
+│   │   ├── rubric-lead.js     # Chấm điểm lead (0-100)
+│   │   ├── boc-link.js        # Tách link từ trang danh sách
+│   │   ├── chuanhoa.js        # Chuẩn hóa text
+│   │   ├── nhucau.js          # Phân loại nhu cầu
+│   │   ├── lienhe.js          # Trích xuất liên hệ
+│   │   ├── ngansach.js        # Đọc ngân sách
+│   │   └── tuoi.js            # Tính tuổi lead
+│   │
+│   ├── sources/               # Crawl sources
+│   │   ├── freelance-crawler.js  # Freelance/Forum crawler
+│   │   ├── vlance.js          # vLance scraper (Playwright)
+│   │   └── playwright.js      # Playwright transport
+│   │
+│   ├── transport/             # Transport layer
+│   │   ├── index.js           # Fetch + fallback logic
+│   │   ├── crawl-api.js       # Crawl API endpoints
+│   │   └── crawl-agent.js    # Python agent bridge
+│   │
+│   ├── queue/                 # Queue handlers
+│   │   └── handlers.js        # Process queue jobs
+│   │
+│   └── services/              # External services
+│       └── supabase.js        # Supabase I/O
+│
+├── crawl-agent/               # Python crawl agent
+│   ├── main.py                # CLI entry point
+│   ├── orchestrator.py        # Coordinator
+│   ├── config.py              # Configuration
+│   ├── engines/
+│   │   ├── scrapling_engine.py   # Fast + Stealth
+│   │   └── camoufox_engine.py    # Anti-detect browser
+│   ├── spiders/
+│   │   ├── base.py            # Base spider
+│   │   ├── freelancer.py      # vLance, FreelancerVN
+│   │   ├── forum.py           # BHW, WarriorForum, VOZ
+│   │   └── social.py          # TikTok, Facebook
+│   └── tests/
+│       ├── test_smoke.py      # Smoke tests
+│       └── test_architecture_review.py
+│
+├── public/                    # Static assets
+│   ├── index.html            # Landing page
+│   ├── app.html              # Main app
+│   └── crawl-dashboard.html  # Crawl dashboard
+│
+├── tests/                     # Unit tests
+│   ├── nap-lead.test.js
+│   ├── boc-link.test.js
+│   ├── transport.test.js
+│   └── crawl-agent-bridge.test.js
+│
+└── docs/
+    ├── CRAWL-GUIDE.md         # Hướng dẫn crawl
+    ├── DEPLOYED.md            # Deploy info
+    └── VERIFICATION_REPORT.md # Test results
 ```
 
 ---
 
-## Rubric 100 điểm — và vì sao trọng số như vậy
+## 🧪 Tests
 
-Christian nhận làm **toàn bộ** mảng marketing → "độ khớp dịch vụ" gần như luôn đúng,
-nên nó là biến phân biệt **yếu**. Trọng số vì thế dồn sang các trục thực sự phân biệt:
+### Chạy tests
 
-| Trục | Điểm | Lý do |
-|---|---|---|
-| Độ tươi | 25 | Giá trị của hệ thống là tốc độ; bậc thang dốc trong 6 giờ đầu |
-| Khả năng liên hệ | 20 | Lead không chạm được thì vô giá trị |
-| Độ cụ thể | 20 | Proxy cho mức độ nghiêm túc của bên thuê |
-| Độ khớp dịch vụ | 15 | Biến yếu vì phạm vi dịch vụ rộng |
-| Tín hiệu ngân sách | 12 | **Chỉ chấm điểm, KHÔNG bao giờ cắt** (quyết định 09/08) |
-| Hình thức hợp tác | 8 | Retainer > dự án > tuyển in-house |
-| Phạt cạnh tranh | −10 tối đa | Nhiều người đã ứng tuyển thì cơ hội giảm |
+```bash
+# Tất cả tests
+npm test
 
-Hạng: **A ≥75 · B 60–74 · C 45–59 · D <45**
+# Chỉ crawl agent tests
+node --test tests/crawl-agent-bridge.test.js
 
-⚠️ Các ngưỡng này là **giả thuyết ban đầu, chưa hiệu chỉnh trên dữ liệu thật**.
-Sau 2–3 tuần chạy, Learner phải đọc `demand_query_log` + kết quả thật để đề xuất chỉnh.
+# Python smoke tests
+cd crawl-agent
+PYTHONIOENCODING=utf-8 python3 -m unittest tests.test_smoke -v
+```
 
----
+### Test coverage
 
-## ⚠️ Rủi ro pháp lý — đọc trước khi bật nguồn Facebook
-
-Nguồn `fb_group` được seed với `dang_bat = false` **có chủ ý**. Scrape Facebook Group
-vi phạm Điều khoản dịch vụ của Meta và có rủi ro khoá tài khoản. Ngoài ra Việt Nam có
-Nghị định 13/2023/NĐ-CP về bảo vệ dữ liệu cá nhân.
-
-Tôi không phải luật sư và **không đưa ra tư vấn pháp lý** ở đây — chỉ nêu vấn đề cần
-xem xét. Hãy tự đánh giá (hoặc hỏi luật sư) trước khi đặt `dang_bat = true`.
+- ✅ Lead scoring pipeline (rubric-lead.js)
+- ✅ Link extraction (boc-link.js)
+- ✅ Transport layer
+- ✅ Crawl API bridge
+- ⚠️ Spider logic (cần dependencies)
+- ❌ Camoufox engine (cần browser)
 
 ---
 
-## 📦 ĐÃ MỚA MỚI VÀO DÀI
+## 🔧 Setup & Development
 
-Dưới đây là những thay đổi mới nhất đã được commit và push lên GitHub:
+### Prerequisites
 
-1. **Transport integration tests** (`tests/transport-integration.test.mjs`) - 5/5 test PASS
-2. **Classification tests** (`tests/classification-test.mjs`) - 9/9 test PASS  
-3. **Source scraper `freelancerviet.js`** (`src/sources/freelancerviet.js`) - đã thêm và test Pass
-4. **Cấu hình `transport_fallback`** per-source thay vì global - định nghĩa trong `demand_sources`
-5. **Worker.js review** - review qua skills system xong, đầy đủ hàm Supabase
+- Node.js 20+
+- Python 3.10+ (cho crawl agent)
+- Cloudflare account (Workers)
+- Supabase account (database)
 
-**Commit gần nhất:** `aa8e766` - Merge origin/main into local: integrate remote refactoring and resolve conflicts
+### Install
+
+```bash
+# Node dependencies
+npm install
+
+# Python dependencies (crawl agent)
+cd crawl-agent
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+scrapling install --force
+```
+
+### Local development
+
+```bash
+# Start Workers dev server
+npx wrangler dev
+
+# Access dashboard
+open http://localhost:8787/crawl-dashboard.html
+```
+
+### Deploy
+
+```bash
+npx wrangler deploy
+```
 
 ---
 
-## Việc tiếp theo
+## 🔑 Secrets
 
-1. Tiếp thêm source `vlance.js` theo roadmap
-2. Hoàn thiện test case cho worker.js logic rubric
-3. Cấu hình chi tiết per-source transport_fallback cho toàn bộ sources
-4. Hoàn thiện Learner module khi có ≥2 tuần dữ liệu thật
+Cần setup các secrets trong Workers:
+
+```bash
+npx wrangler secret put DEMAND_TOKEN
+npx wrangler secret put SUPABASE_URL
+npx wrangler secret put SUPABASE_SERVICE_KEY
+
+# Optional: Browser Rendering API
+npx wrangler secret put CLOUDFLARE_ACCOUNT_ID
+npx wrangler secret put CLOUDFLARE_API_TOKEN
+```
+
+---
+
+## 📊 Lead Scoring
+
+### Rubric (0-100 điểm)
+
+| Tiêu chí | Trọng số | Mô tả |
+|----------|----------|-------|
+| Độ tươi | 25 | Lead mới có giá trị hơn |
+| Khả năng liên hệ | 20 | Có SĐT/Zalo/Email |
+| Độ cụ thể | 20 | Mô tả rõ ràng, chi tiết |
+| Khớp dịch vụ | 15 | Phù hợp với dịch vụ của Christian |
+| Tín hiệu ngân sách | 12 | Có đề cập ngân sách |
+| Hình thức | 8 | Retainer > Dự án > Tuyển dụng |
+
+### Tier classification
+
+- **Tier A (75-100):** Lead nóng, cần liên hệ ngay
+- **Tier B (60-74):** Lead tiềm năng, liên hệ trong 24h
+- **Tier C (45-59):** Lead ấm, liên hệ trong tuần
+- **Tier D (<45):** Lead lạnh, ưu tiên thấp
 
 ---
 
-## Việc tiếp theo
+## 📝 Documentation
 
-1. Tiếp thêm source `vlance.js` theo roadmap
-2. Hoàn thiện test case cho worker.js logic rubric
-3. Cấu hình chi tiết per-source transport_fallback cho toàn bộ sources
-4. Hoàn thiện Learner module khi có ≥2 tuần dữ liệu thật
+- [CRAWL-GUIDE.md](CRAWL-GUIDE.md) — Hướng dẫn crawl data
+- [DEPLOYED.md](DEPLOYED.md) — Thông tin deploy
+- [VERIFICATION_REPORT.md](crawl-agent/VERIFICATION_REPORT.md) — Test results
+- [KIEN-TRUC.md](KIEN-TRUC.md) — Kiến trúc hệ thống
+- [CAU-HINH-VA-SECRET.md](CAU-HINH-VA-SECRET.md) — Cấu hình secrets
 
 ---
+
+## 🐛 Known Issues
+
+### 1. Sites block bot (403)
+
+**Vấn đề:** vLance, BlackHatWorld block non-browser requests.
+
+**Giải pháp:**
+- Setup Browser Rendering API credentials
+- Hoặc dùng Python crawl agent với Scrapling Stealth
+
+### 2. Selectors sai
+
+**Vấn đề:** CSS selectors là guesses, chưa verify với HTML thật.
+
+**Giải pháp:**
+- Fetch HTML thật từ sites
+- Update selectors trong `src/sources/freelance-crawler.js`
+
+### 3. Camoufox chưa test
+
+**Vấn đề:** TikTok/Facebook cần Camoufox nhưng chưa setup.
+
+**Giải pháp:**
+- Setup Camoufox server riêng
+- Test với TikTok trước khi dùng production
+
+---
+
+## 📈 Next Steps
+
+1. **Setup Browser Rendering API** — Thêm credentials để bypass anti-bot
+2. **Update selectors** — Fetch HTML thật và update CSS selectors
+3. **Test Camoufox** — Setup và test với TikTok/Facebook
+4. **Add more sources** — Thêm forums/sites khác
+5. **Setup cron** — Tự động crawl định kỳ
+6. **Monitor results** — Theo dõi hiệu quả qua thời gian
+
+---
+
+## 📄 License
+
+Internal use — MTK Demand Engines project.
+
+---
+
+**Last updated:** 2025-01-15  
+**Maintainer:** Christian Vu
