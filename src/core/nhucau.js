@@ -13,7 +13,7 @@ import { chuanHoaText } from './chuanhoa.js';
 export const TU_KHOA_NHU_CAU = {
   content: ['content', 'noi dung', 'bai viet', 'caption', 'copywriter', 'copywriting',
     'len bai', 'viet bai', 'kich ban', 'storyboard', 'quan tri fanpage', 'quan ly fanpage',
-    'admin page', 'cham soc fanpage', 'xay kenh', 'phat trien kenh', 'seeding'],
+    'admin page', 'cham soc fanpage', 'xay kenh', 'phat trien kenh', 'seeding', 'marketing'],
   video: ['quay', 'dung phim', 'dung video', 'editor', 'edit video', 'video', 'tiktok',
     'reels', 'short', 'youtube', 'quay dung', 'hau ky', 'motion', 'animation', 'tvc',
     'photographer', 'chup anh', 'chup hinh', 'studio'],
@@ -44,6 +44,12 @@ export const TU_KHOA_NGOAI_PHAM_VI = [
   'flutter', 'android', 'ios', 'devops', 'kiem thu', 'tester', 'qa qc',
   'ke toan', 'kiem toan', 'thu kho', 'lai xe', 'tai xe', 'bao ve', 'giup viec',
   'dich thuat', 'phien dich', 'gia su', 'nhap lieu', 'telesale bao hiem',
+  // Sales/Kinh doanh - KHÔNG phải marketing freelancer
+  'giam doc kinh doanh', 'truong phong kinh doanh', 'nhan vien kinh doanh',
+  'chuyen vien kinh doanh', 'sales', 'ban hang', 'kinh doanh', 'sales admin',
+  'sales executive', 'sales manager', 'sales representative', 'telesale',
+  'tele sales', 'ban hang online', 'nhan vien ban hang', 'cham soc khach hang',
+  'tư vấn khách hàng', 'tư vấn bán hàng',
 ];
 
 /**

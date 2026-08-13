@@ -91,6 +91,20 @@ export function napLead(dauVao, now = new Date()) {
   if (!key) return { hopLe: false, lyDo: 'Không dựng được khoá định danh' };
 
   const phanLoai = phanLoaiNhuCau(`${tieuDeCuoi ?? ''}\n${vanBan}`);
+  
+  // LOẠI BỎ THẲNG TAY: Jobs ngoài phạm vi dịch vụ của Christian
+  // Christian cần: marketing, video, content, design, branding
+  // KHÔNG cần: sales, kinh doanh, giám đốc, kế toán, lập trình
+  if (phanLoai.ngoaiPhamVi.length > 0) {
+    return { hopLe: false, lyDo: `Ngoài phạm vi: ${phanLoai.ngoaiPhamVi.join(', ')}` };
+  }
+  
+  // Nếu không có nhu cầu marketing nào được detect → loại
+  // (tránh lưu jobs không liên quan như "Tuyển bảo vệ", "Tuyển lái xe")
+  if (phanLoai.nhuCau.length === 0) {
+    return { hopLe: false, lyDo: 'Không phát hiện nhu cầu marketing' };
+  }
+  
   const lienHe = trichLienHe(vanBan);
   const nganSach = docNganSach(vanBan);
   const hinhThuc = suyRaHinhThuc(`${tieuDeCuoi ?? ''}\n${vanBan}`);
