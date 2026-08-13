@@ -11,7 +11,7 @@
 import { xuLyMotMessage, xuLyQuetNguon, chuanBiMessageQuetNguon, xuLyLayBai } from './src/queue/handlers.js';
 import { kiemTraTransport, layNguon, layInbox } from './src/services/supabase.js';
 import { napNhieuLead } from './src/core/nap-lead.js';
-import { handleCrawlAgent } from './src/transport/crawl-agent.js';
+import { handleCrawlApi } from './src/transport/crawl-api.js';
 
 // --- Supply helpers previously inline (bộ dùng chung) ---
 // (đã di chuyển ra services/supabase.js; đây là alias ngắn để giữ backwards compatibility)
@@ -39,15 +39,21 @@ export default {
       return env.ASSETS ? env.ASSETS.fetch(request) : new Response('Not found', { status: 404 });
     }
 
-    // Crawl Agent routes — separate auth (uses same DEMAND_TOKEN)
+    // Crawl API routes — trigger crawl, view results
     if (p.startsWith('/api/crawl/')) {
       const quyenCA = duocPhep(request, env);
       if (!quyenCA.ok) return traLoi({ loi: quyenCA.loi }, 401);
-      return handleCrawlAgent(request, env);
+      return handleCrawlApi(request, env);
     }
 
-    const quyen = duocPhep(request, env);
-    if (!quyen.ok) return traLoi({ loi: quyen.loi }, 401);
+    // Public read-only endpoints (no auth required)
+    const PUBLIC_ROUTES = ['/api/demand/inbox', '/api/demand/trang-thai'];
+    const isPublic = PUBLIC_ROUTES.includes(p) && (request.method === 'GET' || request.method === 'HEAD');
+
+    if (!isPublic) {
+      const quyen = duocPhep(request, env);
+      if (!quyen.ok) return traLoi({ loi: quyen.loi }, 401);
+    }
 
     try {
       if (p === '/api/demand/nap' && request.method === 'POST') {
