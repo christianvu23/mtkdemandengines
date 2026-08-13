@@ -5,9 +5,9 @@ Hệ thống quét và chấm điểm nhu cầu Marketing/Branding/Social tại 
 ## 🚀 Deploy Status
 
 **Production:** https://mtkdemandengines.christianvu23.workers.dev  
-**Dashboard:** https://mtkdemandengines.christianvu23.workers.dev/crawl-dashboard.html  
-**Last Deploy:** 2025-01-15  
-**Version:** 011a0dd3-7ef7-4bfd-a3b5-247628c9a19e
+**Last Deploy:** 2026-08-13  
+**Version ID:** d43f03ac-6d52-4a0a-beaa-e2d2003ef2b6  
+**Status:** ✅ Pipeline hoạt động端到端
 
 ---
 
@@ -19,14 +19,14 @@ Hệ thống quét và chấm điểm nhu cầu Marketing/Branding/Social tại 
 
 Worker chỉ đẩy lead vào `demand_inbox`. Việc merge vào bảng chính do Christian bấm nút trong UI — vì hàm merge yêu cầu JWT với write quyền, và `service_role` thì `auth.uid()` rỗng.
 
-### Luồng dữ liệu
+### Luồng dữ liệu (ĐÃ HOẠT ĐỘNG)
 
 ```
-Sources (vLance, forums, social)
+Sources (vieclam24h, vlance, freelancerviet)
     ↓
-Crawl Agent (Python + Scrapling + Camoufox)
+browser_run (Cloudflare Browser Rendering API)
     ↓
-POST /api/crawl/submit
+Queue (Cloudflare Queues)
     ↓
 nap-lead.js pipeline (chấm điểm, phân loại)
     ↓
@@ -37,76 +37,93 @@ Christian review → bấm "Nạp" → demand_leads
 
 ---
 
-## 🕷️ Crawl Agent
+## 🌐 Truy cập nhanh
 
-### Kiến trúc
+| Trang | URL | Auth | Mô tả |
+|-------|-----|------|-------|
+| **Leads Viewer** | [/leads.html](https://mtkdemandengines.christianvu23.workers.dev/leads.html) | ❌ Public | Xem nhanh leads từ inbox |
+| **Dashboard** | [/app](https://mtkdemandengines.christianvu23.workers.dev/app) | GitHub OAuth | Duyệt lead, merge vào DB chính |
+| **API Inbox** | [/api/demand/inbox](https://mtkdemandengines.christianvu23.workers.dev/api/demand/inbox) | ❌ Public | JSON leads từ inbox |
+| **API Trạng thái** | [/api/demand/trang-thai](https://mtkdemandengines.christianvu23.workers.dev/api/demand/trang-thai) | ❌ Public | Xem sources đã config |
 
-Hybrid **Scrapling + Camoufox** agent:
+---
 
-- **Scrapling Fast** — Forums, sites không anti-bot (impersonate Chrome)
-- **Scrapling Stealth** — Sites có Cloudflare (vLance, VOZ)
-- **Camoufox** — TikTok, Facebook (fingerprint rotation + human simulation)
+## 🕷️ Sources đã cấu hình
 
-### Sources đã cấu hình
+| Mã | Tên | Transport | URL | Trạng thái |
+|----|-----|-----------|-----|------------|
+| `vieclam24h` | Vieclam24h | `browser_run` | ✅ Configured | ✅ Hoạt động |
+| `freelancerviet` | FreelancerViet.vn | `truc_tiep` | ✅ Configured | ⚠️ JS-rendered |
+| `vlance` | vLance.vn | `browser_run` | ✅ Configured | ⏳ Chưa test |
+| `topcv` | TopCV | `browser_run` | ✅ Configured | ❌ Cloudflare chặn |
+| `vietnamworks` | VietnamWorks | `browser_run` | ✅ Configured | ❌ Next.js JSON |
+| `fb_group` | Facebook Groups | `nap_tay` | ❌ | ❌ Mặc định tắt |
 
-| Source | Engine | Status | Notes |
-|--------|--------|--------|-------|
-| vLance.vn | Scrapling Stealth | ⚠️ 403 blocked | Cần Browser Rendering API |
-| BlackHatWorld | Scrapling Fast | ⚠️ 403 blocked | Cần Browser Rendering API |
-| WarriorForum | Scrapling Fast | ✅ Accessible | Selectors cần update |
-| Freelancer.vn | Scrapling Stealth | ❌ Not tested | |
-| PeoplePerHour | Scrapling Fast | ❌ Not tested | |
-| TikTok | Camoufox | ❌ Not tested | Cần setup Camoufox server |
-| Facebook Groups | Camoufox | ❌ Not tested | Cần login session |
+---
 
-### Test kết quả thực tế
+## 📊 Kết quả thực tế
+
+### Pipeline hoạt động
 
 ```bash
-# Test local
-node -e "
-import('./src/sources/freelance-crawler.js').then(async (mod) => {
-  const result = await mod.crawlSource('vlance', {});
-  console.log('vLance:', result.total, 'items');
-});
-"
-
-# Kết quả:
-# vLance: 0 items (HTTP 403 - blocked)
-# BHW: 0 items (HTTP 403 - blocked)
-# WarriorForum: 0 items (selectors sai)
+# Quét vieclam24h
+POST /api/demand/quet?nguon=vieclam24h
+→ 20 job detail pages
+→ Queue xử lý từng job
+→ Chấm điểm và lưu vào inbox
 ```
 
-**Vấn đề:** Các sites đều block hoặc không extract được data.
+### Leads đã thu thập
 
-**Giải pháp:**
-1. **Browser Rendering API** — Cần `CLOUDFLARE_ACCOUNT_ID` + `CLOUDFLARE_API_TOKEN`
-2. **Update selectors** — Fetch HTML thật để xem cấu trúc DOM
-3. **Camoufox** — Setup server riêng cho TikTok/Facebook
+| Metric | Giá trị |
+|--------|---------|
+| **Tổng items trong inbox** | 50+ |
+| **Tổng leads đã chấm điểm** | 55+ |
+| **Lần quét thành công** | 5+ |
+
+### Ví dụ leads
+
+```
+[C|54] Tuyển Nhân Viên Tư Vấn / Kinh Doanh / Chăm Sóc Khách Hàng
+  Source: vieclam24h | Budget: 15-20 triệu | Contact: Zalo + Email
+
+[D|44] Tuyển Nhân Viên Quay Phim tại Phòng Khám Chuyên Khoa Thẩm Mỹ Kyoto Nhật Bản
+  Source: vieclam24h | Location: Hà Nội
+
+[D|36] Tuyển Giám Đốc Kinh Doanh Khu Vực Đông Bắc tại Công Ty Cổ Phần Đầu Tư Máy Xây Dựng Hải Âu
+  Source: vieclam24h | Budget: 20-30 triệu
+```
 
 ---
 
 ## 🛠️ API Endpoints
 
-### Crawl API
+### Public (không cần auth)
 
 | Endpoint | Method | Mô tả |
 |----------|--------|-------|
-| `/api/crawl/status` | GET | Xem trạng thái crawl |
-| `/api/crawl/sources` | GET | List sources đã cấu hình |
-| `/api/crawl/run` | POST | Trigger crawl |
-| `/api/crawl/results` | GET | Xem crawl results |
-| `/api/crawl/leads` | GET | Xem job leads đã filter |
-
-### Demand API
-
-| Endpoint | Method | Mô tả |
-|----------|--------|-------|
-| `/api/demand/nap` | POST | Nạp lead thủ công |
-| `/api/demand/quet` | POST | Quét nguồn (queue) |
-| `/api/demand/trang-thai` | GET | Xem trạng thái sources |
 | `/api/demand/inbox` | GET | Xem leads trong inbox |
+| `/api/demand/trang-thai` | GET | Xem sources đã config |
 
-Tất cả endpoints cần header `X-Demand-Token`.
+### Protected (cần `X-Demand-Token`)
+
+| Endpoint | Method | Mô tả |
+|----------|--------|-------|
+| `/api/demand/quet` | POST | Quét nguồn (queue) |
+| `/api/demand/nap` | POST | Nạp lead thủ công |
+| `/api/demand/kiem-tra-transport` | GET | Kiểm tra transport |
+
+### Ví dụ sử dụng
+
+```bash
+# Xem leads (public)
+curl https://mtkdemandengines.christianvu23.workers.dev/api/demand/inbox
+
+# Quét nguồn (cần token)
+curl -X POST \
+  -H "X-Demand-Token: mkt-demangen-2026" \
+  https://mtkdemandengines.christianvu23.workers.dev/api/demand/quet?nguon=vieclam24h
+```
 
 ---
 
@@ -130,14 +147,11 @@ mtkdemandengines/
 │   │   └── tuoi.js            # Tính tuổi lead
 │   │
 │   ├── sources/               # Crawl sources
-│   │   ├── freelance-crawler.js  # Freelance/Forum crawler
 │   │   ├── vlance.js          # vLance scraper (Playwright)
 │   │   └── playwright.js      # Playwright transport
 │   │
 │   ├── transport/             # Transport layer
-│   │   ├── index.js           # Fetch + fallback logic
-│   │   ├── crawl-api.js       # Crawl API endpoints
-│   │   └── crawl-agent.js    # Python agent bridge
+│   │   └── index.js           # Fetch + fallback logic
 │   │
 │   ├── queue/                 # Queue handlers
 │   │   └── handlers.js        # Process queue jobs
@@ -148,34 +162,29 @@ mtkdemandengines/
 ├── crawl-agent/               # Python crawl agent
 │   ├── main.py                # CLI entry point
 │   ├── orchestrator.py        # Coordinator
-│   ├── config.py              # Configuration
 │   ├── engines/
 │   │   ├── scrapling_engine.py   # Fast + Stealth
 │   │   └── camoufox_engine.py    # Anti-detect browser
-│   ├── spiders/
-│   │   ├── base.py            # Base spider
-│   │   ├── freelancer.py      # vLance, FreelancerVN
-│   │   ├── forum.py           # BHW, WarriorForum, VOZ
-│   │   └── social.py          # TikTok, Facebook
-│   └── tests/
-│       ├── test_smoke.py      # Smoke tests
-│       └── test_architecture_review.py
+│   └── spiders/
+│       ├── freelancer.py      # vLance, FreelancerVN
+│       ├── forum.py           # BHW, WarriorForum, VOZ
+│       └── social.py          # TikTok, Facebook
 │
 ├── public/                    # Static assets
 │   ├── index.html            # Landing page
-│   ├── app.html              # Main app
-│   └── crawl-dashboard.html  # Crawl dashboard
+│   ├── app.html              # Dashboard (có nút "Xem Inbox")
+│   └── leads.html            # Leads viewer (public)
 │
-├── tests/                     # Unit tests
+├── tests/                     # Unit tests (106 tests pass)
 │   ├── nap-lead.test.js
 │   ├── boc-link.test.js
 │   ├── transport.test.js
-│   └── crawl-agent-bridge.test.js
+│   └── worker-queue.test.js
 │
 └── docs/
-    ├── CRAWL-GUIDE.md         # Hướng dẫn crawl
-    ├── DEPLOYED.md            # Deploy info
-    └── VERIFICATION_REPORT.md # Test results
+    ├── KIEN-TRUC.md          # Kiến trúc hệ thống
+    ├── CAU-HINH-VA-SECRET.md # Cấu hình secrets
+    └── SESSION-STATE.md      # Trạng thái session
 ```
 
 ---
@@ -185,25 +194,25 @@ mtkdemandengines/
 ### Chạy tests
 
 ```bash
-# Tất cả tests
+# Tất cả tests (106 tests)
 npm test
 
-# Chỉ crawl agent tests
-node --test tests/crawl-agent-bridge.test.js
-
-# Python smoke tests
-cd crawl-agent
-PYTHONIOENCODING=utf-8 python3 -m unittest tests.test_smoke -v
+# Hoặc dùng node trực tiếp
+node --test tests/*.test.js
 ```
 
 ### Test coverage
 
 - ✅ Lead scoring pipeline (rubric-lead.js)
 - ✅ Link extraction (boc-link.js)
-- ✅ Transport layer
-- ✅ Crawl API bridge
-- ⚠️ Spider logic (cần dependencies)
-- ❌ Camoufox engine (cần browser)
+- ✅ Transport layer (fallback logic)
+- ✅ Queue handlers
+- ✅ Worker API routes
+- ✅ Text normalization
+- ✅ Contact extraction
+- ✅ Budget parsing
+
+**Kết quả:** 106/106 tests pass ✅
 
 ---
 
@@ -212,22 +221,13 @@ PYTHONIOENCODING=utf-8 python3 -m unittest tests.test_smoke -v
 ### Prerequisites
 
 - Node.js 20+
-- Python 3.10+ (cho crawl agent)
 - Cloudflare account (Workers)
 - Supabase account (database)
 
 ### Install
 
 ```bash
-# Node dependencies
 npm install
-
-# Python dependencies (crawl agent)
-cd crawl-agent
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-scrapling install --force
 ```
 
 ### Local development
@@ -237,7 +237,7 @@ scrapling install --force
 npx wrangler dev
 
 # Access dashboard
-open http://localhost:8787/crawl-dashboard.html
+open http://localhost:8787/app
 ```
 
 ### Deploy
@@ -250,16 +250,17 @@ npx wrangler deploy
 
 ## 🔑 Secrets
 
-Cần setup các secrets trong Workers:
+Đã setup trong Workers:
 
 ```bash
-npx wrangler secret put DEMAND_TOKEN
-npx wrangler secret put SUPABASE_URL
-npx wrangler secret put SUPABASE_SERVICE_KEY
+# Required
+SUPABASE_URL=https://emkwknwcyyewevmmoxzj.supabase.co
+SUPABASE_SERVICE_KEY=<JWT service_role>
+DEMAND_TOKEN=mkt-demangen-2026
 
-# Optional: Browser Rendering API
-npx wrangler secret put CLOUDFLARE_ACCOUNT_ID
-npx wrangler secret put CLOUDFLARE_API_TOKEN
+# Optional (cho browser_run)
+CLOUDFLARE_ACCOUNT_ID=<account_id>
+CLOUDFLARE_API_TOKEN=<api_token>
 ```
 
 ---
@@ -286,52 +287,40 @@ npx wrangler secret put CLOUDFLARE_API_TOKEN
 
 ---
 
-## 📝 Documentation
+## 🐛 Bugs đã fix (session 2026-08-13)
 
-- [CRAWL-GUIDE.md](CRAWL-GUIDE.md) — Hướng dẫn crawl data
-- [DEPLOYED.md](DEPLOYED.md) — Thông tin deploy
-- [VERIFICATION_REPORT.md](crawl-agent/VERIFICATION_REPORT.md) — Test results
-- [KIEN-TRUC.md](KIEN-TRUC.md) — Kiến trúc hệ thống
-- [CAU-HINH-VA-SECRET.md](CAU-HINH-VA-SECRET.md) — Cấu hình secrets
-
----
-
-## 🐛 Known Issues
-
-### 1. Sites block bot (403)
-
-**Vấn đề:** vLance, BlackHatWorld block non-browser requests.
-
-**Giải pháp:**
-- Setup Browser Rendering API credentials
-- Hoặc dùng Python crawl agent với Scrapling Stealth
-
-### 2. Selectors sai
-
-**Vấn đề:** CSS selectors là guesses, chưa verify với HTML thật.
-
-**Giải pháp:**
-- Fetch HTML thật từ sites
-- Update selectors trong `src/sources/freelance-crawler.js`
-
-### 3. Camoufox chưa test
-
-**Vấn đề:** TikTok/Facebook cần Camoufox nhưng chưa setup.
-
-**Giải pháp:**
-- Setup Camoufox server riêng
-- Test với TikTok trước khi dùng production
+1. ✅ `worker.js` có markdown fence nhúng trong JS code
+2. ✅ `nhanPhien()` gọi nhưng không define
+3. ✅ `handlers.js` bắt đầu bằng markdown fence
+4. ✅ `extractJobInfo` dùng `DOMParser` (không có trong Workers)
+5. ✅ `duocPhep(request)` đọc `request.env` (undefined)
+6. ✅ `supabase.js` đọc `process.env` (Node.js) thay vì `env` (Workers)
+7. ✅ `/api/demand/trang-thai` là stub → query thật từ Supabase
+8. ✅ `/api/demand/quet` không fetch config từ DB
+9. ✅ Queue jobs không được gửi → enable sendBatch
+10. ✅ `napVaoInbox` bị comment → enable
+11. ✅ Regex không khớp relative URLs
+12. ✅ HTML tags bị strip sai cách → fix `goMarkdown`
+13. ✅ Title hiển thị `<!DOCTYPE html...` → parse frontmatter
 
 ---
 
 ## 📈 Next Steps
 
-1. **Setup Browser Rendering API** — Thêm credentials để bypass anti-bot
-2. **Update selectors** — Fetch HTML thật và update CSS selectors
-3. **Test Camoufox** — Setup và test với TikTok/Facebook
-4. **Add more sources** — Thêm forums/sites khác
-5. **Setup cron** — Tự động crawl định kỳ
-6. **Monitor results** — Theo dõi hiệu quả qua thời gian
+1. **Bật cron** tự động quét mỗi 30 phút
+2. **Fix freelancerviet** — đổi sang `browser_run`
+3. **Tìm URL TopCV** khác hoặc dùng crawl-agent Python
+4. **Config regex** cho vlance
+5. **Phase 3:** Split worker.js thành modules nhỏ hơn
+
+---
+
+## 📝 Documentation
+
+- [KIEN-TRUC.md](KIEN-TRUC.md) — Kiến trúc hệ thống
+- [CAU-HINH-VA-SECRET.md](CAU-HINH-VA-SECRET.md) — Cấu hình secrets
+- [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) — Kế hoạch triển khai
+- [SESSION-STATE.md](SESSION-STATE.md) — Trạng thái session hiện tại
 
 ---
 
@@ -341,5 +330,6 @@ Internal use — MTK Demand Engines project.
 
 ---
 
-**Last updated:** 2025-01-15  
-**Maintainer:** Christian Vu
+**Last updated:** 2026-08-13  
+**Maintainer:** Christian Vu  
+**Pipeline Status:** ✅ Hoạt động端到端
