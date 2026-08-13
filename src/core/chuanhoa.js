@@ -22,7 +22,7 @@ export function chuanHoaText(s) {
 
 /**
  * Chuẩn hoá URL thành khoá dedup.
- * Bỏ scheme, www/m/vn, tham số theo dõi (utm_*, fbclid, gclid, ref, source), dấu / cuối.
+ * Bỏ scheme, www/m/vn, tham số theo dõi (utm_*, fbclid, gclid, ref, source, open_from, search_id), dấu / cuối.
  * Tương đương SQL: dm_chuan_hoa_key()
  * @returns {string|null} null nếu rỗng
  */
@@ -30,7 +30,7 @@ export function chuanHoaKey(url) {
   let u = String(url ?? '').trim().toLowerCase();
   if (!u) return null;
   u = u.replace(/^https?:\/\/(www\.|m\.|vn\.)?/, '');
-  u = u.replace(/[?&](utm_[^&]*|fbclid|gclid|ref|source)=[^&]*/g, '');
+  u = u.replace(/[?&](utm_[^&]*|fbclid|gclid|ref|source|open_from|search_id)=[^&]*/g, '');
   u = u.replace(/\/+$/, '').trim();
   return u || null;
 }

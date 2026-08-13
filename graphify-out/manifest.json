@@ -145,8 +145,8 @@
     "semantic_hash": ""
   },
   "package.json": {
-    "mtime": 1786634710.1729538,
-    "ast_hash": "1e077e92e75bd023380adaf713101c32",
+    "mtime": 1786636162.3602157,
+    "ast_hash": "aca819174638b8d9c8f10891e14429a8",
     "semantic_hash": ""
   },
   "scripts/auto-scrape-flow.js": {
@@ -190,8 +190,8 @@
     "semantic_hash": ""
   },
   "src/core/nap-lead.js": {
-    "mtime": 1786633611.8015938,
-    "ast_hash": "8e1a3842c45957b84f0838e07a1c8e39",
+    "mtime": 1786637413.1694007,
+    "ast_hash": "5ec279f0038bf1a87846d26d57f0c5c1",
     "semantic_hash": ""
   },
   "src/core/ngansach.js": {
@@ -280,8 +280,8 @@
     "semantic_hash": ""
   },
   "tests/nap-lead.test.js": {
-    "mtime": 1786274504.42571,
-    "ast_hash": "4c46b127446d4633a1837d6d358eecef",
+    "mtime": 1786637445.9058242,
+    "ast_hash": "2fb6c48f6262e862024e06d13a448572",
     "semantic_hash": ""
   },
   "tests/rubric-router.test.js": {
@@ -512,6 +512,11 @@
   "scripts/submit-sample-leads.mjs": {
     "mtime": 1786635094.7590063,
     "ast_hash": "ea5332e7e7219d3e4d050bba38f8b9fc",
+    "semantic_hash": ""
+  },
+  "scripts/fix-raw-text.mjs": {
+    "mtime": 1786637573.7781959,
+    "ast_hash": "3dfb66af0b72a593a6ee6865f68903a4",
     "semantic_hash": ""
   }
 }

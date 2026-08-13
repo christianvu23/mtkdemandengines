@@ -1,16 +1,16 @@
 # Graph Report - mtkdemandengines  (2026-08-13)
 
 ## Corpus Check
-- 99 files · ~77,741 words
+- 103 files · ~79,726 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1106 nodes · 1508 edges · 76 communities (71 shown, 5 thin omitted)
+- 1113 nodes · 1513 edges · 78 communities (71 shown, 7 thin omitted)
 - Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 46 edges (avg confidence: 0.5)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `c6608f2d`
+- Built from commit: `f1714578`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -85,6 +85,8 @@
 - 🧪 Tests
 - 📋 Tổng quan
 - mcp.test.js
+- add-new-sources.mjs
+- submit-sample-leads.mjs
 
 ## God Nodes (most connected - your core abstractions)
 1. `BaseSpider` - 42 edges
@@ -113,7 +115,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (76 total, 5 thin omitted)
+## Communities (78 total, 7 thin omitted)
 
 ### Community 0 - "rubric-lead.js"
 Cohesion: 0.06
@@ -376,9 +378,9 @@ Cohesion: 0.67
 Nodes (3): Luồng dữ liệu (ĐÃ HOẠT ĐỘNG), Nguyên tắc hoạt động, 📋 Tổng quan
 
 ## Knowledge Gaps
-- **410 isolated node(s):** `$schema`, `username`, `default_agent`, `logLevel`, `autoupdate` (+405 more)
+- **413 isolated node(s):** `$schema`, `username`, `default_agent`, `logLevel`, `autoupdate` (+408 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **5 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **7 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
@@ -392,7 +394,7 @@ _Questions this graph is uniquely positioned to answer:_
 - **Are the 5 inferred relationships involving `WorkersClient` (e.g. with `CrawlOrchestrator` and `BaseSpider`) actually correct?**
   _`WorkersClient` has 5 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `$schema`, `username`, `default_agent` to the rest of the system?**
-  _410 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _413 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `rubric-lead.js` be split into smaller, more focused modules?**
   _Cohesion score 0.05518207282913165 - nodes in this community are weakly interconnected._
 - **Should `test_smoke.py` be split into smaller, more focused modules?**

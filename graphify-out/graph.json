@@ -601,8 +601,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "crawl_agent_config",
-      "community": 28,
-      "community_name": "WorkersClient",
+      "community": 20,
+      "community_name": "orchestrator.py",
       "norm_label": "config.py"
     },
     {
@@ -614,8 +614,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "crawl_agent_config_config",
-      "community": 28,
-      "community_name": "WorkersClient",
+      "community": 20,
+      "community_name": "orchestrator.py",
       "norm_label": "config"
     },
     {
@@ -627,7 +627,7 @@
       "_origin": "ast",
       "id": "crawl_agent_config_config_get_all_sources",
       "community": 20,
-      "community_name": "CrawlOrchestrator",
+      "community_name": "orchestrator.py",
       "norm_label": ".get_all_sources()"
     },
     {
@@ -638,8 +638,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_config_config_get_sources_by_engine",
-      "community": 28,
-      "community_name": "WorkersClient",
+      "community": 20,
+      "community_name": "orchestrator.py",
       "norm_label": ".get_sources_by_engine()"
     },
     {
@@ -649,8 +649,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "crawl_agent_config_rationale_1",
-      "community": 28,
-      "community_name": "WorkersClient",
+      "community": 20,
+      "community_name": "orchestrator.py",
       "norm_label": "crawl agent configuration ========================= central configuration for..."
     },
     {
@@ -660,8 +660,8 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "crawl_agent_config_rationale_18",
-      "community": 28,
-      "community_name": "WorkersClient",
+      "community": 20,
+      "community_name": "orchestrator.py",
       "norm_label": "agent configuration \u2014 all settings from env or defaults."
     },
     {
@@ -672,7 +672,7 @@
       "_origin": "ast",
       "id": "crawl_agent_config_rationale_308",
       "community": 20,
-      "community_name": "CrawlOrchestrator",
+      "community_name": "orchestrator.py",
       "norm_label": "return all enabled sources."
     },
     {
@@ -682,8 +682,8 @@
       "source_location": "L320",
       "_origin": "ast",
       "id": "crawl_agent_config_rationale_320",
-      "community": 28,
-      "community_name": "WorkersClient",
+      "community": 20,
+      "community_name": "orchestrator.py",
       "norm_label": "filter sources by engine type."
     },
     {
@@ -980,8 +980,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "crawl_agent_engines_init",
-      "community": 36,
-      "community_name": "ScraplingEngine",
+      "community": 21,
+      "community_name": "CamoufoxEngine",
       "norm_label": "engines/__init__.py"
     },
     {
@@ -991,8 +991,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "crawl_agent_engines_init_rationale_1",
-      "community": 36,
-      "community_name": "ScraplingEngine",
+      "community": 21,
+      "community_name": "CamoufoxEngine",
       "norm_label": "engines package \u2014 scrapling + camoufox hybrid."
     },
     {
@@ -1002,8 +1002,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "crawl_agent_engines_camoufox_engine",
-      "community": 3,
-      "community_name": "BaseSpider",
+      "community": 21,
+      "community_name": "CamoufoxEngine",
       "norm_label": "camoufox_engine.py"
     },
     {
@@ -1158,8 +1158,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "crawl_agent_engines_camoufox_engine_rationale_1",
-      "community": 3,
-      "community_name": "BaseSpider",
+      "community": 21,
+      "community_name": "CamoufoxEngine",
       "norm_label": "camoufox engine \u2014 anti-detect browser for social media crawling...."
     },
     {
@@ -1290,8 +1290,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "crawl_agent_engines_scrapling_engine",
-      "community": 36,
-      "community_name": "ScraplingEngine",
+      "community": 21,
+      "community_name": "CamoufoxEngine",
       "norm_label": "scrapling_engine.py"
     },
     {
@@ -1303,7 +1303,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "crawl_agent_engines_scrapling_engine_scraplingengine",
-      "community": 36,
+      "community": 41,
       "community_name": "ScraplingEngine",
       "norm_label": "scraplingengine"
     },
@@ -1315,7 +1315,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_engines_scrapling_engine_scraplingengine_init",
-      "community": 36,
+      "community": 41,
       "community_name": "ScraplingEngine",
       "norm_label": ".__init__()"
     },
@@ -1328,7 +1328,7 @@
       "_origin": "ast",
       "id": "crawl_agent_engines_scrapling_engine_scraplingengine_fetch_fast",
       "community": 41,
-      "community_name": ".fetch",
+      "community_name": "ScraplingEngine",
       "norm_label": ".fetch_fast()"
     },
     {
@@ -1340,7 +1340,7 @@
       "_origin": "ast",
       "id": "crawl_agent_engines_scrapling_engine_scraplingengine_fetch_stealth",
       "community": 41,
-      "community_name": ".fetch",
+      "community_name": "ScraplingEngine",
       "norm_label": ".fetch_stealth()"
     },
     {
@@ -1352,7 +1352,7 @@
       "_origin": "ast",
       "id": "crawl_agent_engines_scrapling_engine_scraplingengine_fetch",
       "community": 41,
-      "community_name": ".fetch",
+      "community_name": "ScraplingEngine",
       "norm_label": ".fetch()"
     },
     {
@@ -1363,7 +1363,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_engines_scrapling_engine_scraplingengine_fetch_batch",
-      "community": 36,
+      "community": 41,
       "community_name": "ScraplingEngine",
       "norm_label": ".fetch_batch()"
     },
@@ -1376,7 +1376,7 @@
       "_origin": "ast",
       "id": "crawl_agent_engines_scrapling_engine_scraplingengine_extract",
       "community": 41,
-      "community_name": ".fetch",
+      "community_name": "ScraplingEngine",
       "norm_label": ".extract()"
     },
     {
@@ -1386,8 +1386,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "crawl_agent_engines_scrapling_engine_rationale_1",
-      "community": 36,
-      "community_name": "ScraplingEngine",
+      "community": 21,
+      "community_name": "CamoufoxEngine",
       "norm_label": "scrapling engine \u2014 fast + stealth crawling via scrapling framework...."
     },
     {
@@ -1397,7 +1397,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "crawl_agent_engines_scrapling_engine_rationale_16",
-      "community": 36,
+      "community": 41,
       "community_name": "ScraplingEngine",
       "norm_label": "dual-mode scrapling engine: - fast mode: fetchersession with browser..."
     },
@@ -1409,7 +1409,7 @@
       "_origin": "ast",
       "id": "crawl_agent_engines_scrapling_engine_rationale_27",
       "community": 41,
-      "community_name": ".fetch",
+      "community_name": "ScraplingEngine",
       "norm_label": "fast fetch \u2014 impersonate chrome/firefox tls fingerprint. good for: forums, job..."
     },
     {
@@ -1420,7 +1420,7 @@
       "_origin": "ast",
       "id": "crawl_agent_engines_scrapling_engine_rationale_55",
       "community": 41,
-      "community_name": ".fetch",
+      "community_name": "ScraplingEngine",
       "norm_label": "stealth fetch \u2014 full browser with cloudflare bypass. good for: vlance, sites..."
     },
     {
@@ -1431,7 +1431,7 @@
       "_origin": "ast",
       "id": "crawl_agent_engines_scrapling_engine_rationale_85",
       "community": 41,
-      "community_name": ".fetch",
+      "community_name": "ScraplingEngine",
       "norm_label": "smart fetch \u2014 try fast first, escalate to stealth if needed. engine: \"fast\" |..."
     },
     {
@@ -1441,7 +1441,7 @@
       "source_location": "L112",
       "_origin": "ast",
       "id": "crawl_agent_engines_scrapling_engine_rationale_112",
-      "community": 36,
+      "community": 41,
       "community_name": "ScraplingEngine",
       "norm_label": "fetch multiple urls with concurrency limit and delay between batches."
     },
@@ -1453,7 +1453,7 @@
       "_origin": "ast",
       "id": "crawl_agent_engines_scrapling_engine_rationale_145",
       "community": 41,
-      "community_name": ".fetch",
+      "community_name": "ScraplingEngine",
       "norm_label": "fetch and extract specific data using css selectors. selectors: {\"title\":..."
     },
     {
@@ -1463,7 +1463,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "crawl_agent_main",
-      "community": 26,
+      "community": 20,
       "community_name": "orchestrator.py",
       "norm_label": "main.py"
     },
@@ -1474,7 +1474,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "crawl_agent_orchestrator",
-      "community": 26,
+      "community": 20,
       "community_name": "orchestrator.py",
       "norm_label": "orchestrator.py"
     },
@@ -1488,7 +1488,7 @@
       "_origin": "ast",
       "id": "crawl_agent_orchestrator_crawlorchestrator",
       "community": 20,
-      "community_name": "CrawlOrchestrator",
+      "community_name": "orchestrator.py",
       "norm_label": "crawlorchestrator"
     },
     {
@@ -1499,8 +1499,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_orchestrator_crawlorchestrator_init",
-      "community": 28,
-      "community_name": "WorkersClient",
+      "community": 20,
+      "community_name": "orchestrator.py",
       "norm_label": ".__init__()"
     },
     {
@@ -1512,7 +1512,7 @@
       "_origin": "ast",
       "id": "crawl_agent_orchestrator_crawlorchestrator_init_camoufox",
       "community": 20,
-      "community_name": "CrawlOrchestrator",
+      "community_name": "orchestrator.py",
       "norm_label": "._init_camoufox()"
     },
     {
@@ -1524,7 +1524,7 @@
       "_origin": "ast",
       "id": "crawl_agent_orchestrator_crawlorchestrator_close",
       "community": 20,
-      "community_name": "CrawlOrchestrator",
+      "community_name": "orchestrator.py",
       "norm_label": ".close()"
     },
     {
@@ -1536,7 +1536,7 @@
       "_origin": "ast",
       "id": "crawl_agent_orchestrator_crawlorchestrator_run_spider",
       "community": 20,
-      "community_name": "CrawlOrchestrator",
+      "community_name": "orchestrator.py",
       "norm_label": ".run_spider()"
     },
     {
@@ -1548,7 +1548,7 @@
       "_origin": "ast",
       "id": "crawl_agent_orchestrator_crawlorchestrator_run_all",
       "community": 20,
-      "community_name": "CrawlOrchestrator",
+      "community_name": "orchestrator.py",
       "norm_label": ".run_all()"
     },
     {
@@ -1559,8 +1559,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_orchestrator_crawlorchestrator_run_social",
-      "community": 20,
-      "community_name": "CrawlOrchestrator",
+      "community": 21,
+      "community_name": "CamoufoxEngine",
       "norm_label": ".run_social()"
     },
     {
@@ -1572,7 +1572,7 @@
       "_origin": "ast",
       "id": "crawl_agent_orchestrator_crawlorchestrator_health_check",
       "community": 20,
-      "community_name": "CrawlOrchestrator",
+      "community_name": "orchestrator.py",
       "norm_label": ".health_check()"
     },
     {
@@ -1584,7 +1584,7 @@
       "_origin": "ast",
       "id": "crawl_agent_orchestrator_crawlorchestrator_save_results",
       "community": 20,
-      "community_name": "CrawlOrchestrator",
+      "community_name": "orchestrator.py",
       "norm_label": ".save_results()"
     },
     {
@@ -1596,7 +1596,7 @@
       "_origin": "ast",
       "id": "crawl_agent_orchestrator_main",
       "community": 20,
-      "community_name": "CrawlOrchestrator",
+      "community_name": "orchestrator.py",
       "norm_label": "main()"
     },
     {
@@ -1606,7 +1606,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "crawl_agent_orchestrator_rationale_1",
-      "community": 26,
+      "community": 20,
       "community_name": "orchestrator.py",
       "norm_label": "crawl agent orchestrator \u2014 coordinates all spiders and engines...."
     },
@@ -1618,7 +1618,7 @@
       "_origin": "ast",
       "id": "crawl_agent_orchestrator_rationale_52",
       "community": 20,
-      "community_name": "CrawlOrchestrator",
+      "community_name": "orchestrator.py",
       "norm_label": "central orchestrator for the hybrid crawl agent. manages engine lifecycle,..."
     },
     {
@@ -1629,7 +1629,7 @@
       "_origin": "ast",
       "id": "crawl_agent_orchestrator_rationale_65",
       "community": 20,
-      "community_name": "CrawlOrchestrator",
+      "community_name": "orchestrator.py",
       "norm_label": "lazy-init camoufox only when needed (resource-heavy)."
     },
     {
@@ -1640,7 +1640,7 @@
       "_origin": "ast",
       "id": "crawl_agent_orchestrator_rationale_89",
       "community": 20,
-      "community_name": "CrawlOrchestrator",
+      "community_name": "orchestrator.py",
       "norm_label": "run a single spider by source code. returns stats dict with crawl results."
     },
     {
@@ -1651,7 +1651,7 @@
       "_origin": "ast",
       "id": "crawl_agent_orchestrator_rationale_139",
       "community": 20,
-      "community_name": "CrawlOrchestrator",
+      "community_name": "orchestrator.py",
       "norm_label": "run all enabled spiders. engines: filter by engine type [\"scrapling_fast\",..."
     },
     {
@@ -1661,8 +1661,8 @@
       "source_location": "L221",
       "_origin": "ast",
       "id": "crawl_agent_orchestrator_rationale_221",
-      "community": 20,
-      "community_name": "CrawlOrchestrator",
+      "community": 21,
+      "community_name": "CamoufoxEngine",
       "norm_label": "run only social media spiders (tiktok + facebook). these need camoufox and are..."
     },
     {
@@ -1673,7 +1673,7 @@
       "_origin": "ast",
       "id": "crawl_agent_orchestrator_rationale_253",
       "community": 20,
-      "community_name": "CrawlOrchestrator",
+      "community_name": "orchestrator.py",
       "norm_label": "check all systems are operational."
     },
     {
@@ -1684,7 +1684,7 @@
       "_origin": "ast",
       "id": "crawl_agent_orchestrator_rationale_281",
       "community": 20,
-      "community_name": "CrawlOrchestrator",
+      "community_name": "orchestrator.py",
       "norm_label": "save crawl results to json file."
     },
     {
@@ -1695,7 +1695,7 @@
       "_origin": "ast",
       "id": "crawl_agent_orchestrator_rationale_298",
       "community": 20,
-      "community_name": "CrawlOrchestrator",
+      "community_name": "orchestrator.py",
       "norm_label": "cli entry point for the crawl agent."
     },
     {
@@ -1807,8 +1807,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "crawl_agent_spiders_base",
-      "community": 3,
-      "community_name": "BaseSpider",
+      "community": 21,
+      "community_name": "CamoufoxEngine",
       "norm_label": "base.py"
     },
     {
@@ -1820,7 +1820,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_base_basespider",
-      "community": 3,
+      "community": 26,
       "community_name": "BaseSpider",
       "norm_label": "basespider"
     },
@@ -1831,8 +1831,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "abc",
-      "community": 3,
-      "community_name": "BaseSpider",
+      "community": 21,
+      "community_name": "CamoufoxEngine",
       "norm_label": "abc"
     },
     {
@@ -1843,7 +1843,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_base_basespider_init",
-      "community": 36,
+      "community": 41,
       "community_name": "ScraplingEngine",
       "norm_label": ".__init__()"
     },
@@ -1855,7 +1855,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_base_basespider_parse_listing",
-      "community": 3,
+      "community": 26,
       "community_name": "BaseSpider",
       "norm_label": ".parse_listing()"
     },
@@ -1867,7 +1867,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_base_basespider_parse_detail",
-      "community": 3,
+      "community": 26,
       "community_name": "BaseSpider",
       "norm_label": ".parse_detail()"
     },
@@ -1879,7 +1879,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_base_basespider_fetch",
-      "community": 3,
+      "community": 26,
       "community_name": "BaseSpider",
       "norm_label": ".fetch()"
     },
@@ -1891,7 +1891,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_base_basespider_url_key",
-      "community": 3,
+      "community": 26,
       "community_name": "BaseSpider",
       "norm_label": "._url_key()"
     },
@@ -1903,7 +1903,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_base_basespider_is_new",
-      "community": 3,
+      "community": 26,
       "community_name": "BaseSpider",
       "norm_label": ".is_new()"
     },
@@ -1915,7 +1915,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_base_basespider_format_lead",
-      "community": 3,
+      "community": 26,
       "community_name": "BaseSpider",
       "norm_label": ".format_lead()"
     },
@@ -1927,7 +1927,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_base_basespider_crawl",
-      "community": 3,
+      "community": 26,
       "community_name": "BaseSpider",
       "norm_label": ".crawl()"
     },
@@ -1939,7 +1939,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_base_basespider_close",
-      "community": 3,
+      "community": 26,
       "community_name": "BaseSpider",
       "norm_label": ".close()"
     },
@@ -1950,8 +1950,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "crawl_agent_spiders_base_rationale_1",
-      "community": 3,
-      "community_name": "BaseSpider",
+      "community": 21,
+      "community_name": "CamoufoxEngine",
       "norm_label": "base spider \u2014 abstract base for all crawl spiders...."
     },
     {
@@ -1961,7 +1961,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "crawl_agent_spiders_base_rationale_19",
-      "community": 3,
+      "community": 26,
       "community_name": "BaseSpider",
       "norm_label": "abstract base spider that all source-specific spiders inherit from. handles:..."
     },
@@ -1972,7 +1972,7 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "crawl_agent_spiders_base_rationale_43",
-      "community": 3,
+      "community": 26,
       "community_name": "BaseSpider",
       "norm_label": "parse a listing/search page \u2192 extract individual job/post links. returns:..."
     },
@@ -1983,7 +1983,7 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "crawl_agent_spiders_base_rationale_51",
-      "community": 3,
+      "community": 26,
       "community_name": "BaseSpider",
       "norm_label": "parse a detail page \u2192 extract full job/post content. returns: {\"noidung\":..."
     },
@@ -1994,7 +1994,7 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "crawl_agent_spiders_base_rationale_59",
-      "community": 3,
+      "community": 26,
       "community_name": "BaseSpider",
       "norm_label": "fetch url using the spider's configured engine."
     },
@@ -2005,7 +2005,7 @@
       "source_location": "L69",
       "_origin": "ast",
       "id": "crawl_agent_spiders_base_rationale_69",
-      "community": 3,
+      "community": 26,
       "community_name": "BaseSpider",
       "norm_label": "generate dedup key from url."
     },
@@ -2016,7 +2016,7 @@
       "source_location": "L74",
       "_origin": "ast",
       "id": "crawl_agent_spiders_base_rationale_74",
-      "community": 3,
+      "community": 26,
       "community_name": "BaseSpider",
       "norm_label": "check if url has been seen before in this run."
     },
@@ -2027,7 +2027,7 @@
       "source_location": "L83",
       "_origin": "ast",
       "id": "crawl_agent_spiders_base_rationale_83",
-      "community": 3,
+      "community": 26,
       "community_name": "BaseSpider",
       "norm_label": "format extracted data into lead payload for workers api. matches the format..."
     },
@@ -2038,7 +2038,7 @@
       "source_location": "L106",
       "_origin": "ast",
       "id": "crawl_agent_spiders_base_rationale_106",
-      "community": 3,
+      "community": 26,
       "community_name": "BaseSpider",
       "norm_label": "full crawl cycle: 1. fetch listing pages 2. extract individual post links 3...."
     },
@@ -2050,7 +2050,7 @@
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum",
       "community": 3,
-      "community_name": "BaseSpider",
+      "community_name": "forum.py",
       "norm_label": "forum.py"
     },
     {
@@ -2075,7 +2075,7 @@
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_blackhatworldspider",
       "community": 3,
-      "community_name": "BaseSpider",
+      "community_name": "forum.py",
       "norm_label": "blackhatworldspider"
     },
     {
@@ -2087,7 +2087,7 @@
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_blackhatworldspider_parse_listing",
       "community": 3,
-      "community_name": "BaseSpider",
+      "community_name": "forum.py",
       "norm_label": ".parse_listing()"
     },
     {
@@ -2099,7 +2099,7 @@
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_blackhatworldspider_parse_detail",
       "community": 3,
-      "community_name": "BaseSpider",
+      "community_name": "forum.py",
       "norm_label": ".parse_detail()"
     },
     {
@@ -2111,8 +2111,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_warriorforumspider",
-      "community": 26,
-      "community_name": "orchestrator.py",
+      "community": 3,
+      "community_name": "forum.py",
       "norm_label": "warriorforumspider"
     },
     {
@@ -2123,8 +2123,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_warriorforumspider_parse_listing",
-      "community": 26,
-      "community_name": "orchestrator.py",
+      "community": 3,
+      "community_name": "forum.py",
       "norm_label": ".parse_listing()"
     },
     {
@@ -2135,8 +2135,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_warriorforumspider_parse_detail",
-      "community": 26,
-      "community_name": "orchestrator.py",
+      "community": 3,
+      "community_name": "forum.py",
       "norm_label": ".parse_detail()"
     },
     {
@@ -2149,7 +2149,7 @@
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_vozmarketingspider",
       "community": 3,
-      "community_name": "BaseSpider",
+      "community_name": "forum.py",
       "norm_label": "vozmarketingspider"
     },
     {
@@ -2161,7 +2161,7 @@
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_vozmarketingspider_parse_listing",
       "community": 3,
-      "community_name": "BaseSpider",
+      "community_name": "forum.py",
       "norm_label": ".parse_listing()"
     },
     {
@@ -2173,7 +2173,7 @@
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_vozmarketingspider_parse_detail",
       "community": 3,
-      "community_name": "BaseSpider",
+      "community_name": "forum.py",
       "norm_label": ".parse_detail()"
     },
     {
@@ -2186,7 +2186,7 @@
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_brandsvietnamspider",
       "community": 3,
-      "community_name": "BaseSpider",
+      "community_name": "forum.py",
       "norm_label": "brandsvietnamspider"
     },
     {
@@ -2198,7 +2198,7 @@
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_brandsvietnamspider_parse_listing",
       "community": 3,
-      "community_name": "BaseSpider",
+      "community_name": "forum.py",
       "norm_label": ".parse_listing()"
     },
     {
@@ -2210,7 +2210,7 @@
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_brandsvietnamspider_parse_detail",
       "community": 3,
-      "community_name": "BaseSpider",
+      "community_name": "forum.py",
       "norm_label": ".parse_detail()"
     },
     {
@@ -2223,7 +2223,7 @@
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_vietnammarketingspider",
       "community": 3,
-      "community_name": "BaseSpider",
+      "community_name": "forum.py",
       "norm_label": "vietnammarketingspider"
     },
     {
@@ -2235,7 +2235,7 @@
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_vietnammarketingspider_parse_listing",
       "community": 3,
-      "community_name": "BaseSpider",
+      "community_name": "forum.py",
       "norm_label": ".parse_listing()"
     },
     {
@@ -2247,7 +2247,7 @@
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_vietnammarketingspider_parse_detail",
       "community": 3,
-      "community_name": "BaseSpider",
+      "community_name": "forum.py",
       "norm_label": ".parse_detail()"
     },
     {
@@ -2258,7 +2258,7 @@
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_rationale_1",
       "community": 3,
-      "community_name": "BaseSpider",
+      "community_name": "forum.py",
       "norm_label": "forum spider \u2014 crawls marketing forums for lead signals...."
     },
     {
@@ -2280,7 +2280,7 @@
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_rationale_42",
       "community": 3,
-      "community_name": "BaseSpider",
+      "community_name": "forum.py",
       "norm_label": "spider for blackhatworld marketplace & forums. bhw has a marketplace section..."
     },
     {
@@ -2290,8 +2290,8 @@
       "source_location": "L136",
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_rationale_136",
-      "community": 26,
-      "community_name": "orchestrator.py",
+      "community": 3,
+      "community_name": "forum.py",
       "norm_label": "spider for warriorforum \u2014 one of the largest internet marketing forums."
     },
     {
@@ -2302,7 +2302,7 @@
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_rationale_207",
       "community": 3,
-      "community_name": "BaseSpider",
+      "community_name": "forum.py",
       "norm_label": "spider for voz forum marketing section (voz.vn). vietnamese tech/marketing..."
     },
     {
@@ -2313,7 +2313,7 @@
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_rationale_286",
       "community": 3,
-      "community_name": "BaseSpider",
+      "community_name": "forum.py",
       "norm_label": "spider for brandsvietnam.com \u2014 premier vietnamese marketing & branding..."
     },
     {
@@ -2324,7 +2324,7 @@
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_rationale_379",
       "community": 3,
-      "community_name": "BaseSpider",
+      "community_name": "forum.py",
       "norm_label": "spider for vietnammarketing.com.vn \u2014 vietnamese marketing community. has..."
     },
     {
@@ -2680,8 +2680,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_freelancer_freelancercomvnspider",
-      "community": 26,
-      "community_name": "orchestrator.py",
+      "community": 5,
+      "community_name": "spiders/__init__.py",
       "norm_label": "freelancercomvnspider"
     },
     {
@@ -2692,8 +2692,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_freelancer_freelancercomvnspider_parse_listing",
-      "community": 26,
-      "community_name": "orchestrator.py",
+      "community": 5,
+      "community_name": "spiders/__init__.py",
       "norm_label": ".parse_listing()"
     },
     {
@@ -2704,8 +2704,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_freelancer_freelancercomvnspider_parse_detail",
-      "community": 26,
-      "community_name": "orchestrator.py",
+      "community": 5,
+      "community_name": "spiders/__init__.py",
       "norm_label": ".parse_detail()"
     },
     {
@@ -2791,8 +2791,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_freelancer_contravnspider",
-      "community": 5,
-      "community_name": "spiders/__init__.py",
+      "community": 28,
+      "community_name": "ContraVNSpider",
       "norm_label": "contravnspider"
     },
     {
@@ -2803,8 +2803,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_freelancer_contravnspider_parse_listing",
-      "community": 5,
-      "community_name": "spiders/__init__.py",
+      "community": 28,
+      "community_name": "ContraVNSpider",
       "norm_label": ".parse_listing()"
     },
     {
@@ -2815,8 +2815,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_freelancer_contravnspider_parse_detail",
-      "community": 5,
-      "community_name": "spiders/__init__.py",
+      "community": 28,
+      "community_name": "ContraVNSpider",
       "norm_label": ".parse_detail()"
     },
     {
@@ -2865,8 +2865,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_freelancer_topcvspider",
-      "community": 57,
-      "community_name": "TopCVSpider",
+      "community": 5,
+      "community_name": "spiders/__init__.py",
       "norm_label": "topcvspider"
     },
     {
@@ -2877,8 +2877,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_freelancer_topcvspider_parse_listing",
-      "community": 57,
-      "community_name": "TopCVSpider",
+      "community": 5,
+      "community_name": "spiders/__init__.py",
       "norm_label": ".parse_listing()"
     },
     {
@@ -2889,8 +2889,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_freelancer_topcvspider_parse_detail",
-      "community": 57,
-      "community_name": "TopCVSpider",
+      "community": 5,
+      "community_name": "spiders/__init__.py",
       "norm_label": ".parse_detail()"
     },
     {
@@ -2902,8 +2902,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_freelancer_job123spider",
-      "community": 26,
-      "community_name": "orchestrator.py",
+      "community": 5,
+      "community_name": "spiders/__init__.py",
       "norm_label": "job123spider"
     },
     {
@@ -2914,8 +2914,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_freelancer_job123spider_parse_listing",
-      "community": 26,
-      "community_name": "orchestrator.py",
+      "community": 5,
+      "community_name": "spiders/__init__.py",
       "norm_label": ".parse_listing()"
     },
     {
@@ -2926,8 +2926,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_freelancer_job123spider_parse_detail",
-      "community": 26,
-      "community_name": "orchestrator.py",
+      "community": 5,
+      "community_name": "spiders/__init__.py",
       "norm_label": ".parse_detail()"
     },
     {
@@ -3069,8 +3069,8 @@
       "source_location": "L616",
       "_origin": "ast",
       "id": "crawl_agent_spiders_freelancer_rationale_616",
-      "community": 26,
-      "community_name": "orchestrator.py",
+      "community": 5,
+      "community_name": "spiders/__init__.py",
       "norm_label": "spider for freelancer.com vietnam \u2014 global platform with vn freelancer section...."
     },
     {
@@ -3102,8 +3102,8 @@
       "source_location": "L771",
       "_origin": "ast",
       "id": "crawl_agent_spiders_freelancer_rationale_771",
-      "community": 5,
-      "community_name": "spiders/__init__.py",
+      "community": 28,
+      "community_name": "ContraVNSpider",
       "norm_label": "spider for contra.com vietnam \u2014 brand design freelancers in vietnam."
     },
     {
@@ -3124,8 +3124,8 @@
       "source_location": "L878",
       "_origin": "ast",
       "id": "crawl_agent_spiders_freelancer_rationale_878",
-      "community": 57,
-      "community_name": "TopCVSpider",
+      "community": 5,
+      "community_name": "spiders/__init__.py",
       "norm_label": "spider for topcv.vn \u2014 vn job board with 60+ marketing freelancer positions."
     },
     {
@@ -3135,8 +3135,8 @@
       "source_location": "L929",
       "_origin": "ast",
       "id": "crawl_agent_spiders_freelancer_rationale_929",
-      "community": 26,
-      "community_name": "orchestrator.py",
+      "community": 5,
+      "community_name": "spiders/__init__.py",
       "norm_label": "spider for 123job.vn \u2014 has facebook marketing & google ads freelancer..."
     },
     {
@@ -3146,8 +3146,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "crawl_agent_spiders_social",
-      "community": 3,
-      "community_name": "BaseSpider",
+      "community": 21,
+      "community_name": "CamoufoxEngine",
       "norm_label": "social.py"
     },
     {
@@ -3255,8 +3255,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "crawl_agent_spiders_social_rationale_1",
-      "community": 3,
-      "community_name": "BaseSpider",
+      "community": 21,
+      "community_name": "CamoufoxEngine",
       "norm_label": "social media spider \u2014 camoufox-based crawlers for tiktok & facebook...."
     },
     {
@@ -4638,8 +4638,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "crawl_agent_utils_init",
-      "community": 28,
-      "community_name": "WorkersClient",
+      "community": 20,
+      "community_name": "orchestrator.py",
       "norm_label": "utils/__init__.py"
     },
     {
@@ -4649,8 +4649,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "crawl_agent_utils_workers_client",
-      "community": 28,
-      "community_name": "WorkersClient",
+      "community": 20,
+      "community_name": "orchestrator.py",
       "norm_label": "workers_client.py"
     },
     {
@@ -4662,8 +4662,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "crawl_agent_utils_workers_client_workersclient",
-      "community": 28,
-      "community_name": "WorkersClient",
+      "community": 20,
+      "community_name": "orchestrator.py",
       "norm_label": "workersclient"
     },
     {
@@ -4674,8 +4674,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_utils_workers_client_workersclient_init",
-      "community": 28,
-      "community_name": "WorkersClient",
+      "community": 20,
+      "community_name": "orchestrator.py",
       "norm_label": ".__init__()"
     },
     {
@@ -4709,8 +4709,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_utils_workers_client_workersclient_close",
-      "community": 28,
-      "community_name": "WorkersClient",
+      "community": 20,
+      "community_name": "orchestrator.py",
       "norm_label": ".close()"
     },
     {
@@ -4768,8 +4768,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "crawl_agent_utils_workers_client_rationale_1",
-      "community": 28,
-      "community_name": "WorkersClient",
+      "community": 20,
+      "community_name": "orchestrator.py",
       "norm_label": "workers api client \u2014 send crawled leads to mtk demand engines...."
     },
     {
@@ -4779,8 +4779,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "crawl_agent_utils_workers_client_rationale_13",
-      "community": 28,
-      "community_name": "WorkersClient",
+      "community": 20,
+      "community_name": "orchestrator.py",
       "norm_label": "http client for the mtk demand engines workers api."
     },
     {
@@ -4835,7 +4835,7 @@
       "_origin": "ast",
       "id": "mcp_server",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "server.js"
     },
     {
@@ -4847,7 +4847,7 @@
       "_origin": "ast",
       "id": "mcp_server_log",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "log()"
     },
     {
@@ -4859,7 +4859,7 @@
       "_origin": "ast",
       "id": "mcp_server_getbrowser",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "getbrowser()"
     },
     {
@@ -4871,7 +4871,7 @@
       "_origin": "ast",
       "id": "mcp_server_closebrowser",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "closebrowser()"
     },
     {
@@ -4883,7 +4883,7 @@
       "_origin": "ast",
       "id": "mcp_server_pg",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "pg()"
     },
     {
@@ -4895,7 +4895,7 @@
       "_origin": "ast",
       "id": "mcp_server_pgghi",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "pgghi()"
     },
     {
@@ -4907,7 +4907,7 @@
       "_origin": "ast",
       "id": "mcp_server_loi",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "loi()"
     },
     {
@@ -4919,7 +4919,7 @@
       "_origin": "ast",
       "id": "mcp_server_trave",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "trave()"
     },
     {
@@ -4930,7 +4930,7 @@
       "_origin": "ast",
       "id": "mcp_server_dinh_dang",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "dinh_dang"
     },
     {
@@ -4942,7 +4942,7 @@
       "_origin": "ast",
       "id": "mcp_server_motalead",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "motalead()"
     },
     {
@@ -4953,7 +4953,7 @@
       "_origin": "ast",
       "id": "mcp_server_server",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "server"
     },
     {
@@ -4964,7 +4964,7 @@
       "_origin": "ast",
       "id": "mcp_server_transport",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "transport"
     },
     {
@@ -5199,10 +5199,32 @@
       "norm_label": "dotenv"
     },
     {
-      "label": "zod",
+      "label": "pg",
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L21",
+      "_origin": "ast",
+      "id": "package_dependencies_pg",
+      "community": 9,
+      "community_name": "package.json",
+      "norm_label": "pg"
+    },
+    {
+      "label": "pg",
+      "file_type": "concept",
+      "source_file": "package.json",
+      "source_location": "L21",
+      "_origin": "ast",
+      "id": "pg",
+      "community": 9,
+      "community_name": "package.json",
+      "norm_label": "pg"
+    },
+    {
+      "label": "zod",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L22",
       "_origin": "ast",
       "id": "package_dependencies_zod",
       "community": 9,
@@ -5213,7 +5235,7 @@
       "label": "zod",
       "file_type": "concept",
       "source_file": "package.json",
-      "source_location": "L21",
+      "source_location": "L22",
       "_origin": "ast",
       "id": "zod",
       "community": 9,
@@ -5224,7 +5246,7 @@
       "label": "devDependencies",
       "file_type": "code",
       "source_file": "package.json",
-      "source_location": "L23",
+      "source_location": "L24",
       "_origin": "ast",
       "id": "package_devdependencies",
       "community": 9,
@@ -5235,7 +5257,7 @@
       "label": "playwright",
       "file_type": "code",
       "source_file": "package.json",
-      "source_location": "L24",
+      "source_location": "L25",
       "_origin": "ast",
       "id": "package_devdependencies_playwright",
       "community": 9,
@@ -5246,7 +5268,7 @@
       "label": "playwright",
       "file_type": "concept",
       "source_file": "package.json",
-      "source_location": "L24",
+      "source_location": "L25",
       "_origin": "ast",
       "id": "playwright",
       "community": 9,
@@ -5257,7 +5279,7 @@
       "label": "wrangler",
       "file_type": "code",
       "source_file": "package.json",
-      "source_location": "L25",
+      "source_location": "L26",
       "_origin": "ast",
       "id": "package_devdependencies_wrangler",
       "community": 9,
@@ -5268,7 +5290,7 @@
       "label": "wrangler",
       "file_type": "concept",
       "source_file": "package.json",
-      "source_location": "L25",
+      "source_location": "L26",
       "_origin": "ast",
       "id": "wrangler",
       "community": 9,
@@ -5279,7 +5301,7 @@
       "label": "allowScripts",
       "file_type": "code",
       "source_file": "package.json",
-      "source_location": "L27",
+      "source_location": "L28",
       "_origin": "ast",
       "id": "package_allowscripts",
       "community": 9,
@@ -5290,7 +5312,7 @@
       "label": "esbuild@0.28.1",
       "file_type": "code",
       "source_file": "package.json",
-      "source_location": "L28",
+      "source_location": "L29",
       "_origin": "ast",
       "id": "package_allowscripts_esbuild_0_28_1",
       "community": 9,
@@ -5301,7 +5323,7 @@
       "label": "workerd@1.20260811.1",
       "file_type": "code",
       "source_file": "package.json",
-      "source_location": "L29",
+      "source_location": "L30",
       "_origin": "ast",
       "id": "package_allowscripts_workerd_1_20260811_1",
       "community": 9,
@@ -5570,6 +5592,28 @@
       "norm_label": "main()"
     },
     {
+      "label": "fix-raw-text.mjs",
+      "file_type": "code",
+      "source_file": "scripts/fix-raw-text.mjs",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "scripts_fix_raw_text",
+      "community": 36,
+      "community_name": "fix-raw-text.mjs",
+      "norm_label": "fix-raw-text.mjs"
+    },
+    {
+      "label": "pool",
+      "file_type": "code",
+      "source_file": "scripts/fix-raw-text.mjs",
+      "source_location": "L8",
+      "_origin": "ast",
+      "id": "scripts_fix_raw_text_pool",
+      "community": 36,
+      "community_name": "fix-raw-text.mjs",
+      "norm_label": "pool"
+    },
+    {
       "label": "scrape-vlance.js",
       "file_type": "code",
       "source_file": "scripts/scrape-vlance.js",
@@ -5658,7 +5702,7 @@
       "_origin": "ast",
       "id": "scripts_smoke",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "smoke.mjs"
     },
     {
@@ -5670,7 +5714,7 @@
       "_origin": "ast",
       "id": "scripts_smoke_ok",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "ok()"
     },
     {
@@ -5682,7 +5726,7 @@
       "_origin": "ast",
       "id": "scripts_smoke_hong",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "hong()"
     },
     {
@@ -5694,7 +5738,7 @@
       "_origin": "ast",
       "id": "scripts_smoke_goi",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "goi()"
     },
     {
@@ -5821,7 +5865,7 @@
       "_origin": "ast",
       "id": "src_core_chuanhoa",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "chuanhoa.js"
     },
     {
@@ -5833,7 +5877,7 @@
       "_origin": "ast",
       "id": "src_core_chuanhoa_bodau",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "bodau()"
     },
     {
@@ -5845,7 +5889,7 @@
       "_origin": "ast",
       "id": "src_core_chuanhoa_chuanhoatext",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "chuanhoatext()"
     },
     {
@@ -5857,7 +5901,7 @@
       "_origin": "ast",
       "id": "src_core_chuanhoa_chuanhoakey",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "chuanhoakey()"
     },
     {
@@ -5869,7 +5913,7 @@
       "_origin": "ast",
       "id": "src_core_chuanhoa_khoaduphong",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "khoaduphong()"
     },
     {
@@ -5881,7 +5925,7 @@
       "_origin": "ast",
       "id": "src_core_chuanhoa_dotuongdong",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "dotuongdong()"
     },
     {
@@ -5892,7 +5936,7 @@
       "_origin": "ast",
       "id": "src_core_lienhe",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "lienhe.js"
     },
     {
@@ -5904,7 +5948,7 @@
       "_origin": "ast",
       "id": "src_core_lienhe_chuanhoasdt",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "chuanhoasdt()"
     },
     {
@@ -5916,7 +5960,7 @@
       "_origin": "ast",
       "id": "src_core_lienhe_trichsdt",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "trichsdt()"
     },
     {
@@ -5928,7 +5972,7 @@
       "_origin": "ast",
       "id": "src_core_lienhe_trichemail",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "trichemail()"
     },
     {
@@ -5940,7 +5984,7 @@
       "_origin": "ast",
       "id": "src_core_lienhe_trichzalo",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "trichzalo()"
     },
     {
@@ -5952,7 +5996,7 @@
       "_origin": "ast",
       "id": "src_core_lienhe_trichlink",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "trichlink()"
     },
     {
@@ -5964,7 +6008,7 @@
       "_origin": "ast",
       "id": "src_core_lienhe_trichlienhe",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "trichlienhe()"
     },
     {
@@ -5975,62 +6019,86 @@
       "_origin": "ast",
       "id": "src_core_nap_lead",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "nap-lead.js"
+    },
+    {
+      "label": "goFrontmatter()",
+      "file_type": "code",
+      "source_file": "src/core/nap-lead.js",
+      "source_location": "L16",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "src_core_nap_lead_gofrontmatter",
+      "community": 0,
+      "community_name": "nap-lead.js",
+      "norm_label": "gofrontmatter()"
     },
     {
       "label": "goMarkdown()",
       "file_type": "code",
       "source_file": "src/core/nap-lead.js",
-      "source_location": "L14",
+      "source_location": "L21",
       "_callable": true,
       "_origin": "ast",
       "id": "src_core_nap_lead_gomarkdown",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "gomarkdown()"
+    },
+    {
+      "label": "sachUrlTheoDoi()",
+      "file_type": "code",
+      "source_file": "src/core/nap-lead.js",
+      "source_location": "L38",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "src_core_nap_lead_sachurltheodoi",
+      "community": 0,
+      "community_name": "nap-lead.js",
+      "norm_label": "sachurltheodoi()"
     },
     {
       "label": "doanTieuDe()",
       "file_type": "code",
       "source_file": "src/core/nap-lead.js",
-      "source_location": "L30",
+      "source_location": "L48",
       "_callable": true,
       "_origin": "ast",
       "id": "src_core_nap_lead_doantieude",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "doantieude()"
     },
     {
       "label": "doDoCanhTranh()",
       "file_type": "code",
       "source_file": "src/core/nap-lead.js",
-      "source_location": "L57",
+      "source_location": "L75",
       "_callable": true,
       "_origin": "ast",
       "id": "src_core_nap_lead_dodocanhtranh",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "dodocanhtranh()"
     },
     {
       "label": "napLead()",
       "file_type": "code",
       "source_file": "src/core/nap-lead.js",
-      "source_location": "L77",
+      "source_location": "L95",
       "_callable": true,
       "_origin": "ast",
       "id": "src_core_nap_lead_naplead",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "naplead()"
     },
     {
       "label": "napNhieuLead()",
       "file_type": "code",
       "source_file": "src/core/nap-lead.js",
-      "source_location": "L157",
+      "source_location": "L175",
       "_callable": true,
       "_origin": "ast",
       "id": "src_core_nap_lead_napnhieulead",
@@ -6046,7 +6114,7 @@
       "_origin": "ast",
       "id": "src_core_ngansach",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "ngansach.js"
     },
     {
@@ -6058,7 +6126,7 @@
       "_origin": "ast",
       "id": "src_core_ngansach_chuanhoanhe",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "chuanhoanhe()"
     },
     {
@@ -6069,7 +6137,7 @@
       "_origin": "ast",
       "id": "src_core_ngansach_don_vi",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "don_vi"
     },
     {
@@ -6080,7 +6148,7 @@
       "_origin": "ast",
       "id": "src_core_ngansach_thoa_thuan",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "thoa_thuan"
     },
     {
@@ -6092,7 +6160,7 @@
       "_origin": "ast",
       "id": "src_core_ngansach_doisovevnd",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "doisovevnd()"
     },
     {
@@ -6104,7 +6172,7 @@
       "_origin": "ast",
       "id": "src_core_ngansach_docngansach",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "docngansach()"
     },
     {
@@ -6115,7 +6183,7 @@
       "_origin": "ast",
       "id": "src_core_nhucau",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "nhucau.js"
     },
     {
@@ -6126,7 +6194,7 @@
       "_origin": "ast",
       "id": "src_core_nhucau_tu_khoa_nhu_cau",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "tu_khoa_nhu_cau"
     },
     {
@@ -6137,7 +6205,7 @@
       "_origin": "ast",
       "id": "src_core_nhucau_tu_khoa_ngoai_pham_vi",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "tu_khoa_ngoai_pham_vi"
     },
     {
@@ -6148,7 +6216,7 @@
       "_origin": "ast",
       "id": "src_core_nhucau_tu_khoa_toan_thoi_gian",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "tu_khoa_toan_thoi_gian"
     },
     {
@@ -6159,7 +6227,7 @@
       "_origin": "ast",
       "id": "src_core_nhucau_tu_khoa_retainer",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "tu_khoa_retainer"
     },
     {
@@ -6170,7 +6238,7 @@
       "_origin": "ast",
       "id": "src_core_nhucau_tu_khoa_freelancer",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "tu_khoa_freelancer"
     },
     {
@@ -6182,7 +6250,7 @@
       "_origin": "ast",
       "id": "src_core_nhucau_demtrung",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "demtrung()"
     },
     {
@@ -6194,7 +6262,7 @@
       "_origin": "ast",
       "id": "src_core_nhucau_phanloainhucau",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "phanloainhucau()"
     },
     {
@@ -6206,7 +6274,7 @@
       "_origin": "ast",
       "id": "src_core_nhucau_suyrahinhthuc",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "suyrahinhthuc()"
     },
     {
@@ -6218,7 +6286,7 @@
       "_origin": "ast",
       "id": "src_core_nhucau_doankhuvuc",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "doankhuvuc()"
     },
     {
@@ -6229,7 +6297,7 @@
       "_origin": "ast",
       "id": "src_core_router_lead",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "router-lead.js"
     },
     {
@@ -6241,7 +6309,7 @@
       "_origin": "ast",
       "id": "src_core_router_lead_quyetdinh",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "quyetdinh()"
     },
     {
@@ -6253,7 +6321,7 @@
       "_origin": "ast",
       "id": "src_core_router_lead_dinhtuyen",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "dinhtuyen()"
     },
     {
@@ -6265,7 +6333,7 @@
       "_origin": "ast",
       "id": "src_core_router_lead_kiembaotoan",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "kiembaotoan()"
     },
     {
@@ -6276,7 +6344,7 @@
       "_origin": "ast",
       "id": "src_core_rubric_lead",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "rubric-lead.js"
     },
     {
@@ -6287,7 +6355,7 @@
       "_origin": "ast",
       "id": "src_core_rubric_lead_trong_so",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "trong_so"
     },
     {
@@ -6298,7 +6366,7 @@
       "_origin": "ast",
       "id": "src_core_rubric_lead_phat_canh_tranh_toi_da",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "phat_canh_tranh_toi_da"
     },
     {
@@ -6309,7 +6377,7 @@
       "_origin": "ast",
       "id": "src_core_rubric_lead_nguong_tier",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "nguong_tier"
     },
     {
@@ -6321,7 +6389,7 @@
       "_origin": "ast",
       "id": "src_core_rubric_lead_kiembatbien",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "kiembatbien()"
     },
     {
@@ -6333,7 +6401,7 @@
       "_origin": "ast",
       "id": "src_core_rubric_lead_diemkhananglienhe",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "diemkhananglienhe()"
     },
     {
@@ -6345,7 +6413,7 @@
       "_origin": "ast",
       "id": "src_core_rubric_lead_diemdocuthe",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "diemdocuthe()"
     },
     {
@@ -6357,7 +6425,7 @@
       "_origin": "ast",
       "id": "src_core_rubric_lead_diemdokhopdichvu",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "diemdokhopdichvu()"
     },
     {
@@ -6369,7 +6437,7 @@
       "_origin": "ast",
       "id": "src_core_rubric_lead_diemtinhieungansach",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "diemtinhieungansach()"
     },
     {
@@ -6381,7 +6449,7 @@
       "_origin": "ast",
       "id": "src_core_rubric_lead_diemhinhthuc",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "diemhinhthuc()"
     },
     {
@@ -6393,7 +6461,7 @@
       "_origin": "ast",
       "id": "src_core_rubric_lead_phatcanhtranh",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "phatcanhtranh()"
     },
     {
@@ -6405,7 +6473,7 @@
       "_origin": "ast",
       "id": "src_core_rubric_lead_xeptier",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "xeptier()"
     },
     {
@@ -6417,7 +6485,7 @@
       "_origin": "ast",
       "id": "src_core_rubric_lead_chamdiem",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "chamdiem()"
     },
     {
@@ -6428,7 +6496,7 @@
       "_origin": "ast",
       "id": "src_core_tuoi",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "tuoi.js"
     },
     {
@@ -6440,7 +6508,7 @@
       "_origin": "ast",
       "id": "src_core_tuoi_tinhtuoigio",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "tinhtuoigio()"
     },
     {
@@ -6452,7 +6520,7 @@
       "_origin": "ast",
       "id": "src_core_tuoi_tinhhethan",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "tinhhethan()"
     },
     {
@@ -6464,7 +6532,7 @@
       "_origin": "ast",
       "id": "src_core_tuoi_conhan",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "conhan()"
     },
     {
@@ -6476,7 +6544,7 @@
       "_origin": "ast",
       "id": "src_core_tuoi_diemdotuoi",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "diemdotuoi()"
     },
     {
@@ -6488,7 +6556,7 @@
       "_origin": "ast",
       "id": "src_core_tuoi_nhandotuoi",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "nhandotuoi()"
     },
     {
@@ -7157,7 +7225,7 @@
       "_origin": "ast",
       "id": "tests_chuanhoa_test",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "chuanhoa.test.js"
     },
     {
@@ -7213,7 +7281,7 @@
       "_origin": "ast",
       "id": "tests_nap_lead_test",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "nap-lead.test.js"
     },
     {
@@ -7224,7 +7292,7 @@
       "_origin": "ast",
       "id": "tests_nap_lead_test_now",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "now"
     },
     {
@@ -7236,7 +7304,7 @@
       "_origin": "ast",
       "id": "tests_nap_lead_test_giotruoc",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "giotruoc()"
     },
     {
@@ -7247,7 +7315,7 @@
       "_origin": "ast",
       "id": "tests_rubric_router_test",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "rubric-router.test.js"
     },
     {
@@ -7258,7 +7326,7 @@
       "_origin": "ast",
       "id": "tests_rubric_router_test_now",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "now"
     },
     {
@@ -7270,7 +7338,7 @@
       "_origin": "ast",
       "id": "tests_rubric_router_test_giotruoc",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "giotruoc()"
     },
     {
@@ -7281,7 +7349,7 @@
       "_origin": "ast",
       "id": "tests_rubric_router_test_lead_vang",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "lead_vang"
     },
     {
@@ -7292,7 +7360,7 @@
       "_origin": "ast",
       "id": "tests_rubric_router_test_lead_ngoai_pham_vi",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "lead_ngoai_pham_vi"
     },
     {
@@ -7303,7 +7371,7 @@
       "_origin": "ast",
       "id": "tests_rubric_router_test_lead_het_han",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "lead_het_han"
     },
     {
@@ -7314,7 +7382,7 @@
       "_origin": "ast",
       "id": "tests_rubric_router_test_lead_khong_lien_he",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "lead_khong_lien_he"
     },
     {
@@ -7336,7 +7404,7 @@
       "_origin": "ast",
       "id": "tests_trich_xuat_test",
       "community": 0,
-      "community_name": "rubric-lead.js",
+      "community_name": "nap-lead.js",
       "norm_label": "trich-xuat.test.js"
     },
     {
@@ -19789,7 +19857,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "package.json",
-      "source_location": "L27",
+      "source_location": "L28",
       "weight": 1.0,
       "_origin": "ast",
       "source": "package",
@@ -19822,7 +19890,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "package.json",
-      "source_location": "L23",
+      "source_location": "L24",
       "weight": 1.0,
       "_origin": "ast",
       "source": "package",
@@ -19987,6 +20055,17 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "package.json",
+      "source_location": "L21",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "package_dependencies",
+      "target": "package_dependencies_pg",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
       "source_location": "L19",
       "weight": 1.0,
       "_origin": "ast",
@@ -19998,7 +20077,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "package.json",
-      "source_location": "L21",
+      "source_location": "L22",
       "weight": 1.0,
       "_origin": "ast",
       "source": "package_dependencies",
@@ -20049,19 +20128,20 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
-      "source": "package_dependencies_zod",
-      "target": "zod",
+      "source": "package_dependencies_pg",
+      "target": "pg",
       "confidence_score": 1.0
     },
     {
-      "relation": "contains",
+      "relation": "imports",
       "confidence": "EXTRACTED",
       "source_file": "package.json",
-      "source_location": "L24",
+      "source_location": "L22",
       "weight": 1.0,
+      "context": "import",
       "_origin": "ast",
-      "source": "package_devdependencies",
-      "target": "package_devdependencies_playwright",
+      "source": "package_dependencies_zod",
+      "target": "zod",
       "confidence_score": 1.0
     },
     {
@@ -20072,6 +20152,17 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "package_devdependencies",
+      "target": "package_devdependencies_playwright",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L26",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "package_devdependencies",
       "target": "package_devdependencies_wrangler",
       "confidence_score": 1.0
     },
@@ -20079,7 +20170,7 @@
       "relation": "imports",
       "confidence": "EXTRACTED",
       "source_file": "package.json",
-      "source_location": "L24",
+      "source_location": "L25",
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
@@ -20091,7 +20182,7 @@
       "relation": "imports",
       "confidence": "EXTRACTED",
       "source_file": "package.json",
-      "source_location": "L25",
+      "source_location": "L26",
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
@@ -20103,7 +20194,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "package.json",
-      "source_location": "L28",
+      "source_location": "L29",
       "weight": 1.0,
       "_origin": "ast",
       "source": "package_allowscripts",
@@ -20114,7 +20205,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "package.json",
-      "source_location": "L29",
+      "source_location": "L30",
       "weight": 1.0,
       "_origin": "ast",
       "source": "package_allowscripts",
@@ -20544,6 +20635,17 @@
       "_origin": "ast",
       "source": "scripts_crawl_data_main",
       "target": "src_sources_freelance_crawler_filterjobleads",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/fix-raw-text.mjs",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_fix_raw_text",
+      "target": "scripts_fix_raw_text_pool",
       "confidence_score": 1.0
     },
     {
@@ -21166,7 +21268,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/core/nap-lead.js",
-      "source_location": "L58",
+      "source_location": "L76",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_core_nap_lead_dodocanhtranh",
@@ -21274,7 +21376,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/core/nap-lead.js",
-      "source_location": "L90",
+      "source_location": "L108",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_core_nap_lead_naplead",
@@ -21310,7 +21412,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/core/nap-lead.js",
-      "source_location": "L90",
+      "source_location": "L108",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_core_nap_lead_naplead",
@@ -21580,7 +21682,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/core/nap-lead.js",
-      "source_location": "L108",
+      "source_location": "L126",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_core_nap_lead_naplead",
@@ -21626,7 +21728,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/core/nap-lead.js",
-      "source_location": "L30",
+      "source_location": "L48",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_core_nap_lead",
@@ -21637,7 +21739,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/core/nap-lead.js",
-      "source_location": "L57",
+      "source_location": "L75",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_core_nap_lead",
@@ -21648,7 +21750,18 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/core/nap-lead.js",
-      "source_location": "L14",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_core_nap_lead",
+      "target": "src_core_nap_lead_gofrontmatter",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/core/nap-lead.js",
+      "source_location": "L21",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_core_nap_lead",
@@ -21659,7 +21772,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/core/nap-lead.js",
-      "source_location": "L77",
+      "source_location": "L95",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_core_nap_lead",
@@ -21670,11 +21783,22 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/core/nap-lead.js",
-      "source_location": "L157",
+      "source_location": "L175",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_core_nap_lead",
       "target": "src_core_nap_lead_napnhieulead",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/core/nap-lead.js",
+      "source_location": "L38",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_core_nap_lead",
+      "target": "src_core_nap_lead_sachurltheodoi",
       "confidence_score": 1.0
     },
     {
@@ -21839,7 +21963,31 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/core/nap-lead.js",
-      "source_location": "L48",
+      "source_location": "L22",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_core_nap_lead_gomarkdown",
+      "target": "src_core_nap_lead_gofrontmatter",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/nap-lead.test.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "tests_nap_lead_test",
+      "target": "src_core_nap_lead_gofrontmatter",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/core/nap-lead.js",
+      "source_location": "L66",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_core_nap_lead_doantieude",
@@ -21851,7 +21999,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/core/nap-lead.js",
-      "source_location": "L86",
+      "source_location": "L104",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_core_nap_lead_naplead",
@@ -21875,7 +22023,31 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/core/nap-lead.js",
-      "source_location": "L87",
+      "source_location": "L149",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_core_nap_lead_naplead",
+      "target": "src_core_nap_lead_sachurltheodoi",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/nap-lead.test.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "tests_nap_lead_test",
+      "target": "src_core_nap_lead_sachurltheodoi",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/core/nap-lead.js",
+      "source_location": "L105",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_core_nap_lead_naplead",
@@ -21899,7 +22071,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/core/nap-lead.js",
-      "source_location": "L112",
+      "source_location": "L130",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_core_nap_lead_naplead",
@@ -21924,7 +22096,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/core/nap-lead.js",
-      "source_location": "L109",
+      "source_location": "L127",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_core_nap_lead_naplead",
@@ -21936,7 +22108,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/core/nap-lead.js",
-      "source_location": "L111",
+      "source_location": "L129",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_core_nap_lead_naplead",
@@ -21948,7 +22120,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/core/nap-lead.js",
-      "source_location": "L93",
+      "source_location": "L111",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_core_nap_lead_naplead",
@@ -21960,7 +22132,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/core/nap-lead.js",
-      "source_location": "L110",
+      "source_location": "L128",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_core_nap_lead_naplead",
@@ -21972,7 +22144,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/core/nap-lead.js",
-      "source_location": "L114",
+      "source_location": "L132",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_core_nap_lead_naplead",
@@ -21983,7 +22155,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/core/nap-lead.js",
-      "source_location": "L161",
+      "source_location": "L179",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_core_nap_lead_napnhieulead",
@@ -29710,5 +29882,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "f17145780164b471906a8ba8a7f055a86a431910"
+  "built_at_commit": "ee5555f0ce7ed727efc76b6359bc4699d722929b"
 }

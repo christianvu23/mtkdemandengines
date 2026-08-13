@@ -5309,6 +5309,51 @@
       "norm_label": "workerd@1.20260811.1"
     },
     {
+      "label": "add-new-sources.mjs",
+      "file_type": "code",
+      "source_file": "scripts/add-new-sources.mjs",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "scripts_add_new_sources",
+      "community": 76,
+      "community_name": "add-new-sources.mjs",
+      "norm_label": "add-new-sources.mjs"
+    },
+    {
+      "label": "supabase",
+      "file_type": "code",
+      "source_file": "scripts/add-new-sources.mjs",
+      "source_location": "L14",
+      "_origin": "ast",
+      "id": "scripts_add_new_sources_supabase",
+      "community": 76,
+      "community_name": "add-new-sources.mjs",
+      "norm_label": "supabase"
+    },
+    {
+      "label": "NEW_SOURCES",
+      "file_type": "code",
+      "source_file": "scripts/add-new-sources.mjs",
+      "source_location": "L16",
+      "_origin": "ast",
+      "id": "scripts_add_new_sources_new_sources",
+      "community": 76,
+      "community_name": "add-new-sources.mjs",
+      "norm_label": "new_sources"
+    },
+    {
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "scripts/add-new-sources.mjs",
+      "source_location": "L172",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "scripts_add_new_sources_main",
+      "community": 76,
+      "community_name": "add-new-sources.mjs",
+      "norm_label": "main()"
+    },
+    {
       "label": "auto-scrape-flow.js",
       "file_type": "code",
       "source_file": "scripts/auto-scrape-flow.js",
@@ -5651,6 +5696,40 @@
       "community": 0,
       "community_name": "rubric-lead.js",
       "norm_label": "goi()"
+    },
+    {
+      "label": "submit-sample-leads.mjs",
+      "file_type": "code",
+      "source_file": "scripts/submit-sample-leads.mjs",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "scripts_submit_sample_leads",
+      "community": 77,
+      "community_name": "submit-sample-leads.mjs",
+      "norm_label": "submit-sample-leads.mjs"
+    },
+    {
+      "label": "SAMPLE_LEADS",
+      "file_type": "code",
+      "source_file": "scripts/submit-sample-leads.mjs",
+      "source_location": "L17",
+      "_origin": "ast",
+      "id": "scripts_submit_sample_leads_sample_leads",
+      "community": 77,
+      "community_name": "submit-sample-leads.mjs",
+      "norm_label": "sample_leads"
+    },
+    {
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "scripts/submit-sample-leads.mjs",
+      "source_location": "L127",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "scripts_submit_sample_leads_main",
+      "community": 77,
+      "community_name": "submit-sample-leads.mjs",
+      "norm_label": "main()"
     },
     {
       "label": "boc-link.js",
@@ -20045,6 +20124,39 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "scripts/add-new-sources.mjs",
+      "source_location": "L172",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_add_new_sources",
+      "target": "scripts_add_new_sources_main",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/add-new-sources.mjs",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_add_new_sources",
+      "target": "scripts_add_new_sources_new_sources",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/add-new-sources.mjs",
+      "source_location": "L14",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_add_new_sources",
+      "target": "scripts_add_new_sources_supabase",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "scripts/auto-scrape-flow.js",
       "source_location": "L181",
       "weight": 1.0,
@@ -20591,6 +20703,28 @@
       "_origin": "ast",
       "source": "scripts_smoke",
       "target": "src_core_nap_lead_naplead",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/submit-sample-leads.mjs",
+      "source_location": "L127",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_submit_sample_leads",
+      "target": "scripts_submit_sample_leads_main",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/submit-sample-leads.mjs",
+      "source_location": "L17",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_submit_sample_leads",
+      "target": "scripts_submit_sample_leads_sample_leads",
       "confidence_score": 1.0
     },
     {
@@ -29576,5 +29710,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "c6608f2da974014640c3750628e76087db7c6cd6"
+  "built_at_commit": "f17145780164b471906a8ba8a7f055a86a431910"
 }

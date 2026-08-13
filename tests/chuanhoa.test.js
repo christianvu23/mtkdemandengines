@@ -26,6 +26,21 @@ test('chuanHoaKey bỏ scheme, www và tham số theo dõi', () => {
   assert.equal(chuanHoaKey(null), null);
 });
 
+test('chuanHoaKey bỏ open_from và search_id (tracking params của vieclam24h)', () => {
+  assert.equal(
+    chuanHoaKey('https://vieclam24h.vn/marketing/test-id123.html?open_from=0301&search_id=abc123&utm_source=google'),
+    'vieclam24h.vn/marketing/test-id123.html',
+  );
+  assert.equal(
+    chuanHoaKey('https://vieclam24h.vn/marketing/test-id123.html?search_id=xyz'),
+    'vieclam24h.vn/marketing/test-id123.html',
+  );
+  assert.equal(
+    chuanHoaKey('https://vieclam24h.vn/marketing/test-id123.html?open_from=0301'),
+    'vieclam24h.vn/marketing/test-id123.html',
+  );
+});
+
 test('hai URL cùng bài nhưng khác tracking phải ra cùng một khoá', () => {
   const a = chuanHoaKey('https://vlance.vn/du-an/x?utm_campaign=abc');
   const b = chuanHoaKey('http://www.vlance.vn/du-an/x/');
