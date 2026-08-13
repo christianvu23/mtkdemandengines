@@ -422,6 +422,7 @@ function veThe(l) {
     <div class="tierbox t-${l.tier}">${l.tier}<small>${l.score}</small></div>
     <div>
       <h3>${esc(l.title)}</h3>
+      ${l.source_url ? `<div style="font-size:12px;margin:4px 0"><a href="${esc(l.source_url)}" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none">Xem bài gốc ↗</a></div>` : ''}
       <div class="meta">
         <span class="tag">${NHAN_NGUON[l.source] || l.source}</span>
         ${l.khu_vuc && l.khu_vuc !== 'Không rõ' ? `<span class="tag">${esc(l.khu_vuc)}</span>` : ''}
