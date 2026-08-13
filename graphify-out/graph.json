@@ -624,7 +624,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "crawl_agent_config",
-      "community": 46,
+      "community": 35,
       "community_name": "orchestrator.py",
       "norm_label": "config.py"
     },
@@ -636,7 +636,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_config_load_dotenv",
-      "community": 46,
+      "community": 35,
       "community_name": "orchestrator.py",
       "norm_label": "load_dotenv()"
     },
@@ -649,8 +649,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "crawl_agent_config_config",
-      "community": 4,
-      "community_name": "Config",
+      "community": 35,
+      "community_name": "orchestrator.py",
       "norm_label": "config"
     },
     {
@@ -684,7 +684,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "crawl_agent_config_rationale_1",
-      "community": 46,
+      "community": 35,
       "community_name": "orchestrator.py",
       "norm_label": "crawl agent configuration ========================= central configuration for..."
     },
@@ -695,8 +695,8 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "crawl_agent_config_rationale_23",
-      "community": 4,
-      "community_name": "Config",
+      "community": 35,
+      "community_name": "orchestrator.py",
       "norm_label": "agent configuration \u2014 all settings from env or defaults."
     },
     {
@@ -1338,8 +1338,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "crawl_agent_engines_scrapling_engine_scraplingengine",
-      "community": 41,
-      "community_name": "ScraplingEngine",
+      "community": 21,
+      "community_name": "BaseSpider",
       "norm_label": "scraplingengine"
     },
     {
@@ -1350,8 +1350,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_engines_scrapling_engine_scraplingengine_init",
-      "community": 41,
-      "community_name": "ScraplingEngine",
+      "community": 21,
+      "community_name": "BaseSpider",
       "norm_label": ".__init__()"
     },
     {
@@ -1363,7 +1363,7 @@
       "_origin": "ast",
       "id": "crawl_agent_engines_scrapling_engine_scraplingengine_fetch_fast",
       "community": 41,
-      "community_name": "ScraplingEngine",
+      "community_name": ".fetch",
       "norm_label": ".fetch_fast()"
     },
     {
@@ -1375,7 +1375,7 @@
       "_origin": "ast",
       "id": "crawl_agent_engines_scrapling_engine_scraplingengine_fetch_stealth",
       "community": 41,
-      "community_name": "ScraplingEngine",
+      "community_name": ".fetch",
       "norm_label": ".fetch_stealth()"
     },
     {
@@ -1387,7 +1387,7 @@
       "_origin": "ast",
       "id": "crawl_agent_engines_scrapling_engine_scraplingengine_fetch",
       "community": 41,
-      "community_name": "ScraplingEngine",
+      "community_name": ".fetch",
       "norm_label": ".fetch()"
     },
     {
@@ -1398,8 +1398,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_engines_scrapling_engine_scraplingengine_fetch_batch",
-      "community": 41,
-      "community_name": "ScraplingEngine",
+      "community": 21,
+      "community_name": "BaseSpider",
       "norm_label": ".fetch_batch()"
     },
     {
@@ -1411,7 +1411,7 @@
       "_origin": "ast",
       "id": "crawl_agent_engines_scrapling_engine_scraplingengine_extract",
       "community": 41,
-      "community_name": "ScraplingEngine",
+      "community_name": ".fetch",
       "norm_label": ".extract()"
     },
     {
@@ -1432,8 +1432,8 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "crawl_agent_engines_scrapling_engine_rationale_16",
-      "community": 41,
-      "community_name": "ScraplingEngine",
+      "community": 21,
+      "community_name": "BaseSpider",
       "norm_label": "dual-mode scrapling engine: - fast mode: fetchersession with browser..."
     },
     {
@@ -1444,7 +1444,7 @@
       "_origin": "ast",
       "id": "crawl_agent_engines_scrapling_engine_rationale_27",
       "community": 41,
-      "community_name": "ScraplingEngine",
+      "community_name": ".fetch",
       "norm_label": "fast fetch \u2014 impersonate chrome/firefox tls fingerprint. good for: forums, job..."
     },
     {
@@ -1455,7 +1455,7 @@
       "_origin": "ast",
       "id": "crawl_agent_engines_scrapling_engine_rationale_55",
       "community": 41,
-      "community_name": "ScraplingEngine",
+      "community_name": ".fetch",
       "norm_label": "stealth fetch \u2014 full browser with cloudflare bypass. good for: vlance, sites..."
     },
     {
@@ -1466,7 +1466,7 @@
       "_origin": "ast",
       "id": "crawl_agent_engines_scrapling_engine_rationale_85",
       "community": 41,
-      "community_name": "ScraplingEngine",
+      "community_name": ".fetch",
       "norm_label": "smart fetch \u2014 try fast first, escalate to stealth if needed. engine: \"fast\" |..."
     },
     {
@@ -1476,8 +1476,8 @@
       "source_location": "L112",
       "_origin": "ast",
       "id": "crawl_agent_engines_scrapling_engine_rationale_112",
-      "community": 41,
-      "community_name": "ScraplingEngine",
+      "community": 21,
+      "community_name": "BaseSpider",
       "norm_label": "fetch multiple urls with concurrency limit and delay between batches."
     },
     {
@@ -1488,7 +1488,7 @@
       "_origin": "ast",
       "id": "crawl_agent_engines_scrapling_engine_rationale_145",
       "community": 41,
-      "community_name": "ScraplingEngine",
+      "community_name": ".fetch",
       "norm_label": "fetch and extract specific data using css selectors. selectors: {\"title\":..."
     },
     {
@@ -1509,7 +1509,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "crawl_agent_orchestrator",
-      "community": 46,
+      "community": 35,
       "community_name": "orchestrator.py",
       "norm_label": "orchestrator.py"
     },
@@ -1534,8 +1534,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_orchestrator_crawlorchestrator_init",
-      "community": 4,
-      "community_name": "Config",
+      "community": 35,
+      "community_name": "orchestrator.py",
       "norm_label": ".__init__()"
     },
     {
@@ -1575,10 +1575,22 @@
       "norm_label": ".run_spider()"
     },
     {
-      "label": "._record_health()",
+      "label": "._count_error_kinds()",
       "file_type": "code",
       "source_file": "crawl-agent/orchestrator.py",
       "source_location": "L155",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "crawl_agent_orchestrator_crawlorchestrator_count_error_kinds",
+      "community": 20,
+      "community_name": "CrawlOrchestrator",
+      "norm_label": "._count_error_kinds()"
+    },
+    {
+      "label": "._record_health()",
+      "file_type": "code",
+      "source_file": "crawl-agent/orchestrator.py",
+      "source_location": "L164",
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_orchestrator_crawlorchestrator_record_health",
@@ -1590,7 +1602,7 @@
       "label": ".run_all()",
       "file_type": "code",
       "source_file": "crawl-agent/orchestrator.py",
-      "source_location": "L190",
+      "source_location": "L199",
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_orchestrator_crawlorchestrator_run_all",
@@ -1602,7 +1614,7 @@
       "label": ".run_social()",
       "file_type": "code",
       "source_file": "crawl-agent/orchestrator.py",
-      "source_location": "L281",
+      "source_location": "L291",
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_orchestrator_crawlorchestrator_run_social",
@@ -1614,7 +1626,7 @@
       "label": ".health_check()",
       "file_type": "code",
       "source_file": "crawl-agent/orchestrator.py",
-      "source_location": "L317",
+      "source_location": "L327",
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_orchestrator_crawlorchestrator_health_check",
@@ -1626,7 +1638,7 @@
       "label": ".save_results()",
       "file_type": "code",
       "source_file": "crawl-agent/orchestrator.py",
-      "source_location": "L345",
+      "source_location": "L355",
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_orchestrator_crawlorchestrator_save_results",
@@ -1638,7 +1650,7 @@
       "label": "main()",
       "file_type": "code",
       "source_file": "crawl-agent/orchestrator.py",
-      "source_location": "L362",
+      "source_location": "L372",
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_orchestrator_main",
@@ -1653,7 +1665,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "crawl_agent_orchestrator_rationale_1",
-      "community": 46,
+      "community": 35,
       "community_name": "orchestrator.py",
       "norm_label": "crawl agent orchestrator \u2014 coordinates all spiders and engines...."
     },
@@ -1691,12 +1703,23 @@
       "norm_label": "run a single spider by source code. returns stats dict with crawl results."
     },
     {
-      "label": "C\u1eadp nh\u1eadt circuit breaker + baseline sau m\u1ed7i run. Circuit: quan t\u00e2m \"c\u00f3 fetch\u2026",
+      "label": "Gom l\u1ed7i theo kind \u0111\u1ec3 bi\u1ebft n\u00ean x\u1eed l\u00fd g\u00ec ti\u1ebfp (vd: nhi\u1ec1u 'blocked' = d\u1eebng hammer).",
       "file_type": "rationale",
       "source_file": "crawl-agent/orchestrator.py",
       "source_location": "L156",
       "_origin": "ast",
       "id": "crawl_agent_orchestrator_rationale_156",
+      "community": 20,
+      "community_name": "CrawlOrchestrator",
+      "norm_label": "gom loi theo kind \u0111e biet nen xu ly gi tiep (vd: nhieu 'blocked' = dung hammer)."
+    },
+    {
+      "label": "C\u1eadp nh\u1eadt circuit breaker + baseline sau m\u1ed7i run. Circuit: quan t\u00e2m \"c\u00f3 fetch\u2026",
+      "file_type": "rationale",
+      "source_file": "crawl-agent/orchestrator.py",
+      "source_location": "L165",
+      "_origin": "ast",
+      "id": "crawl_agent_orchestrator_rationale_165",
       "community": 20,
       "community_name": "CrawlOrchestrator",
       "norm_label": "cap nhat circuit breaker + baseline sau moi run. circuit: quan tam \"co fetch..."
@@ -1705,9 +1728,9 @@
       "label": "Run all enabled spiders. engines: filter by engine type [\"scrapling_fast\",\u2026",
       "file_type": "rationale",
       "source_file": "crawl-agent/orchestrator.py",
-      "source_location": "L197",
+      "source_location": "L206",
       "_origin": "ast",
-      "id": "crawl_agent_orchestrator_rationale_197",
+      "id": "crawl_agent_orchestrator_rationale_206",
       "community": 20,
       "community_name": "CrawlOrchestrator",
       "norm_label": "run all enabled spiders. engines: filter by engine type [\"scrapling_fast\",..."
@@ -1716,9 +1739,9 @@
       "label": "Run only social media spiders (TikTok + Facebook). These need Camoufox and are\u2026",
       "file_type": "rationale",
       "source_file": "crawl-agent/orchestrator.py",
-      "source_location": "L286",
+      "source_location": "L296",
       "_origin": "ast",
-      "id": "crawl_agent_orchestrator_rationale_286",
+      "id": "crawl_agent_orchestrator_rationale_296",
       "community": 20,
       "community_name": "CrawlOrchestrator",
       "norm_label": "run only social media spiders (tiktok + facebook). these need camoufox and are..."
@@ -1727,9 +1750,9 @@
       "label": "Check all systems are operational.",
       "file_type": "rationale",
       "source_file": "crawl-agent/orchestrator.py",
-      "source_location": "L318",
+      "source_location": "L328",
       "_origin": "ast",
-      "id": "crawl_agent_orchestrator_rationale_318",
+      "id": "crawl_agent_orchestrator_rationale_328",
       "community": 20,
       "community_name": "CrawlOrchestrator",
       "norm_label": "check all systems are operational."
@@ -1738,9 +1761,9 @@
       "label": "Save crawl results to JSON file.",
       "file_type": "rationale",
       "source_file": "crawl-agent/orchestrator.py",
-      "source_location": "L346",
+      "source_location": "L356",
       "_origin": "ast",
-      "id": "crawl_agent_orchestrator_rationale_346",
+      "id": "crawl_agent_orchestrator_rationale_356",
       "community": 20,
       "community_name": "CrawlOrchestrator",
       "norm_label": "save crawl results to json file."
@@ -1749,9 +1772,9 @@
       "label": "CLI entry point for the crawl agent.",
       "file_type": "rationale",
       "source_file": "crawl-agent/orchestrator.py",
-      "source_location": "L363",
+      "source_location": "L373",
       "_origin": "ast",
-      "id": "crawl_agent_orchestrator_rationale_363",
+      "id": "crawl_agent_orchestrator_rationale_373",
       "community": 20,
       "community_name": "CrawlOrchestrator",
       "norm_label": "cli entry point for the crawl agent."
@@ -1820,8 +1843,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "crawl_agent_scripts_update_feedback",
-      "community": 40,
-      "community_name": "build_preference_prompt",
+      "community": 35,
+      "community_name": "orchestrator.py",
       "norm_label": "update_feedback.py"
     },
     {
@@ -1832,8 +1855,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_scripts_update_feedback_fetch_feedback",
-      "community": 40,
-      "community_name": "build_preference_prompt",
+      "community": 35,
+      "community_name": "orchestrator.py",
       "norm_label": "fetch_feedback()"
     },
     {
@@ -1844,8 +1867,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_scripts_update_feedback_main",
-      "community": 40,
-      "community_name": "build_preference_prompt",
+      "community": 35,
+      "community_name": "orchestrator.py",
       "norm_label": "main()"
     },
     {
@@ -1855,8 +1878,8 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "crawl_agent_scripts_update_feedback_rationale_28",
-      "community": 40,
-      "community_name": "build_preference_prompt",
+      "community": 35,
+      "community_name": "orchestrator.py",
       "norm_label": "goi workers api, tra feedback dang {positive, negative, updated_at}."
     },
     {
@@ -1919,7 +1942,7 @@
       "label": "BaseSpider",
       "file_type": "code",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L19",
+      "source_location": "L21",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
@@ -1943,7 +1966,7 @@
       "label": ".__init__()",
       "file_type": "code",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L30",
+      "source_location": "L32",
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_base_basespider_init",
@@ -1955,31 +1978,31 @@
       "label": ".parse_listing()",
       "file_type": "code",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L43",
+      "source_location": "L46",
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_base_basespider_parse_listing",
-      "community": 21,
-      "community_name": "BaseSpider",
+      "community": 51,
+      "community_name": ".crawl",
       "norm_label": ".parse_listing()"
     },
     {
       "label": ".parse_detail()",
       "file_type": "code",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L51",
+      "source_location": "L54",
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_base_basespider_parse_detail",
-      "community": 21,
-      "community_name": "BaseSpider",
+      "community": 51,
+      "community_name": ".crawl",
       "norm_label": ".parse_detail()"
     },
     {
       "label": ".fetch()",
       "file_type": "code",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L59",
+      "source_location": "L62",
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_base_basespider_fetch",
@@ -1991,7 +2014,7 @@
       "label": ".fetch_with_retry()",
       "file_type": "code",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L68",
+      "source_location": "L71",
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_base_basespider_fetch_with_retry",
@@ -2003,55 +2026,55 @@
       "label": "._url_key()",
       "file_type": "code",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L92",
+      "source_location": "L111",
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_base_basespider_url_key",
-      "community": 21,
-      "community_name": "BaseSpider",
+      "community": 51,
+      "community_name": ".crawl",
       "norm_label": "._url_key()"
     },
     {
       "label": ".is_new()",
       "file_type": "code",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L97",
+      "source_location": "L116",
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_base_basespider_is_new",
-      "community": 21,
-      "community_name": "BaseSpider",
+      "community": 51,
+      "community_name": ".crawl",
       "norm_label": ".is_new()"
     },
     {
       "label": ".format_lead()",
       "file_type": "code",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L106",
+      "source_location": "L125",
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_base_basespider_format_lead",
-      "community": 21,
-      "community_name": "BaseSpider",
+      "community": 51,
+      "community_name": ".crawl",
       "norm_label": ".format_lead()"
     },
     {
       "label": ".crawl()",
       "file_type": "code",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L121",
+      "source_location": "L140",
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_base_basespider_crawl",
-      "community": 21,
-      "community_name": "BaseSpider",
+      "community": 51,
+      "community_name": ".crawl",
       "norm_label": ".crawl()"
     },
     {
       "label": ".close()",
       "file_type": "code",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L244",
+      "source_location": "L271",
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_base_basespider_close",
@@ -2074,9 +2097,9 @@
       "label": "Abstract base spider that all source-specific spiders inherit from. Handles:\u2026",
       "file_type": "rationale",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L20",
+      "source_location": "L22",
       "_origin": "ast",
-      "id": "crawl_agent_spiders_base_rationale_20",
+      "id": "crawl_agent_spiders_base_rationale_22",
       "community": 21,
       "community_name": "BaseSpider",
       "norm_label": "abstract base spider that all source-specific spiders inherit from. handles:..."
@@ -2085,88 +2108,88 @@
       "label": "Parse a listing/search page \u2192 extract individual job/post links. Returns:\u2026",
       "file_type": "rationale",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L44",
+      "source_location": "L47",
       "_origin": "ast",
-      "id": "crawl_agent_spiders_base_rationale_44",
-      "community": 21,
-      "community_name": "BaseSpider",
+      "id": "crawl_agent_spiders_base_rationale_47",
+      "community": 51,
+      "community_name": ".crawl",
       "norm_label": "parse a listing/search page \u2192 extract individual job/post links. returns:..."
     },
     {
       "label": "Parse a detail page \u2192 extract full job/post content. Returns: {\"noiDung\":\u2026",
       "file_type": "rationale",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L52",
+      "source_location": "L55",
       "_origin": "ast",
-      "id": "crawl_agent_spiders_base_rationale_52",
-      "community": 21,
-      "community_name": "BaseSpider",
+      "id": "crawl_agent_spiders_base_rationale_55",
+      "community": 51,
+      "community_name": ".crawl",
       "norm_label": "parse a detail page \u2192 extract full job/post content. returns: {\"noidung\":..."
     },
     {
       "label": "Fetch URL using the spider's configured engine.",
       "file_type": "rationale",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L60",
+      "source_location": "L63",
       "_origin": "ast",
-      "id": "crawl_agent_spiders_base_rationale_60",
+      "id": "crawl_agent_spiders_base_rationale_63",
       "community": 21,
       "community_name": "BaseSpider",
       "norm_label": "fetch url using the spider's configured engine."
     },
     {
-      "label": "Fetch v\u1edbi exponential backoff. Ch\u1ec9 retry khi fetch th\u1ea5t b\u1ea1i (ok=False); KH\u00d4NG\u2026",
+      "label": "Fetch v\u1edbi guard + exponential backoff. Guard ch\u1ea1y TR\u01af\u1edaC khi fetch: -\u2026",
       "file_type": "rationale",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L69",
+      "source_location": "L72",
       "_origin": "ast",
-      "id": "crawl_agent_spiders_base_rationale_69",
+      "id": "crawl_agent_spiders_base_rationale_72",
       "community": 21,
       "community_name": "BaseSpider",
-      "norm_label": "fetch voi exponential backoff. chi retry khi fetch that bai (ok=false); khong..."
+      "norm_label": "fetch voi guard + exponential backoff. guard chay truoc khi fetch: -..."
     },
     {
       "label": "Generate dedup key from URL.",
       "file_type": "rationale",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L93",
+      "source_location": "L112",
       "_origin": "ast",
-      "id": "crawl_agent_spiders_base_rationale_93",
-      "community": 21,
-      "community_name": "BaseSpider",
+      "id": "crawl_agent_spiders_base_rationale_112",
+      "community": 51,
+      "community_name": ".crawl",
       "norm_label": "generate dedup key from url."
     },
     {
       "label": "Check if URL has been seen before in this run.",
       "file_type": "rationale",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L98",
+      "source_location": "L117",
       "_origin": "ast",
-      "id": "crawl_agent_spiders_base_rationale_98",
-      "community": 21,
-      "community_name": "BaseSpider",
+      "id": "crawl_agent_spiders_base_rationale_117",
+      "community": 51,
+      "community_name": ".crawl",
       "norm_label": "check if url has been seen before in this run."
     },
     {
       "label": "Format extracted data into lead payload for Workers API. Matches the format\u2026",
       "file_type": "rationale",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L107",
+      "source_location": "L126",
       "_origin": "ast",
-      "id": "crawl_agent_spiders_base_rationale_107",
-      "community": 21,
-      "community_name": "BaseSpider",
+      "id": "crawl_agent_spiders_base_rationale_126",
+      "community": 51,
+      "community_name": ".crawl",
       "norm_label": "format extracted data into lead payload for workers api. matches the format..."
     },
     {
       "label": "Full crawl cycle: 1. Fetch listing pages 2. Extract individual post links 3.\u2026",
       "file_type": "rationale",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L130",
+      "source_location": "L149",
       "_origin": "ast",
-      "id": "crawl_agent_spiders_base_rationale_130",
-      "community": 21,
-      "community_name": "BaseSpider",
+      "id": "crawl_agent_spiders_base_rationale_149",
+      "community": 51,
+      "community_name": ".crawl",
       "norm_label": "full crawl cycle: 1. fetch listing pages 2. extract individual post links 3...."
     },
     {
@@ -2177,7 +2200,7 @@
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum",
       "community": 3,
-      "community_name": "forum.py",
+      "community_name": "is_lead_signal",
       "norm_label": "forum.py"
     },
     {
@@ -2188,7 +2211,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_is_lead_signal",
-      "community": 28,
+      "community": 3,
       "community_name": "is_lead_signal",
       "norm_label": "is_lead_signal()"
     },
@@ -2202,7 +2225,7 @@
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_blackhatworldspider",
       "community": 3,
-      "community_name": "forum.py",
+      "community_name": "is_lead_signal",
       "norm_label": "blackhatworldspider"
     },
     {
@@ -2213,7 +2236,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_blackhatworldspider_parse_listing",
-      "community": 28,
+      "community": 3,
       "community_name": "is_lead_signal",
       "norm_label": ".parse_listing()"
     },
@@ -2226,7 +2249,7 @@
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_blackhatworldspider_parse_detail",
       "community": 3,
-      "community_name": "forum.py",
+      "community_name": "is_lead_signal",
       "norm_label": ".parse_detail()"
     },
     {
@@ -2239,7 +2262,7 @@
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_warriorforumspider",
       "community": 3,
-      "community_name": "forum.py",
+      "community_name": "is_lead_signal",
       "norm_label": "warriorforumspider"
     },
     {
@@ -2251,7 +2274,7 @@
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_warriorforumspider_parse_listing",
       "community": 3,
-      "community_name": "forum.py",
+      "community_name": "is_lead_signal",
       "norm_label": ".parse_listing()"
     },
     {
@@ -2263,7 +2286,7 @@
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_warriorforumspider_parse_detail",
       "community": 3,
-      "community_name": "forum.py",
+      "community_name": "is_lead_signal",
       "norm_label": ".parse_detail()"
     },
     {
@@ -2276,7 +2299,7 @@
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_vozmarketingspider",
       "community": 3,
-      "community_name": "forum.py",
+      "community_name": "is_lead_signal",
       "norm_label": "vozmarketingspider"
     },
     {
@@ -2287,7 +2310,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_vozmarketingspider_parse_listing",
-      "community": 28,
+      "community": 3,
       "community_name": "is_lead_signal",
       "norm_label": ".parse_listing()"
     },
@@ -2300,7 +2323,7 @@
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_vozmarketingspider_parse_detail",
       "community": 3,
-      "community_name": "forum.py",
+      "community_name": "is_lead_signal",
       "norm_label": ".parse_detail()"
     },
     {
@@ -2313,7 +2336,7 @@
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_brandsvietnamspider",
       "community": 3,
-      "community_name": "forum.py",
+      "community_name": "is_lead_signal",
       "norm_label": "brandsvietnamspider"
     },
     {
@@ -2324,7 +2347,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_brandsvietnamspider_parse_listing",
-      "community": 28,
+      "community": 3,
       "community_name": "is_lead_signal",
       "norm_label": ".parse_listing()"
     },
@@ -2337,7 +2360,7 @@
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_brandsvietnamspider_parse_detail",
       "community": 3,
-      "community_name": "forum.py",
+      "community_name": "is_lead_signal",
       "norm_label": ".parse_detail()"
     },
     {
@@ -2350,7 +2373,7 @@
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_vietnammarketingspider",
       "community": 3,
-      "community_name": "forum.py",
+      "community_name": "is_lead_signal",
       "norm_label": "vietnammarketingspider"
     },
     {
@@ -2361,7 +2384,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_vietnammarketingspider_parse_listing",
-      "community": 28,
+      "community": 3,
       "community_name": "is_lead_signal",
       "norm_label": ".parse_listing()"
     },
@@ -2374,7 +2397,7 @@
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_vietnammarketingspider_parse_detail",
       "community": 3,
-      "community_name": "forum.py",
+      "community_name": "is_lead_signal",
       "norm_label": ".parse_detail()"
     },
     {
@@ -2385,7 +2408,7 @@
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_rationale_1",
       "community": 3,
-      "community_name": "forum.py",
+      "community_name": "is_lead_signal",
       "norm_label": "forum spider \u2014 crawls marketing forums for lead signals...."
     },
     {
@@ -2395,7 +2418,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_rationale_36",
-      "community": 28,
+      "community": 3,
       "community_name": "is_lead_signal",
       "norm_label": "check if text contains signals of a job opportunity."
     },
@@ -2407,7 +2430,7 @@
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_rationale_42",
       "community": 3,
-      "community_name": "forum.py",
+      "community_name": "is_lead_signal",
       "norm_label": "spider for blackhatworld marketplace & forums. bhw has a marketplace section..."
     },
     {
@@ -2418,7 +2441,7 @@
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_rationale_136",
       "community": 3,
-      "community_name": "forum.py",
+      "community_name": "is_lead_signal",
       "norm_label": "spider for warriorforum \u2014 one of the largest internet marketing forums."
     },
     {
@@ -2429,7 +2452,7 @@
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_rationale_207",
       "community": 3,
-      "community_name": "forum.py",
+      "community_name": "is_lead_signal",
       "norm_label": "spider for voz forum marketing section (voz.vn). vietnamese tech/marketing..."
     },
     {
@@ -2440,7 +2463,7 @@
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_rationale_286",
       "community": 3,
-      "community_name": "forum.py",
+      "community_name": "is_lead_signal",
       "norm_label": "spider for brandsvietnam.com \u2014 premier vietnamese marketing & branding..."
     },
     {
@@ -2451,7 +2474,7 @@
       "_origin": "ast",
       "id": "crawl_agent_spiders_forum_rationale_379",
       "community": 3,
-      "community_name": "forum.py",
+      "community_name": "is_lead_signal",
       "norm_label": "spider for vietnammarketing.com.vn \u2014 vietnamese marketing community. has..."
     },
     {
@@ -2474,8 +2497,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_freelancer_vlancespider",
-      "community": 5,
-      "community_name": "spiders/__init__.py",
+      "community": 54,
+      "community_name": "VLanceSpider",
       "norm_label": "vlancespider"
     },
     {
@@ -2486,8 +2509,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_freelancer_vlancespider_parse_listing",
-      "community": 5,
-      "community_name": "spiders/__init__.py",
+      "community": 54,
+      "community_name": "VLanceSpider",
       "norm_label": ".parse_listing()"
     },
     {
@@ -2498,8 +2521,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_freelancer_vlancespider_parse_detail",
-      "community": 5,
-      "community_name": "spiders/__init__.py",
+      "community": 54,
+      "community_name": "VLanceSpider",
       "norm_label": ".parse_detail()"
     },
     {
@@ -2548,8 +2571,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_freelancer_peopleperhourspider",
-      "community": 56,
-      "community_name": "PeoplePerHourSpider",
+      "community": 5,
+      "community_name": "spiders/__init__.py",
       "norm_label": "peopleperhourspider"
     },
     {
@@ -2560,8 +2583,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_freelancer_peopleperhourspider_parse_listing",
-      "community": 56,
-      "community_name": "PeoplePerHourSpider",
+      "community": 5,
+      "community_name": "spiders/__init__.py",
       "norm_label": ".parse_listing()"
     },
     {
@@ -2572,8 +2595,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_freelancer_peopleperhourspider_parse_detail",
-      "community": 56,
-      "community_name": "PeoplePerHourSpider",
+      "community": 5,
+      "community_name": "spiders/__init__.py",
       "norm_label": ".parse_detail()"
     },
     {
@@ -2696,8 +2719,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_freelancer_jobboardvnspider",
-      "community": 78,
-      "community_name": "JobBoardVNSpider",
+      "community": 5,
+      "community_name": "spiders/__init__.py",
       "norm_label": "jobboardvnspider"
     },
     {
@@ -2708,8 +2731,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_freelancer_jobboardvnspider_parse_listing",
-      "community": 78,
-      "community_name": "JobBoardVNSpider",
+      "community": 5,
+      "community_name": "spiders/__init__.py",
       "norm_label": ".parse_listing()"
     },
     {
@@ -2720,8 +2743,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_freelancer_jobboardvnspider_parse_detail",
-      "community": 78,
-      "community_name": "JobBoardVNSpider",
+      "community": 5,
+      "community_name": "spiders/__init__.py",
       "norm_label": ".parse_detail()"
     },
     {
@@ -2770,8 +2793,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_freelancer_upworkvnspider",
-      "community": 79,
-      "community_name": "UpworkVNSpider",
+      "community": 5,
+      "community_name": "spiders/__init__.py",
       "norm_label": "upworkvnspider"
     },
     {
@@ -2782,8 +2805,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_freelancer_upworkvnspider_parse_listing",
-      "community": 79,
-      "community_name": "UpworkVNSpider",
+      "community": 5,
+      "community_name": "spiders/__init__.py",
       "norm_label": ".parse_listing()"
     },
     {
@@ -2794,8 +2817,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_freelancer_upworkvnspider_parse_detail",
-      "community": 79,
-      "community_name": "UpworkVNSpider",
+      "community": 5,
+      "community_name": "spiders/__init__.py",
       "norm_label": ".parse_detail()"
     },
     {
@@ -2844,8 +2867,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_freelancer_truelancervnspider",
-      "community": 46,
-      "community_name": "orchestrator.py",
+      "community": 5,
+      "community_name": "spiders/__init__.py",
       "norm_label": "truelancervnspider"
     },
     {
@@ -2856,8 +2879,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_freelancer_truelancervnspider_parse_listing",
-      "community": 46,
-      "community_name": "orchestrator.py",
+      "community": 5,
+      "community_name": "spiders/__init__.py",
       "norm_label": ".parse_listing()"
     },
     {
@@ -2868,8 +2891,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_freelancer_truelancervnspider_parse_detail",
-      "community": 46,
-      "community_name": "orchestrator.py",
+      "community": 5,
+      "community_name": "spiders/__init__.py",
       "norm_label": ".parse_detail()"
     },
     {
@@ -2881,7 +2904,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_freelancer_behancevnspider",
-      "community": 46,
+      "community": 35,
       "community_name": "orchestrator.py",
       "norm_label": "behancevnspider"
     },
@@ -2893,7 +2916,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_freelancer_behancevnspider_parse_listing",
-      "community": 46,
+      "community": 35,
       "community_name": "orchestrator.py",
       "norm_label": ".parse_listing()"
     },
@@ -2905,7 +2928,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_freelancer_behancevnspider_parse_detail",
-      "community": 46,
+      "community": 35,
       "community_name": "orchestrator.py",
       "norm_label": ".parse_detail()"
     },
@@ -3075,8 +3098,8 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "crawl_agent_spiders_freelancer_rationale_16",
-      "community": 5,
-      "community_name": "spiders/__init__.py",
+      "community": 54,
+      "community_name": "VLanceSpider",
       "norm_label": "spider for vlance.vn \u2014 vietnamese freelance marketplace. uses stealth engine..."
     },
     {
@@ -3086,8 +3109,8 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "crawl_agent_spiders_freelancer_rationale_26",
-      "community": 5,
-      "community_name": "spiders/__init__.py",
+      "community": 54,
+      "community_name": "VLanceSpider",
       "norm_label": "parse vlance listing page \u2192 extract job links."
     },
     {
@@ -3097,8 +3120,8 @@
       "source_location": "L83",
       "_origin": "ast",
       "id": "crawl_agent_spiders_freelancer_rationale_83",
-      "community": 5,
-      "community_name": "spiders/__init__.py",
+      "community": 54,
+      "community_name": "VLanceSpider",
       "norm_label": "parse vlance job detail page."
     },
     {
@@ -3119,8 +3142,8 @@
       "source_location": "L203",
       "_origin": "ast",
       "id": "crawl_agent_spiders_freelancer_rationale_203",
-      "community": 56,
-      "community_name": "PeoplePerHourSpider",
+      "community": 5,
+      "community_name": "spiders/__init__.py",
       "norm_label": "spider for peopleperhour \u2014 international freelance marketplace. uses fast..."
     },
     {
@@ -3163,8 +3186,8 @@
       "source_location": "L448",
       "_origin": "ast",
       "id": "crawl_agent_spiders_freelancer_rationale_448",
-      "community": 78,
-      "community_name": "JobBoardVNSpider",
+      "community": 5,
+      "community_name": "spiders/__init__.py",
       "norm_label": "spider for jobboard.vn \u2014 vietnamese freelancer job board. has marketing..."
     },
     {
@@ -3185,8 +3208,8 @@
       "source_location": "L556",
       "_origin": "ast",
       "id": "crawl_agent_spiders_freelancer_rationale_556",
-      "community": 79,
-      "community_name": "UpworkVNSpider",
+      "community": 5,
+      "community_name": "spiders/__init__.py",
       "norm_label": "spider for upwork vietnam \u2014 international platform with large vn freelancer..."
     },
     {
@@ -3207,8 +3230,8 @@
       "source_location": "L668",
       "_origin": "ast",
       "id": "crawl_agent_spiders_freelancer_rationale_668",
-      "community": 46,
-      "community_name": "orchestrator.py",
+      "community": 5,
+      "community_name": "spiders/__init__.py",
       "norm_label": "spider for truelancer vietnam \u2014 has digital marketing & video production jobs..."
     },
     {
@@ -3218,7 +3241,7 @@
       "source_location": "L719",
       "_origin": "ast",
       "id": "crawl_agent_spiders_freelancer_rationale_719",
-      "community": 46,
+      "community": 35,
       "community_name": "orchestrator.py",
       "norm_label": "spider for behance vietnam \u2014 portfolio-based hiring for brand designers in vn."
     },
@@ -3286,8 +3309,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_social_tiktokspider",
-      "community": 54,
-      "community_name": "TikTokSpider",
+      "community": 21,
+      "community_name": "BaseSpider",
       "norm_label": "tiktokspider"
     },
     {
@@ -3298,8 +3321,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_social_tiktokspider_parse_listing",
-      "community": 54,
-      "community_name": "TikTokSpider",
+      "community": 21,
+      "community_name": "BaseSpider",
       "norm_label": ".parse_listing()"
     },
     {
@@ -3310,8 +3333,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_social_tiktokspider_parse_detail",
-      "community": 54,
-      "community_name": "TikTokSpider",
+      "community": 21,
+      "community_name": "BaseSpider",
       "norm_label": ".parse_detail()"
     },
     {
@@ -3322,8 +3345,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_social_tiktokspider_crawl_search_queries",
-      "community": 54,
-      "community_name": "TikTokSpider",
+      "community": 21,
+      "community_name": "BaseSpider",
       "norm_label": ".crawl_search_queries()"
     },
     {
@@ -3335,8 +3358,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_social_facebookgroupspider",
-      "community": 35,
-      "community_name": "WorkersClient",
+      "community": 21,
+      "community_name": "BaseSpider",
       "norm_label": "facebookgroupspider"
     },
     {
@@ -3347,8 +3370,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_social_facebookgroupspider_parse_listing",
-      "community": 35,
-      "community_name": "WorkersClient",
+      "community": 21,
+      "community_name": "BaseSpider",
       "norm_label": ".parse_listing()"
     },
     {
@@ -3359,8 +3382,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_social_facebookgroupspider_parse_detail",
-      "community": 35,
-      "community_name": "WorkersClient",
+      "community": 21,
+      "community_name": "BaseSpider",
       "norm_label": ".parse_detail()"
     },
     {
@@ -3371,8 +3394,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_spiders_social_facebookgroupspider_crawl_groups",
-      "community": 35,
-      "community_name": "WorkersClient",
+      "community": 21,
+      "community_name": "BaseSpider",
       "norm_label": ".crawl_groups()"
     },
     {
@@ -3393,8 +3416,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "crawl_agent_spiders_social_rationale_15",
-      "community": 54,
-      "community_name": "TikTokSpider",
+      "community": 21,
+      "community_name": "BaseSpider",
       "norm_label": "spider for tiktok \u2014 searches for marketing-related content. uses camoufox with..."
     },
     {
@@ -3404,8 +3427,8 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "crawl_agent_spiders_social_rationale_37",
-      "community": 54,
-      "community_name": "TikTokSpider",
+      "community": 21,
+      "community_name": "BaseSpider",
       "norm_label": "parse tiktok search results \u2014 already json from js extraction."
     },
     {
@@ -3415,8 +3438,8 @@
       "source_location": "L89",
       "_origin": "ast",
       "id": "crawl_agent_spiders_social_rationale_89",
-      "community": 54,
-      "community_name": "TikTokSpider",
+      "community": 21,
+      "community_name": "BaseSpider",
       "norm_label": "parse tiktok profile/page detail."
     },
     {
@@ -3426,8 +3449,8 @@
       "source_location": "L131",
       "_origin": "ast",
       "id": "crawl_agent_spiders_social_rationale_131",
-      "community": 54,
-      "community_name": "TikTokSpider",
+      "community": 21,
+      "community_name": "BaseSpider",
       "norm_label": "crawl tiktok by searching multiple queries. each query gets a separate search..."
     },
     {
@@ -3437,8 +3460,8 @@
       "source_location": "L194",
       "_origin": "ast",
       "id": "crawl_agent_spiders_social_rationale_194",
-      "community": 35,
-      "community_name": "WorkersClient",
+      "community": 21,
+      "community_name": "BaseSpider",
       "norm_label": "spider for facebook groups \u2014 finds marketing job posts. uses camoufox with..."
     },
     {
@@ -3448,8 +3471,8 @@
       "source_location": "L220",
       "_origin": "ast",
       "id": "crawl_agent_spiders_social_rationale_220",
-      "community": 35,
-      "community_name": "WorkersClient",
+      "community": 21,
+      "community_name": "BaseSpider",
       "norm_label": "parse fb group posts \u2014 already json from js extraction."
     },
     {
@@ -3459,8 +3482,8 @@
       "source_location": "L261",
       "_origin": "ast",
       "id": "crawl_agent_spiders_social_rationale_261",
-      "community": 35,
-      "community_name": "WorkersClient",
+      "community": 21,
+      "community_name": "BaseSpider",
       "norm_label": "parse fb post detail."
     },
     {
@@ -3470,8 +3493,8 @@
       "source_location": "L295",
       "_origin": "ast",
       "id": "crawl_agent_spiders_social_rationale_295",
-      "community": 35,
-      "community_name": "WorkersClient",
+      "community": 21,
+      "community_name": "BaseSpider",
       "norm_label": "crawl multiple facebook groups for lead signals. uses camoufox with session..."
     },
     {
@@ -3782,6 +3805,162 @@
       "community": 62,
       "community_name": "test_architecture_review.py",
       "norm_label": "calculate overall % fit with christian's requirements."
+    },
+    {
+      "label": "test_errors.py",
+      "file_type": "code",
+      "source_file": "crawl-agent/tests/test_errors.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "crawl_agent_tests_test_errors",
+      "community": 46,
+      "community_name": "classify",
+      "norm_label": "test_errors.py"
+    },
+    {
+      "label": "TestClassify",
+      "file_type": "code",
+      "source_file": "crawl-agent/tests/test_errors.py",
+      "source_location": "L15",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "crawl_agent_tests_test_errors_testclassify",
+      "community": 46,
+      "community_name": "classify",
+      "norm_label": "testclassify"
+    },
+    {
+      "label": ".test_403_is_blocked_and_not_retryable()",
+      "file_type": "code",
+      "source_file": "crawl-agent/tests/test_errors.py",
+      "source_location": "L16",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "crawl_agent_tests_test_errors_testclassify_test_403_is_blocked_and_not_retryable",
+      "community": 46,
+      "community_name": "classify",
+      "norm_label": ".test_403_is_blocked_and_not_retryable()"
+    },
+    {
+      "label": ".test_429_is_rate_limited_and_retryable()",
+      "file_type": "code",
+      "source_file": "crawl-agent/tests/test_errors.py",
+      "source_location": "L22",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "crawl_agent_tests_test_errors_testclassify_test_429_is_rate_limited_and_retryable",
+      "community": 46,
+      "community_name": "classify",
+      "norm_label": ".test_429_is_rate_limited_and_retryable()"
+    },
+    {
+      "label": ".test_timeout_retryable()",
+      "file_type": "code",
+      "source_file": "crawl-agent/tests/test_errors.py",
+      "source_location": "L27",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "crawl_agent_tests_test_errors_testclassify_test_timeout_retryable",
+      "community": 46,
+      "community_name": "classify",
+      "norm_label": ".test_timeout_retryable()"
+    },
+    {
+      "label": ".test_cloudflare_challenge_is_blocked()",
+      "file_type": "code",
+      "source_file": "crawl-agent/tests/test_errors.py",
+      "source_location": "L32",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "crawl_agent_tests_test_errors_testclassify_test_cloudflare_challenge_is_blocked",
+      "community": 46,
+      "community_name": "classify",
+      "norm_label": ".test_cloudflare_challenge_is_blocked()"
+    },
+    {
+      "label": ".test_dns_error_retryable()",
+      "file_type": "code",
+      "source_file": "crawl-agent/tests/test_errors.py",
+      "source_location": "L37",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "crawl_agent_tests_test_errors_testclassify_test_dns_error_retryable",
+      "community": 46,
+      "community_name": "classify",
+      "norm_label": ".test_dns_error_retryable()"
+    },
+    {
+      "label": ".test_robots_disallowed_never_retries()",
+      "file_type": "code",
+      "source_file": "crawl-agent/tests/test_errors.py",
+      "source_location": "L42",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "crawl_agent_tests_test_errors_testclassify_test_robots_disallowed_never_retries",
+      "community": 46,
+      "community_name": "classify",
+      "norm_label": ".test_robots_disallowed_never_retries()"
+    },
+    {
+      "label": ".test_unknown_defaults_retryable_with_hint()",
+      "file_type": "code",
+      "source_file": "crawl-agent/tests/test_errors.py",
+      "source_location": "L47",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "crawl_agent_tests_test_errors_testclassify_test_unknown_defaults_retryable_with_hint",
+      "community": 46,
+      "community_name": "classify",
+      "norm_label": ".test_unknown_defaults_retryable_with_hint()"
+    },
+    {
+      "label": "TestMakeError",
+      "file_type": "code",
+      "source_file": "crawl-agent/tests/test_errors.py",
+      "source_location": "L54",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "crawl_agent_tests_test_errors_testmakeerror",
+      "community": 46,
+      "community_name": "classify",
+      "norm_label": "testmakeerror"
+    },
+    {
+      "label": ".test_envelope_has_full_contract()",
+      "file_type": "code",
+      "source_file": "crawl-agent/tests/test_errors.py",
+      "source_location": "L55",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "crawl_agent_tests_test_errors_testmakeerror_test_envelope_has_full_contract",
+      "community": 46,
+      "community_name": "classify",
+      "norm_label": ".test_envelope_has_full_contract()"
+    },
+    {
+      "label": ".test_submit_error_uses_status()",
+      "file_type": "code",
+      "source_file": "crawl-agent/tests/test_errors.py",
+      "source_location": "L64",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "crawl_agent_tests_test_errors_testmakeerror_test_submit_error_uses_status",
+      "community": 46,
+      "community_name": "classify",
+      "norm_label": ".test_submit_error_uses_status()"
+    },
+    {
+      "label": "Unit Tests \u2014 Error envelope (recovery contract)\u2026",
+      "file_type": "rationale",
+      "source_file": "crawl-agent/tests/test_errors.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "crawl_agent_tests_test_errors_rationale_1",
+      "community": 46,
+      "community_name": "classify",
+      "norm_label": "unit tests \u2014 error envelope (recovery contract)..."
     },
     {
       "label": "test_feedback.py",
@@ -4706,8 +4885,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "crawl_agent_tests_test_unit",
-      "community": 4,
-      "community_name": "Config",
+      "community": 3,
+      "community_name": "is_lead_signal",
       "norm_label": "test_unit.py"
     },
     {
@@ -4719,7 +4898,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "crawl_agent_tests_test_unit_testleadsignaldetection",
-      "community": 28,
+      "community": 3,
       "community_name": "is_lead_signal",
       "norm_label": "testleadsignaldetection"
     },
@@ -4731,7 +4910,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_tests_test_unit_testleadsignaldetection_test_vietnamese_lead_signals_detected",
-      "community": 28,
+      "community": 3,
       "community_name": "is_lead_signal",
       "norm_label": ".test_vietnamese_lead_signals_detected()"
     },
@@ -4743,7 +4922,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_tests_test_unit_testleadsignaldetection_test_english_lead_signals_detected",
-      "community": 28,
+      "community": 3,
       "community_name": "is_lead_signal",
       "norm_label": ".test_english_lead_signals_detected()"
     },
@@ -4755,7 +4934,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_tests_test_unit_testleadsignaldetection_test_non_lead_posts_not_detected",
-      "community": 28,
+      "community": 3,
       "community_name": "is_lead_signal",
       "norm_label": ".test_non_lead_posts_not_detected()"
     },
@@ -4767,7 +4946,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_tests_test_unit_testleadsignaldetection_test_case_insensitive",
-      "community": 28,
+      "community": 3,
       "community_name": "is_lead_signal",
       "norm_label": ".test_case_insensitive()"
     },
@@ -4779,7 +4958,7 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_tests_test_unit_testleadsignaldetection_test_empty_and_short_text",
-      "community": 28,
+      "community": 3,
       "community_name": "is_lead_signal",
       "norm_label": ".test_empty_and_short_text()"
     },
@@ -4793,7 +4972,7 @@
       "_origin": "ast",
       "id": "crawl_agent_tests_test_unit_testleadsignalkeywords",
       "community": 4,
-      "community_name": "Config",
+      "community_name": "TestLeadSignalKeywords",
       "norm_label": "testleadsignalkeywords"
     },
     {
@@ -4805,7 +4984,7 @@
       "_origin": "ast",
       "id": "crawl_agent_tests_test_unit_testleadsignalkeywords_test_vn_keywords_exist",
       "community": 4,
-      "community_name": "Config",
+      "community_name": "TestLeadSignalKeywords",
       "norm_label": ".test_vn_keywords_exist()"
     },
     {
@@ -4817,7 +4996,7 @@
       "_origin": "ast",
       "id": "crawl_agent_tests_test_unit_testleadsignalkeywords_test_en_keywords_exist",
       "community": 4,
-      "community_name": "Config",
+      "community_name": "TestLeadSignalKeywords",
       "norm_label": ".test_en_keywords_exist()"
     },
     {
@@ -4829,7 +5008,7 @@
       "_origin": "ast",
       "id": "crawl_agent_tests_test_unit_testleadsignalkeywords_test_critical_vn_keywords_present",
       "community": 4,
-      "community_name": "Config",
+      "community_name": "TestLeadSignalKeywords",
       "norm_label": ".test_critical_vn_keywords_present()"
     },
     {
@@ -4841,8 +5020,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "crawl_agent_tests_test_unit_testboclinkintegration",
-      "community": 4,
-      "community_name": "Config",
+      "community": 78,
+      "community_name": "TestBocLinkIntegration",
       "norm_label": "testboclinkintegration"
     },
     {
@@ -4853,8 +5032,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_tests_test_unit_testboclinkintegration_test_url_dedup_concept",
-      "community": 4,
-      "community_name": "Config",
+      "community": 78,
+      "community_name": "TestBocLinkIntegration",
       "norm_label": ".test_url_dedup_concept()"
     },
     {
@@ -4866,8 +5045,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "crawl_agent_tests_test_unit_testconfigvalidation",
-      "community": 4,
-      "community_name": "Config",
+      "community": 3,
+      "community_name": "is_lead_signal",
       "norm_label": "testconfigvalidation"
     },
     {
@@ -4915,8 +5094,8 @@
       "_callable_class": true,
       "_origin": "ast",
       "id": "crawl_agent_tests_test_unit_testleadformatcontract",
-      "community": 4,
-      "community_name": "Config",
+      "community": 56,
+      "community_name": "TestLeadFormatContract",
       "norm_label": "testleadformatcontract"
     },
     {
@@ -4927,8 +5106,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_tests_test_unit_testleadformatcontract_test_required_fields",
-      "community": 4,
-      "community_name": "Config",
+      "community": 56,
+      "community_name": "TestLeadFormatContract",
       "norm_label": ".test_required_fields()"
     },
     {
@@ -4939,8 +5118,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "crawl_agent_tests_test_unit_testleadformatcontract_test_noi_dung_not_empty",
-      "community": 4,
-      "community_name": "Config",
+      "community": 56,
+      "community_name": "TestLeadFormatContract",
       "norm_label": ".test_noi_dung_not_empty()"
     },
     {
@@ -4950,8 +5129,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "crawl_agent_tests_test_unit_rationale_1",
-      "community": 4,
-      "community_name": "Config",
+      "community": 3,
+      "community_name": "is_lead_signal",
       "norm_label": "unit tests \u2014 core logic (test-driven development)..."
     },
     {
@@ -4961,7 +5140,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "crawl_agent_tests_test_unit_rationale_19",
-      "community": 28,
+      "community": 3,
       "community_name": "is_lead_signal",
       "norm_label": "test lead signal keyword detection in forum posts."
     },
@@ -4972,7 +5151,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "crawl_agent_tests_test_unit_rationale_22",
-      "community": 28,
+      "community": 3,
       "community_name": "is_lead_signal",
       "norm_label": "vn lead signals should be detected."
     },
@@ -4983,7 +5162,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "crawl_agent_tests_test_unit_rationale_35",
-      "community": 28,
+      "community": 3,
       "community_name": "is_lead_signal",
       "norm_label": "en lead signals should be detected."
     },
@@ -4994,7 +5173,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "crawl_agent_tests_test_unit_rationale_48",
-      "community": 28,
+      "community": 3,
       "community_name": "is_lead_signal",
       "norm_label": "non-lead posts should not be detected as leads."
     },
@@ -5005,7 +5184,7 @@
       "source_location": "L61",
       "_origin": "ast",
       "id": "crawl_agent_tests_test_unit_rationale_61",
-      "community": 28,
+      "community": 3,
       "community_name": "is_lead_signal",
       "norm_label": "detection should be case-insensitive."
     },
@@ -5016,7 +5195,7 @@
       "source_location": "L66",
       "_origin": "ast",
       "id": "crawl_agent_tests_test_unit_rationale_66",
-      "community": 28,
+      "community": 3,
       "community_name": "is_lead_signal",
       "norm_label": "empty or very short text should not trigger."
     },
@@ -5028,7 +5207,7 @@
       "_origin": "ast",
       "id": "crawl_agent_tests_test_unit_rationale_72",
       "community": 4,
-      "community_name": "Config",
+      "community_name": "TestLeadSignalKeywords",
       "norm_label": "test keyword list completeness."
     },
     {
@@ -5039,7 +5218,7 @@
       "_origin": "ast",
       "id": "crawl_agent_tests_test_unit_rationale_75",
       "community": 4,
-      "community_name": "Config",
+      "community_name": "TestLeadSignalKeywords",
       "norm_label": "vn keyword list should not be empty."
     },
     {
@@ -5050,7 +5229,7 @@
       "_origin": "ast",
       "id": "crawl_agent_tests_test_unit_rationale_79",
       "community": 4,
-      "community_name": "Config",
+      "community_name": "TestLeadSignalKeywords",
       "norm_label": "en keyword list should not be empty."
     },
     {
@@ -5061,7 +5240,7 @@
       "_origin": "ast",
       "id": "crawl_agent_tests_test_unit_rationale_83",
       "community": 4,
-      "community_name": "Config",
+      "community_name": "TestLeadSignalKeywords",
       "norm_label": "critical vn keywords must be present."
     },
     {
@@ -5071,8 +5250,8 @@
       "source_location": "L90",
       "_origin": "ast",
       "id": "crawl_agent_tests_test_unit_rationale_90",
-      "community": 4,
-      "community_name": "Config",
+      "community": 78,
+      "community_name": "TestBocLinkIntegration",
       "norm_label": "test integration with existing boc-link.js logic (conceptual)."
     },
     {
@@ -5082,8 +5261,8 @@
       "source_location": "L93",
       "_origin": "ast",
       "id": "crawl_agent_tests_test_unit_rationale_93",
-      "community": 4,
-      "community_name": "Config",
+      "community": 78,
+      "community_name": "TestBocLinkIntegration",
       "norm_label": "url dedup should normalize urls."
     },
     {
@@ -5093,8 +5272,8 @@
       "source_location": "L106",
       "_origin": "ast",
       "id": "crawl_agent_tests_test_unit_rationale_106",
-      "community": 4,
-      "community_name": "Config",
+      "community": 3,
+      "community_name": "is_lead_signal",
       "norm_label": "test configuration validation."
     },
     {
@@ -5137,8 +5316,8 @@
       "source_location": "L145",
       "_origin": "ast",
       "id": "crawl_agent_tests_test_unit_rationale_145",
-      "community": 4,
-      "community_name": "Config",
+      "community": 56,
+      "community_name": "TestLeadFormatContract",
       "norm_label": "test lead format matches workers api contract."
     },
     {
@@ -5148,8 +5327,8 @@
       "source_location": "L148",
       "_origin": "ast",
       "id": "crawl_agent_tests_test_unit_rationale_148",
-      "community": 4,
-      "community_name": "Config",
+      "community": 56,
+      "community_name": "TestLeadFormatContract",
       "norm_label": "lead must have required fields for /api/demand/nap."
     },
     {
@@ -5159,9 +5338,285 @@
       "source_location": "L165",
       "_origin": "ast",
       "id": "crawl_agent_tests_test_unit_rationale_165",
-      "community": 4,
-      "community_name": "Config",
+      "community": 56,
+      "community_name": "TestLeadFormatContract",
       "norm_label": "noidung must not be empty (nap-lead.js requires >= 20 chars)."
+    },
+    {
+      "label": "test_url_guard.py",
+      "file_type": "code",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "crawl_agent_tests_test_url_guard",
+      "community": 28,
+      "community_name": "is_safe_url",
+      "norm_label": "test_url_guard.py"
+    },
+    {
+      "label": "TestIsSafeUrl",
+      "file_type": "code",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L15",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "crawl_agent_tests_test_url_guard_testissafeurl",
+      "community": 28,
+      "community_name": "is_safe_url",
+      "norm_label": "testissafeurl"
+    },
+    {
+      "label": ".test_normal_https_url_ok()",
+      "file_type": "code",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L16",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "crawl_agent_tests_test_url_guard_testissafeurl_test_normal_https_url_ok",
+      "community": 28,
+      "community_name": "is_safe_url",
+      "norm_label": ".test_normal_https_url_ok()"
+    },
+    {
+      "label": ".test_blocks_localhost()",
+      "file_type": "code",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L20",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "crawl_agent_tests_test_url_guard_testissafeurl_test_blocks_localhost",
+      "community": 28,
+      "community_name": "is_safe_url",
+      "norm_label": ".test_blocks_localhost()"
+    },
+    {
+      "label": ".test_blocks_private_ip()",
+      "file_type": "code",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L24",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "crawl_agent_tests_test_url_guard_testissafeurl_test_blocks_private_ip",
+      "community": 28,
+      "community_name": "is_safe_url",
+      "norm_label": ".test_blocks_private_ip()"
+    },
+    {
+      "label": ".test_blocks_cloud_metadata()",
+      "file_type": "code",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L28",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "crawl_agent_tests_test_url_guard_testissafeurl_test_blocks_cloud_metadata",
+      "community": 28,
+      "community_name": "is_safe_url",
+      "norm_label": ".test_blocks_cloud_metadata()"
+    },
+    {
+      "label": ".test_blocks_loopback_ip()",
+      "file_type": "code",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L33",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "crawl_agent_tests_test_url_guard_testissafeurl_test_blocks_loopback_ip",
+      "community": 28,
+      "community_name": "is_safe_url",
+      "norm_label": ".test_blocks_loopback_ip()"
+    },
+    {
+      "label": ".test_blocks_file_scheme()",
+      "file_type": "code",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L37",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "crawl_agent_tests_test_url_guard_testissafeurl_test_blocks_file_scheme",
+      "community": 28,
+      "community_name": "is_safe_url",
+      "norm_label": ".test_blocks_file_scheme()"
+    },
+    {
+      "label": ".test_blocks_internal_hostnames()",
+      "file_type": "code",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L41",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "crawl_agent_tests_test_url_guard_testissafeurl_test_blocks_internal_hostnames",
+      "community": 28,
+      "community_name": "is_safe_url",
+      "norm_label": ".test_blocks_internal_hostnames()"
+    },
+    {
+      "label": ".test_blocks_garbage()",
+      "file_type": "code",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L45",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "crawl_agent_tests_test_url_guard_testissafeurl_test_blocks_garbage",
+      "community": 28,
+      "community_name": "is_safe_url",
+      "norm_label": ".test_blocks_garbage()"
+    },
+    {
+      "label": "TestParseRobots",
+      "file_type": "code",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L52",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "crawl_agent_tests_test_url_guard_testparserobots",
+      "community": 28,
+      "community_name": "is_safe_url",
+      "norm_label": "testparserobots"
+    },
+    {
+      "label": ".test_wildcard_agent_gets_star_rules()",
+      "file_type": "code",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L62",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "crawl_agent_tests_test_url_guard_testparserobots_test_wildcard_agent_gets_star_rules",
+      "community": 28,
+      "community_name": "is_safe_url",
+      "norm_label": ".test_wildcard_agent_gets_star_rules()"
+    },
+    {
+      "label": ".test_specific_agent_gets_own_rules()",
+      "file_type": "code",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L68",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "crawl_agent_tests_test_url_guard_testparserobots_test_specific_agent_gets_own_rules",
+      "community": 28,
+      "community_name": "is_safe_url",
+      "norm_label": ".test_specific_agent_gets_own_rules()"
+    },
+    {
+      "label": ".test_empty_disallow_allows_all()",
+      "file_type": "code",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L73",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "crawl_agent_tests_test_url_guard_testparserobots_test_empty_disallow_allows_all",
+      "community": 28,
+      "community_name": "is_safe_url",
+      "norm_label": ".test_empty_disallow_allows_all()"
+    },
+    {
+      "label": ".test_empty_or_missing_robots()",
+      "file_type": "code",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L77",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "crawl_agent_tests_test_url_guard_testparserobots_test_empty_or_missing_robots",
+      "community": 28,
+      "community_name": "is_safe_url",
+      "norm_label": ".test_empty_or_missing_robots()"
+    },
+    {
+      "label": ".test_comments_ignored()",
+      "file_type": "code",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L81",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "crawl_agent_tests_test_url_guard_testparserobots_test_comments_ignored",
+      "community": 28,
+      "community_name": "is_safe_url",
+      "norm_label": ".test_comments_ignored()"
+    },
+    {
+      "label": "TestPathAllowed",
+      "file_type": "code",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L86",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "crawl_agent_tests_test_url_guard_testpathallowed",
+      "community": 28,
+      "community_name": "is_safe_url",
+      "norm_label": "testpathallowed"
+    },
+    {
+      "label": ".test_no_rules_allows_everything()",
+      "file_type": "code",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L87",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "crawl_agent_tests_test_url_guard_testpathallowed_test_no_rules_allows_everything",
+      "community": 28,
+      "community_name": "is_safe_url",
+      "norm_label": ".test_no_rules_allows_everything()"
+    },
+    {
+      "label": ".test_prefix_blocked()",
+      "file_type": "code",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L90",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "crawl_agent_tests_test_url_guard_testpathallowed_test_prefix_blocked",
+      "community": 28,
+      "community_name": "is_safe_url",
+      "norm_label": ".test_prefix_blocked()"
+    },
+    {
+      "label": ".test_unrelated_path_allowed()",
+      "file_type": "code",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L93",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "crawl_agent_tests_test_url_guard_testpathallowed_test_unrelated_path_allowed",
+      "community": 28,
+      "community_name": "is_safe_url",
+      "norm_label": ".test_unrelated_path_allowed()"
+    },
+    {
+      "label": ".test_multiple_rules()",
+      "file_type": "code",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L96",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "crawl_agent_tests_test_url_guard_testpathallowed_test_multiple_rules",
+      "community": 28,
+      "community_name": "is_safe_url",
+      "norm_label": ".test_multiple_rules()"
+    },
+    {
+      "label": "Unit Tests \u2014 URL guard (SSRF allowlist + robots.txt)\u2026",
+      "file_type": "rationale",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "crawl_agent_tests_test_url_guard_rationale_1",
+      "community": 28,
+      "community_name": "is_safe_url",
+      "norm_label": "unit tests \u2014 url guard (ssrf allowlist + robots.txt)..."
+    },
+    {
+      "label": "169.254.169.254 = cloud metadata endpoint \u2014 SSRF kinh \u0111i\u1ec3n.",
+      "file_type": "rationale",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L29",
+      "_origin": "ast",
+      "id": "crawl_agent_tests_test_url_guard_rationale_29",
+      "community": 28,
+      "community_name": "is_safe_url",
+      "norm_label": "169.254.169.254 = cloud metadata endpoint \u2014 ssrf kinh \u0111ien."
     },
     {
       "label": "utils/__init__.py",
@@ -5170,7 +5625,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "crawl_agent_utils_init",
-      "community": 46,
+      "community": 35,
       "community_name": "orchestrator.py",
       "norm_label": "utils/__init__.py"
     },
@@ -5425,6 +5880,74 @@
       "norm_label": "ghi nhan ket qua 1 run. ham thuan \u2014 tra state moi, khong sua state cu. @param..."
     },
     {
+      "label": "errors.py",
+      "file_type": "code",
+      "source_file": "crawl-agent/utils/errors.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "crawl_agent_utils_errors",
+      "community": 46,
+      "community_name": "classify",
+      "norm_label": "errors.py"
+    },
+    {
+      "label": "classify()",
+      "file_type": "code",
+      "source_file": "crawl-agent/utils/errors.py",
+      "source_location": "L38",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "crawl_agent_utils_errors_classify",
+      "community": 46,
+      "community_name": "classify",
+      "norm_label": "classify()"
+    },
+    {
+      "label": "make_error()",
+      "file_type": "code",
+      "source_file": "crawl-agent/utils/errors.py",
+      "source_location": "L59",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "crawl_agent_utils_errors_make_error",
+      "community": 46,
+      "community_name": "classify",
+      "norm_label": "make_error()"
+    },
+    {
+      "label": "Structured error envelope \u2014 l\u1ed7i ph\u1ea3i mang theo c\u00e1ch x\u1eed l\u00fd.\u2026",
+      "file_type": "rationale",
+      "source_file": "crawl-agent/utils/errors.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "crawl_agent_utils_errors_rationale_1",
+      "community": 46,
+      "community_name": "classify",
+      "norm_label": "structured error envelope \u2014 loi phai mang theo cach xu ly...."
+    },
+    {
+      "label": "Ph\u00e2n lo\u1ea1i m\u1ed9t l\u1ed7i fetch. H\u00c0M THU\u1ea6N. @returns {\"kind\": str, \"retryable\": bool,\u2026",
+      "file_type": "rationale",
+      "source_file": "crawl-agent/utils/errors.py",
+      "source_location": "L39",
+      "_origin": "ast",
+      "id": "crawl_agent_utils_errors_rationale_39",
+      "community": 46,
+      "community_name": "classify",
+      "norm_label": "phan loai mot loi fetch. ham thuan. @returns {\"kind\": str, \"retryable\": bool,..."
+    },
+    {
+      "label": "T\u1ea1o error envelope chu\u1ea9n cho stats[\"errors\"]. H\u00c0M THU\u1ea6N. @param phase \"listing\"\u2026",
+      "file_type": "rationale",
+      "source_file": "crawl-agent/utils/errors.py",
+      "source_location": "L60",
+      "_origin": "ast",
+      "id": "crawl_agent_utils_errors_rationale_60",
+      "community": 46,
+      "community_name": "classify",
+      "norm_label": "tao error envelope chuan cho stats[\"errors\"]. ham thuan. @param phase \"listing\"..."
+    },
+    {
       "label": "feedback.py",
       "file_type": "code",
       "source_file": "crawl-agent/utils/feedback.py",
@@ -5550,13 +6073,210 @@
       "norm_label": "bien lich su duyet thanh \u0111oan prompt bias. ham thuan. tra \"\" neu chua co du..."
     },
     {
+      "label": "url_guard.py",
+      "file_type": "code",
+      "source_file": "crawl-agent/utils/url_guard.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "crawl_agent_utils_url_guard",
+      "community": 28,
+      "community_name": "is_safe_url",
+      "norm_label": "url_guard.py"
+    },
+    {
+      "label": "is_safe_url()",
+      "file_type": "code",
+      "source_file": "crawl-agent/utils/url_guard.py",
+      "source_location": "L28",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "crawl_agent_utils_url_guard_is_safe_url",
+      "community": 28,
+      "community_name": "is_safe_url",
+      "norm_label": "is_safe_url()"
+    },
+    {
+      "label": "parse_robots()",
+      "file_type": "code",
+      "source_file": "crawl-agent/utils/url_guard.py",
+      "source_location": "L60",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "crawl_agent_utils_url_guard_parse_robots",
+      "community": 28,
+      "community_name": "is_safe_url",
+      "norm_label": "parse_robots()"
+    },
+    {
+      "label": "path_allowed()",
+      "file_type": "code",
+      "source_file": "crawl-agent/utils/url_guard.py",
+      "source_location": "L106",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "crawl_agent_utils_url_guard_path_allowed",
+      "community": 28,
+      "community_name": "is_safe_url",
+      "norm_label": "path_allowed()"
+    },
+    {
+      "label": "RobotsCache",
+      "file_type": "code",
+      "source_file": "crawl-agent/utils/url_guard.py",
+      "source_location": "L121",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "id": "crawl_agent_utils_url_guard_robotscache",
+      "community": 28,
+      "community_name": "is_safe_url",
+      "norm_label": "robotscache"
+    },
+    {
+      "label": ".__init__()",
+      "file_type": "code",
+      "source_file": "crawl-agent/utils/url_guard.py",
+      "source_location": "L124",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "crawl_agent_utils_url_guard_robotscache_init",
+      "community": 28,
+      "community_name": "is_safe_url",
+      "norm_label": ".__init__()"
+    },
+    {
+      "label": "._get_client()",
+      "file_type": "code",
+      "source_file": "crawl-agent/utils/url_guard.py",
+      "source_location": "L130",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "crawl_agent_utils_url_guard_robotscache_get_client",
+      "community": 28,
+      "community_name": "is_safe_url",
+      "norm_label": "._get_client()"
+    },
+    {
+      "label": ".close()",
+      "file_type": "code",
+      "source_file": "crawl-agent/utils/url_guard.py",
+      "source_location": "L140",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "crawl_agent_utils_url_guard_robotscache_close",
+      "community": 28,
+      "community_name": "is_safe_url",
+      "norm_label": ".close()"
+    },
+    {
+      "label": "._fetch_disallowed()",
+      "file_type": "code",
+      "source_file": "crawl-agent/utils/url_guard.py",
+      "source_location": "L144",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "crawl_agent_utils_url_guard_robotscache_fetch_disallowed",
+      "community": 28,
+      "community_name": "is_safe_url",
+      "norm_label": "._fetch_disallowed()"
+    },
+    {
+      "label": ".is_allowed()",
+      "file_type": "code",
+      "source_file": "crawl-agent/utils/url_guard.py",
+      "source_location": "L158",
+      "_callable": true,
+      "_origin": "ast",
+      "id": "crawl_agent_utils_url_guard_robotscache_is_allowed",
+      "community": 28,
+      "community_name": "is_safe_url",
+      "norm_label": ".is_allowed()"
+    },
+    {
+      "label": "URL guard \u2014 an to\u00e0n URL + t\u00f4n tr\u1ecdng robots.txt.\u2026",
+      "file_type": "rationale",
+      "source_file": "crawl-agent/utils/url_guard.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "crawl_agent_utils_url_guard_rationale_1",
+      "community": 28,
+      "community_name": "is_safe_url",
+      "norm_label": "url guard \u2014 an toan url + ton trong robots.txt...."
+    },
+    {
+      "label": "Ki\u1ec3m tra URL c\u00f3 an to\u00e0n \u0111\u1ec3 fetch kh\u00f4ng. H\u00c0M THU\u1ea6N. @returns (an_to\u00e0n,\u2026",
+      "file_type": "rationale",
+      "source_file": "crawl-agent/utils/url_guard.py",
+      "source_location": "L29",
+      "_origin": "ast",
+      "id": "crawl_agent_utils_url_guard_rationale_29",
+      "community": 28,
+      "community_name": "is_safe_url",
+      "norm_label": "kiem tra url co an toan \u0111e fetch khong. ham thuan. @returns (an_toan,..."
+    },
+    {
+      "label": "Parse robots.txt t\u1ed1i gi\u1ea3n: tr\u1ea3 danh s\u00e1ch Disallow \u00e1p d\u1ee5ng cho user_agent. H\u00c0M\u2026",
+      "file_type": "rationale",
+      "source_file": "crawl-agent/utils/url_guard.py",
+      "source_location": "L61",
+      "_origin": "ast",
+      "id": "crawl_agent_utils_url_guard_rationale_61",
+      "community": 28,
+      "community_name": "is_safe_url",
+      "norm_label": "parse robots.txt toi gian: tra danh sach disallow ap dung cho user_agent. ham..."
+    },
+    {
+      "label": "Path c\u00f3 \u0111\u01b0\u1ee3c ph\u00e9p crawl kh\u00f4ng (theo danh s\u00e1ch Disallow). H\u00c0M THU\u1ea6N. Lu\u1eadt\u2026",
+      "file_type": "rationale",
+      "source_file": "crawl-agent/utils/url_guard.py",
+      "source_location": "L107",
+      "_origin": "ast",
+      "id": "crawl_agent_utils_url_guard_rationale_107",
+      "community": 28,
+      "community_name": "is_safe_url",
+      "norm_label": "path co \u0111uoc phep crawl khong (theo danh sach disallow). ham thuan. luat..."
+    },
+    {
+      "label": "Cache robots.txt theo domain. Fail-open khi kh\u00f4ng \u0111\u1ecdc \u0111\u01b0\u1ee3c.",
+      "file_type": "rationale",
+      "source_file": "crawl-agent/utils/url_guard.py",
+      "source_location": "L122",
+      "_origin": "ast",
+      "id": "crawl_agent_utils_url_guard_rationale_122",
+      "community": 28,
+      "community_name": "is_safe_url",
+      "norm_label": "cache robots.txt theo domain. fail-open khi khong \u0111oc \u0111uoc."
+    },
+    {
+      "label": "\u0110\u1ecdc robots.txt c\u1ee7a origin. L\u1ed7i \u2192 tr\u1ea3 [] (fail-open, site kh\u00f4ng \u0111\u1eb7t lu\u1eadt).",
+      "file_type": "rationale",
+      "source_file": "crawl-agent/utils/url_guard.py",
+      "source_location": "L145",
+      "_origin": "ast",
+      "id": "crawl_agent_utils_url_guard_rationale_145",
+      "community": 28,
+      "community_name": "is_safe_url",
+      "norm_label": "\u0111oc robots.txt cua origin. loi \u2192 tra [] (fail-open, site khong \u0111at luat)."
+    },
+    {
+      "label": "URL c\u00f3 \u0111\u01b0\u1ee3c ph\u00e9p fetch kh\u00f4ng (safe + robots).",
+      "file_type": "rationale",
+      "source_file": "crawl-agent/utils/url_guard.py",
+      "source_location": "L159",
+      "_origin": "ast",
+      "id": "crawl_agent_utils_url_guard_rationale_159",
+      "community": 28,
+      "community_name": "is_safe_url",
+      "norm_label": "url co \u0111uoc phep fetch khong (safe + robots)."
+    },
+    {
       "label": "workers_client.py",
       "file_type": "code",
       "source_file": "crawl-agent/utils/workers_client.py",
       "source_location": "L1",
       "_origin": "ast",
       "id": "crawl_agent_utils_workers_client",
-      "community": 46,
+      "community": 35,
       "community_name": "orchestrator.py",
       "norm_label": "workers_client.py"
     },
@@ -5570,7 +6290,7 @@
       "_origin": "ast",
       "id": "crawl_agent_utils_workers_client_workersclient",
       "community": 35,
-      "community_name": "WorkersClient",
+      "community_name": "orchestrator.py",
       "norm_label": "workersclient"
     },
     {
@@ -5582,7 +6302,7 @@
       "_origin": "ast",
       "id": "crawl_agent_utils_workers_client_workersclient_init",
       "community": 35,
-      "community_name": "WorkersClient",
+      "community_name": "orchestrator.py",
       "norm_label": ".__init__()"
     },
     {
@@ -5594,7 +6314,7 @@
       "_origin": "ast",
       "id": "crawl_agent_utils_workers_client_workersclient_get_client",
       "community": 35,
-      "community_name": "WorkersClient",
+      "community_name": "orchestrator.py",
       "norm_label": "._get_client()"
     },
     {
@@ -5605,7 +6325,7 @@
       "_origin": "ast",
       "id": "asyncclient",
       "community": 35,
-      "community_name": "WorkersClient",
+      "community_name": "orchestrator.py",
       "norm_label": "asyncclient"
     },
     {
@@ -5617,7 +6337,7 @@
       "_origin": "ast",
       "id": "crawl_agent_utils_workers_client_workersclient_close",
       "community": 35,
-      "community_name": "WorkersClient",
+      "community_name": "orchestrator.py",
       "norm_label": ".close()"
     },
     {
@@ -5629,7 +6349,7 @@
       "_origin": "ast",
       "id": "crawl_agent_utils_workers_client_workersclient_health_check",
       "community": 35,
-      "community_name": "WorkersClient",
+      "community_name": "orchestrator.py",
       "norm_label": ".health_check()"
     },
     {
@@ -5641,7 +6361,7 @@
       "_origin": "ast",
       "id": "crawl_agent_utils_workers_client_workersclient_submit_leads",
       "community": 35,
-      "community_name": "WorkersClient",
+      "community_name": "orchestrator.py",
       "norm_label": ".submit_leads()"
     },
     {
@@ -5653,7 +6373,7 @@
       "_origin": "ast",
       "id": "crawl_agent_utils_workers_client_workersclient_trigger_scan",
       "community": 35,
-      "community_name": "WorkersClient",
+      "community_name": "orchestrator.py",
       "norm_label": ".trigger_scan()"
     },
     {
@@ -5665,7 +6385,7 @@
       "_origin": "ast",
       "id": "crawl_agent_utils_workers_client_workersclient_get_sources_status",
       "community": 35,
-      "community_name": "WorkersClient",
+      "community_name": "orchestrator.py",
       "norm_label": ".get_sources_status()"
     },
     {
@@ -5675,7 +6395,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "crawl_agent_utils_workers_client_rationale_1",
-      "community": 46,
+      "community": 35,
       "community_name": "orchestrator.py",
       "norm_label": "workers api client \u2014 send crawled leads to mtk demand engines...."
     },
@@ -5687,7 +6407,7 @@
       "_origin": "ast",
       "id": "crawl_agent_utils_workers_client_rationale_13",
       "community": 35,
-      "community_name": "WorkersClient",
+      "community_name": "orchestrator.py",
       "norm_label": "http client for the mtk demand engines workers api."
     },
     {
@@ -5698,7 +6418,7 @@
       "_origin": "ast",
       "id": "crawl_agent_utils_workers_client_rationale_37",
       "community": 35,
-      "community_name": "WorkersClient",
+      "community_name": "orchestrator.py",
       "norm_label": "check if workers api is reachable."
     },
     {
@@ -5709,7 +6429,7 @@
       "_origin": "ast",
       "id": "crawl_agent_utils_workers_client_rationale_46",
       "community": 35,
-      "community_name": "WorkersClient",
+      "community_name": "orchestrator.py",
       "norm_label": "submit crawled leads to the workers api for scoring. each lead: { source, url,..."
     },
     {
@@ -5720,7 +6440,7 @@
       "_origin": "ast",
       "id": "crawl_agent_utils_workers_client_rationale_102",
       "community": 35,
-      "community_name": "WorkersClient",
+      "community_name": "orchestrator.py",
       "norm_label": "trigger a scan via workers api (uses existing queue system)."
     },
     {
@@ -5731,7 +6451,7 @@
       "_origin": "ast",
       "id": "crawl_agent_utils_workers_client_rationale_117",
       "community": 35,
-      "community_name": "WorkersClient",
+      "community_name": "orchestrator.py",
       "norm_label": "get status of all configured sources."
     },
     {
@@ -7886,8 +8606,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_transport_crawl_agent",
-      "community": 51,
-      "community_name": "crawl-agent.js",
+      "community": 8,
+      "community_name": "worker.js",
       "norm_label": "crawl-agent.js"
     },
     {
@@ -7898,8 +8618,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "src_transport_crawl_agent_handlecrawlagent",
-      "community": 51,
-      "community_name": "crawl-agent.js",
+      "community": 8,
+      "community_name": "worker.js",
       "norm_label": "handlecrawlagent()"
     },
     {
@@ -7910,8 +8630,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "src_transport_crawl_agent_handlesubmitcrawl",
-      "community": 51,
-      "community_name": "crawl-agent.js",
+      "community": 8,
+      "community_name": "worker.js",
       "norm_label": "handlesubmitcrawl()"
     },
     {
@@ -7922,8 +8642,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "src_transport_crawl_agent_handlecrawlstatus",
-      "community": 51,
-      "community_name": "crawl-agent.js",
+      "community": 8,
+      "community_name": "worker.js",
       "norm_label": "handlecrawlstatus()"
     },
     {
@@ -7934,8 +8654,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "src_transport_crawl_agent_handletriggercrawl",
-      "community": 51,
-      "community_name": "crawl-agent.js",
+      "community": 8,
+      "community_name": "worker.js",
       "norm_label": "handletriggercrawl()"
     },
     {
@@ -7946,8 +8666,8 @@
       "_callable": true,
       "_origin": "ast",
       "id": "src_transport_crawl_agent_handlecrawlsources",
-      "community": 51,
-      "community_name": "crawl-agent.js",
+      "community": 8,
+      "community_name": "worker.js",
       "norm_label": "handlecrawlsources()"
     },
     {
@@ -14800,7 +15520,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "crawl-agent/orchestrator.py",
-      "source_location": "L339",
+      "source_location": "L349",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_orchestrator_crawlorchestrator_health_check",
@@ -14812,7 +15532,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "crawl-agent/orchestrator.py",
-      "source_location": "L204",
+      "source_location": "L213",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_orchestrator_crawlorchestrator_run_all",
@@ -14836,7 +15556,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "crawl-agent/orchestrator.py",
-      "source_location": "L389",
+      "source_location": "L399",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_orchestrator_main",
@@ -15526,7 +16246,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L63",
+      "source_location": "L66",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_spiders_base_basespider_fetch",
@@ -15538,7 +16258,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L30",
+      "source_location": "L32",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_spiders_base_basespider_init",
@@ -16043,7 +16763,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L30",
+      "source_location": "L32",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_spiders_base_basespider_init",
@@ -16180,7 +16900,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/orchestrator.py",
-      "source_location": "L362",
+      "source_location": "L372",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_orchestrator",
@@ -16561,7 +17281,18 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/orchestrator.py",
-      "source_location": "L317",
+      "source_location": "L155",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_orchestrator_crawlorchestrator",
+      "target": "crawl_agent_orchestrator_crawlorchestrator_count_error_kinds",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/orchestrator.py",
+      "source_location": "L327",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_orchestrator_crawlorchestrator",
@@ -16594,7 +17325,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/orchestrator.py",
-      "source_location": "L155",
+      "source_location": "L164",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_orchestrator_crawlorchestrator",
@@ -16605,7 +17336,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/orchestrator.py",
-      "source_location": "L190",
+      "source_location": "L199",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_orchestrator_crawlorchestrator",
@@ -16616,7 +17347,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/orchestrator.py",
-      "source_location": "L281",
+      "source_location": "L291",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_orchestrator_crawlorchestrator",
@@ -16638,7 +17369,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/orchestrator.py",
-      "source_location": "L345",
+      "source_location": "L355",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_orchestrator_crawlorchestrator",
@@ -16661,7 +17392,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/orchestrator.py",
-      "source_location": "L385",
+      "source_location": "L395",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_orchestrator_main",
@@ -16696,7 +17427,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/orchestrator.py",
-      "source_location": "L334",
+      "source_location": "L344",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_orchestrator_crawlorchestrator_health_check",
@@ -16708,7 +17439,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/orchestrator.py",
-      "source_location": "L235",
+      "source_location": "L244",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_orchestrator_crawlorchestrator_run_all",
@@ -16720,7 +17451,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/orchestrator.py",
-      "source_location": "L290",
+      "source_location": "L300",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_orchestrator_crawlorchestrator_run_social",
@@ -16755,7 +17486,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/orchestrator.py",
-      "source_location": "L433",
+      "source_location": "L443",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_orchestrator_main",
@@ -16767,7 +17498,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/orchestrator.py",
-      "source_location": "L218",
+      "source_location": "L227",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_orchestrator_crawlorchestrator_run_all",
@@ -16791,7 +17522,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/orchestrator.py",
-      "source_location": "L406",
+      "source_location": "L416",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_orchestrator_main",
@@ -16810,6 +17541,18 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/orchestrator.py",
+      "source_location": "L273",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_orchestrator_crawlorchestrator_run_all",
+      "target": "crawl_agent_orchestrator_crawlorchestrator_count_error_kinds",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/orchestrator.py",
@@ -16817,6 +17560,17 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_orchestrator_rationale_156",
+      "target": "crawl_agent_orchestrator_crawlorchestrator_count_error_kinds",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/orchestrator.py",
+      "source_location": "L165",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_orchestrator_rationale_165",
       "target": "crawl_agent_orchestrator_crawlorchestrator_record_health",
       "confidence_score": 1.0
     },
@@ -16825,7 +17579,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/orchestrator.py",
-      "source_location": "L417",
+      "source_location": "L427",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_orchestrator_main",
@@ -16836,10 +17590,10 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/orchestrator.py",
-      "source_location": "L197",
+      "source_location": "L206",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "crawl_agent_orchestrator_rationale_197",
+      "source": "crawl_agent_orchestrator_rationale_206",
       "target": "crawl_agent_orchestrator_crawlorchestrator_run_all",
       "confidence_score": 1.0
     },
@@ -16849,7 +17603,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "crawl-agent/orchestrator.py",
-      "source_location": "L307",
+      "source_location": "L317",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_orchestrator_crawlorchestrator_run_social",
@@ -16861,7 +17615,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "crawl-agent/orchestrator.py",
-      "source_location": "L295",
+      "source_location": "L305",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_orchestrator_crawlorchestrator_run_social",
@@ -16872,7 +17626,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/orchestrator.py",
-      "source_location": "L429",
+      "source_location": "L439",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_orchestrator_main",
@@ -16883,10 +17637,10 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/orchestrator.py",
-      "source_location": "L286",
+      "source_location": "L296",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "crawl_agent_orchestrator_rationale_286",
+      "source": "crawl_agent_orchestrator_rationale_296",
       "target": "crawl_agent_orchestrator_crawlorchestrator_run_social",
       "confidence_score": 1.0
     },
@@ -16895,7 +17649,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/orchestrator.py",
-      "source_location": "L399",
+      "source_location": "L409",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_orchestrator_main",
@@ -16906,10 +17660,10 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/orchestrator.py",
-      "source_location": "L318",
+      "source_location": "L328",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "crawl_agent_orchestrator_rationale_318",
+      "source": "crawl_agent_orchestrator_rationale_328",
       "target": "crawl_agent_orchestrator_crawlorchestrator_health_check",
       "confidence_score": 1.0
     },
@@ -16918,7 +17672,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/orchestrator.py",
-      "source_location": "L426",
+      "source_location": "L436",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_orchestrator_main",
@@ -16929,10 +17683,10 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/orchestrator.py",
-      "source_location": "L346",
+      "source_location": "L356",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "crawl_agent_orchestrator_rationale_346",
+      "source": "crawl_agent_orchestrator_rationale_356",
       "target": "crawl_agent_orchestrator_crawlorchestrator_save_results",
       "confidence_score": 1.0
     },
@@ -16940,10 +17694,10 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/orchestrator.py",
-      "source_location": "L363",
+      "source_location": "L373",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "crawl_agent_orchestrator_rationale_363",
+      "source": "crawl_agent_orchestrator_rationale_373",
       "target": "crawl_agent_orchestrator_main",
       "confidence_score": 1.0
     },
@@ -17505,11 +18259,83 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L19",
+      "source_location": "L21",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_spiders_base",
       "target": "crawl_agent_spiders_base_basespider",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/spiders/base.py",
+      "source_location": "L17",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_spiders_base",
+      "target": "crawl_agent_utils_errors",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/spiders/base.py",
+      "source_location": "L17",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_spiders_base",
+      "target": "crawl_agent_utils_errors_classify",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/spiders/base.py",
+      "source_location": "L17",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_spiders_base",
+      "target": "crawl_agent_utils_errors_make_error",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/spiders/base.py",
+      "source_location": "L18",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_spiders_base",
+      "target": "crawl_agent_utils_url_guard",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/spiders/base.py",
+      "source_location": "L18",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_spiders_base",
+      "target": "crawl_agent_utils_url_guard_is_safe_url",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/spiders/base.py",
+      "source_location": "L18",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_spiders_base",
+      "target": "crawl_agent_utils_url_guard_robotscache",
       "confidence_score": 1.0
     },
     {
@@ -17587,7 +18413,7 @@
       "relation": "inherits",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L19",
+      "source_location": "L21",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_spiders_base_basespider",
@@ -17598,7 +18424,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L244",
+      "source_location": "L271",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_spiders_base_basespider",
@@ -17609,7 +18435,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L121",
+      "source_location": "L140",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_spiders_base_basespider",
@@ -17620,7 +18446,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L59",
+      "source_location": "L62",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_spiders_base_basespider",
@@ -17631,7 +18457,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L68",
+      "source_location": "L71",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_spiders_base_basespider",
@@ -17642,7 +18468,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L106",
+      "source_location": "L125",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_spiders_base_basespider",
@@ -17653,7 +18479,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L30",
+      "source_location": "L32",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_spiders_base_basespider",
@@ -17664,7 +18490,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L97",
+      "source_location": "L116",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_spiders_base_basespider",
@@ -17675,7 +18501,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L51",
+      "source_location": "L54",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_spiders_base_basespider",
@@ -17686,7 +18512,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L43",
+      "source_location": "L46",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_spiders_base_basespider",
@@ -17697,12 +18523,23 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L92",
+      "source_location": "L111",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_spiders_base_basespider",
       "target": "crawl_agent_spiders_base_basespider_url_key",
       "confidence_score": 1.0
+    },
+    {
+      "relation": "uses",
+      "confidence": "INFERRED",
+      "source_file": "crawl-agent/spiders/base.py",
+      "source_location": "L18",
+      "weight": 0.8,
+      "_origin": "ast",
+      "source": "crawl_agent_spiders_base_basespider",
+      "target": "crawl_agent_utils_url_guard_robotscache",
+      "confidence_score": 0.5
     },
     {
       "relation": "uses",
@@ -17719,10 +18556,10 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L20",
+      "source_location": "L22",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "crawl_agent_spiders_base_rationale_20",
+      "source": "crawl_agent_spiders_base_rationale_22",
       "target": "crawl_agent_spiders_base_basespider",
       "confidence_score": 1.0
     },
@@ -18016,11 +18853,23 @@
       "confidence_score": 0.5
     },
     {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "crawl-agent/spiders/base.py",
+      "source_location": "L41",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_spiders_base_basespider_init",
+      "target": "crawl_agent_utils_url_guard_robotscache"
+    },
+    {
       "relation": "references",
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L30",
+      "source_location": "L32",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_spiders_base_basespider_init",
@@ -18032,7 +18881,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L165",
+      "source_location": "L187",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_spiders_base_basespider_crawl",
@@ -18043,10 +18892,10 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L44",
+      "source_location": "L47",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "crawl_agent_spiders_base_rationale_44",
+      "source": "crawl_agent_spiders_base_rationale_47",
       "target": "crawl_agent_spiders_base_basespider_parse_listing",
       "confidence_score": 1.0
     },
@@ -18055,7 +18904,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L194",
+      "source_location": "L219",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_spiders_base_basespider_crawl",
@@ -18066,10 +18915,10 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L52",
+      "source_location": "L55",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "crawl_agent_spiders_base_rationale_52",
+      "source": "crawl_agent_spiders_base_rationale_55",
       "target": "crawl_agent_spiders_base_basespider_parse_detail",
       "confidence_score": 1.0
     },
@@ -18078,7 +18927,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L76",
+      "source_location": "L91",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_spiders_base_basespider_fetch_with_retry",
@@ -18089,10 +18938,10 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L60",
+      "source_location": "L63",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "crawl_agent_spiders_base_rationale_60",
+      "source": "crawl_agent_spiders_base_rationale_63",
       "target": "crawl_agent_spiders_base_basespider_fetch",
       "confidence_score": 1.0
     },
@@ -18101,7 +18950,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L159",
+      "source_location": "L178",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_spiders_base_basespider_crawl",
@@ -18109,13 +18958,37 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "crawl-agent/spiders/base.py",
+      "source_location": "L95",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_spiders_base_basespider_fetch_with_retry",
+      "target": "crawl_agent_utils_errors_classify"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "crawl-agent/spiders/base.py",
+      "source_location": "L82",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_spiders_base_basespider_fetch_with_retry",
+      "target": "crawl_agent_utils_url_guard_is_safe_url"
+    },
+    {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L69",
+      "source_location": "L72",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "crawl_agent_spiders_base_rationale_69",
+      "source": "crawl_agent_spiders_base_rationale_72",
       "target": "crawl_agent_spiders_base_basespider_fetch_with_retry",
       "confidence_score": 1.0
     },
@@ -18124,7 +18997,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L99",
+      "source_location": "L118",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_spiders_base_basespider_is_new",
@@ -18135,10 +19008,10 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L93",
+      "source_location": "L112",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "crawl_agent_spiders_base_rationale_93",
+      "source": "crawl_agent_spiders_base_rationale_112",
       "target": "crawl_agent_spiders_base_basespider_url_key",
       "confidence_score": 1.0
     },
@@ -18147,7 +19020,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L168",
+      "source_location": "L190",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_spiders_base_basespider_crawl",
@@ -18158,10 +19031,10 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L98",
+      "source_location": "L117",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "crawl_agent_spiders_base_rationale_98",
+      "source": "crawl_agent_spiders_base_rationale_117",
       "target": "crawl_agent_spiders_base_basespider_is_new",
       "confidence_score": 1.0
     },
@@ -18170,7 +19043,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L197",
+      "source_location": "L222",
       "weight": 1.0,
       "_origin": "ast",
       "source": "crawl_agent_spiders_base_basespider_crawl",
@@ -18181,21 +19054,33 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L107",
+      "source_location": "L126",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "crawl_agent_spiders_base_rationale_107",
+      "source": "crawl_agent_spiders_base_rationale_126",
       "target": "crawl_agent_spiders_base_basespider_format_lead",
       "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "crawl-agent/spiders/base.py",
+      "source_location": "L180",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_spiders_base_basespider_crawl",
+      "target": "crawl_agent_utils_errors_make_error"
     },
     {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "crawl-agent/spiders/base.py",
-      "source_location": "L130",
+      "source_location": "L149",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "crawl_agent_spiders_base_rationale_130",
+      "source": "crawl_agent_spiders_base_rationale_149",
       "target": "crawl_agent_spiders_base_basespider_crawl",
       "confidence_score": 1.0
     },
@@ -19873,6 +20758,282 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/tests/test_errors.py",
+      "source_location": "L15",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_errors",
+      "target": "crawl_agent_tests_test_errors_testclassify",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/tests/test_errors.py",
+      "source_location": "L54",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_errors",
+      "target": "crawl_agent_tests_test_errors_testmakeerror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/tests/test_errors.py",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_errors",
+      "target": "crawl_agent_utils_errors",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/tests/test_errors.py",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_errors",
+      "target": "crawl_agent_utils_errors_classify",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/tests/test_errors.py",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_errors",
+      "target": "crawl_agent_utils_errors_make_error",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/tests/test_errors.py",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_errors_rationale_1",
+      "target": "crawl_agent_tests_test_errors",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/tests/test_errors.py",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_errors_testclassify",
+      "target": "crawl_agent_tests_test_errors_testclassify_test_403_is_blocked_and_not_retryable",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/tests/test_errors.py",
+      "source_location": "L22",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_errors_testclassify",
+      "target": "crawl_agent_tests_test_errors_testclassify_test_429_is_rate_limited_and_retryable",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/tests/test_errors.py",
+      "source_location": "L32",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_errors_testclassify",
+      "target": "crawl_agent_tests_test_errors_testclassify_test_cloudflare_challenge_is_blocked",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/tests/test_errors.py",
+      "source_location": "L37",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_errors_testclassify",
+      "target": "crawl_agent_tests_test_errors_testclassify_test_dns_error_retryable",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/tests/test_errors.py",
+      "source_location": "L42",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_errors_testclassify",
+      "target": "crawl_agent_tests_test_errors_testclassify_test_robots_disallowed_never_retries",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/tests/test_errors.py",
+      "source_location": "L27",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_errors_testclassify",
+      "target": "crawl_agent_tests_test_errors_testclassify_test_timeout_retryable",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/tests/test_errors.py",
+      "source_location": "L47",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_errors_testclassify",
+      "target": "crawl_agent_tests_test_errors_testclassify_test_unknown_defaults_retryable_with_hint",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "crawl-agent/tests/test_errors.py",
+      "source_location": "L17",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_errors_testclassify_test_403_is_blocked_and_not_retryable",
+      "target": "crawl_agent_utils_errors_classify"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "crawl-agent/tests/test_errors.py",
+      "source_location": "L23",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_errors_testclassify_test_429_is_rate_limited_and_retryable",
+      "target": "crawl_agent_utils_errors_classify"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "crawl-agent/tests/test_errors.py",
+      "source_location": "L28",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_errors_testclassify_test_timeout_retryable",
+      "target": "crawl_agent_utils_errors_classify"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "crawl-agent/tests/test_errors.py",
+      "source_location": "L33",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_errors_testclassify_test_cloudflare_challenge_is_blocked",
+      "target": "crawl_agent_utils_errors_classify"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "crawl-agent/tests/test_errors.py",
+      "source_location": "L38",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_errors_testclassify_test_dns_error_retryable",
+      "target": "crawl_agent_utils_errors_classify"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "crawl-agent/tests/test_errors.py",
+      "source_location": "L43",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_errors_testclassify_test_robots_disallowed_never_retries",
+      "target": "crawl_agent_utils_errors_classify"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "crawl-agent/tests/test_errors.py",
+      "source_location": "L48",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_errors_testclassify_test_unknown_defaults_retryable_with_hint",
+      "target": "crawl_agent_utils_errors_classify"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/tests/test_errors.py",
+      "source_location": "L55",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_errors_testmakeerror",
+      "target": "crawl_agent_tests_test_errors_testmakeerror_test_envelope_has_full_contract",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/tests/test_errors.py",
+      "source_location": "L64",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_errors_testmakeerror",
+      "target": "crawl_agent_tests_test_errors_testmakeerror_test_submit_error_uses_status",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "crawl-agent/tests/test_errors.py",
+      "source_location": "L56",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_errors_testmakeerror_test_envelope_has_full_contract",
+      "target": "crawl_agent_utils_errors_make_error"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "crawl-agent/tests/test_errors.py",
+      "source_location": "L65",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_errors_testmakeerror_test_submit_error_uses_status",
+      "target": "crawl_agent_utils_errors_make_error"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "crawl-agent/tests/test_feedback.py",
       "source_location": "L52",
       "weight": 1.0,
@@ -21533,6 +22694,500 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L15",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_url_guard",
+      "target": "crawl_agent_tests_test_url_guard_testissafeurl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L52",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_url_guard",
+      "target": "crawl_agent_tests_test_url_guard_testparserobots",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L86",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_url_guard",
+      "target": "crawl_agent_tests_test_url_guard_testpathallowed",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_url_guard",
+      "target": "crawl_agent_utils_url_guard",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_url_guard",
+      "target": "crawl_agent_utils_url_guard_is_safe_url",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_url_guard",
+      "target": "crawl_agent_utils_url_guard_parse_robots",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_url_guard",
+      "target": "crawl_agent_utils_url_guard_path_allowed",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_url_guard_rationale_1",
+      "target": "crawl_agent_tests_test_url_guard",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L28",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_url_guard_testissafeurl",
+      "target": "crawl_agent_tests_test_url_guard_testissafeurl_test_blocks_cloud_metadata",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L37",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_url_guard_testissafeurl",
+      "target": "crawl_agent_tests_test_url_guard_testissafeurl_test_blocks_file_scheme",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L45",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_url_guard_testissafeurl",
+      "target": "crawl_agent_tests_test_url_guard_testissafeurl_test_blocks_garbage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L41",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_url_guard_testissafeurl",
+      "target": "crawl_agent_tests_test_url_guard_testissafeurl_test_blocks_internal_hostnames",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L20",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_url_guard_testissafeurl",
+      "target": "crawl_agent_tests_test_url_guard_testissafeurl_test_blocks_localhost",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L33",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_url_guard_testissafeurl",
+      "target": "crawl_agent_tests_test_url_guard_testissafeurl_test_blocks_loopback_ip",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L24",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_url_guard_testissafeurl",
+      "target": "crawl_agent_tests_test_url_guard_testissafeurl_test_blocks_private_ip",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_url_guard_testissafeurl",
+      "target": "crawl_agent_tests_test_url_guard_testissafeurl_test_normal_https_url_ok",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L17",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_url_guard_testissafeurl_test_normal_https_url_ok",
+      "target": "crawl_agent_utils_url_guard_is_safe_url"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L21",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_url_guard_testissafeurl_test_blocks_localhost",
+      "target": "crawl_agent_utils_url_guard_is_safe_url"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L25",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_url_guard_testissafeurl_test_blocks_private_ip",
+      "target": "crawl_agent_utils_url_guard_is_safe_url"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L29",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_url_guard_rationale_29",
+      "target": "crawl_agent_tests_test_url_guard_testissafeurl_test_blocks_cloud_metadata",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L30",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_url_guard_testissafeurl_test_blocks_cloud_metadata",
+      "target": "crawl_agent_utils_url_guard_is_safe_url"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L34",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_url_guard_testissafeurl_test_blocks_loopback_ip",
+      "target": "crawl_agent_utils_url_guard_is_safe_url"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L38",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_url_guard_testissafeurl_test_blocks_file_scheme",
+      "target": "crawl_agent_utils_url_guard_is_safe_url"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L42",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_url_guard_testissafeurl_test_blocks_internal_hostnames",
+      "target": "crawl_agent_utils_url_guard_is_safe_url"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L46",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_url_guard_testissafeurl_test_blocks_garbage",
+      "target": "crawl_agent_utils_url_guard_is_safe_url"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L81",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_url_guard_testparserobots",
+      "target": "crawl_agent_tests_test_url_guard_testparserobots_test_comments_ignored",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L73",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_url_guard_testparserobots",
+      "target": "crawl_agent_tests_test_url_guard_testparserobots_test_empty_disallow_allows_all",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L77",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_url_guard_testparserobots",
+      "target": "crawl_agent_tests_test_url_guard_testparserobots_test_empty_or_missing_robots",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L68",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_url_guard_testparserobots",
+      "target": "crawl_agent_tests_test_url_guard_testparserobots_test_specific_agent_gets_own_rules",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L62",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_url_guard_testparserobots",
+      "target": "crawl_agent_tests_test_url_guard_testparserobots_test_wildcard_agent_gets_star_rules",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L63",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_url_guard_testparserobots_test_wildcard_agent_gets_star_rules",
+      "target": "crawl_agent_utils_url_guard_parse_robots"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L69",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_url_guard_testparserobots_test_specific_agent_gets_own_rules",
+      "target": "crawl_agent_utils_url_guard_parse_robots"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L75",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_url_guard_testparserobots_test_empty_disallow_allows_all",
+      "target": "crawl_agent_utils_url_guard_parse_robots"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L78",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_url_guard_testparserobots_test_empty_or_missing_robots",
+      "target": "crawl_agent_utils_url_guard_parse_robots"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L83",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_url_guard_testparserobots_test_comments_ignored",
+      "target": "crawl_agent_utils_url_guard_parse_robots"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L96",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_url_guard_testpathallowed",
+      "target": "crawl_agent_tests_test_url_guard_testpathallowed_test_multiple_rules",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L87",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_url_guard_testpathallowed",
+      "target": "crawl_agent_tests_test_url_guard_testpathallowed_test_no_rules_allows_everything",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L90",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_url_guard_testpathallowed",
+      "target": "crawl_agent_tests_test_url_guard_testpathallowed_test_prefix_blocked",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L93",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_url_guard_testpathallowed",
+      "target": "crawl_agent_tests_test_url_guard_testpathallowed_test_unrelated_path_allowed",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L88",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_url_guard_testpathallowed_test_no_rules_allows_everything",
+      "target": "crawl_agent_utils_url_guard_path_allowed"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L91",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_url_guard_testpathallowed_test_prefix_blocked",
+      "target": "crawl_agent_utils_url_guard_path_allowed"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L94",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_url_guard_testpathallowed_test_unrelated_path_allowed",
+      "target": "crawl_agent_utils_url_guard_path_allowed"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "crawl-agent/tests/test_url_guard.py",
+      "source_location": "L98",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_tests_test_url_guard_testpathallowed_test_multiple_rules",
+      "target": "crawl_agent_utils_url_guard_path_allowed"
+    },
+    {
       "relation": "re_exports",
       "context": "export",
       "confidence": "EXTRACTED",
@@ -21817,6 +23472,73 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/utils/errors.py",
+      "source_location": "L38",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_utils_errors",
+      "target": "crawl_agent_utils_errors_classify",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/utils/errors.py",
+      "source_location": "L59",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_utils_errors",
+      "target": "crawl_agent_utils_errors_make_error",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/utils/errors.py",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_utils_errors_rationale_1",
+      "target": "crawl_agent_utils_errors",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/utils/errors.py",
+      "source_location": "L65",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_utils_errors_make_error",
+      "target": "crawl_agent_utils_errors_classify",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/utils/errors.py",
+      "source_location": "L39",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_utils_errors_rationale_39",
+      "target": "crawl_agent_utils_errors_classify",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/utils/errors.py",
+      "source_location": "L60",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_utils_errors_rationale_60",
+      "target": "crawl_agent_utils_errors_make_error",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "crawl-agent/utils/feedback.py",
       "source_location": "L51",
       "weight": 1.0,
@@ -21947,6 +23669,242 @@
       "_origin": "ast",
       "source": "crawl_agent_utils_feedback_rationale_52",
       "target": "crawl_agent_utils_feedback_build_preference_prompt",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/utils/url_guard.py",
+      "source_location": "L28",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_utils_url_guard",
+      "target": "crawl_agent_utils_url_guard_is_safe_url",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/utils/url_guard.py",
+      "source_location": "L60",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_utils_url_guard",
+      "target": "crawl_agent_utils_url_guard_parse_robots",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/utils/url_guard.py",
+      "source_location": "L106",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_utils_url_guard",
+      "target": "crawl_agent_utils_url_guard_path_allowed",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/utils/url_guard.py",
+      "source_location": "L121",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_utils_url_guard",
+      "target": "crawl_agent_utils_url_guard_robotscache",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/utils/url_guard.py",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_utils_url_guard_rationale_1",
+      "target": "crawl_agent_utils_url_guard",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/utils/url_guard.py",
+      "source_location": "L29",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_utils_url_guard_rationale_29",
+      "target": "crawl_agent_utils_url_guard_is_safe_url",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/utils/url_guard.py",
+      "source_location": "L160",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_utils_url_guard_robotscache_is_allowed",
+      "target": "crawl_agent_utils_url_guard_is_safe_url",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/utils/url_guard.py",
+      "source_location": "L61",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_utils_url_guard_rationale_61",
+      "target": "crawl_agent_utils_url_guard_parse_robots",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/utils/url_guard.py",
+      "source_location": "L150",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_utils_url_guard_robotscache_fetch_disallowed",
+      "target": "crawl_agent_utils_url_guard_parse_robots",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/utils/url_guard.py",
+      "source_location": "L107",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_utils_url_guard_rationale_107",
+      "target": "crawl_agent_utils_url_guard_path_allowed",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/utils/url_guard.py",
+      "source_location": "L170",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_utils_url_guard_robotscache_is_allowed",
+      "target": "crawl_agent_utils_url_guard_path_allowed",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/utils/url_guard.py",
+      "source_location": "L122",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_utils_url_guard_rationale_122",
+      "target": "crawl_agent_utils_url_guard_robotscache",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/utils/url_guard.py",
+      "source_location": "L140",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_utils_url_guard_robotscache",
+      "target": "crawl_agent_utils_url_guard_robotscache_close",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/utils/url_guard.py",
+      "source_location": "L144",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_utils_url_guard_robotscache",
+      "target": "crawl_agent_utils_url_guard_robotscache_fetch_disallowed",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/utils/url_guard.py",
+      "source_location": "L130",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_utils_url_guard_robotscache",
+      "target": "crawl_agent_utils_url_guard_robotscache_get_client",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/utils/url_guard.py",
+      "source_location": "L124",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_utils_url_guard_robotscache",
+      "target": "crawl_agent_utils_url_guard_robotscache_init",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/utils/url_guard.py",
+      "source_location": "L158",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_utils_url_guard_robotscache",
+      "target": "crawl_agent_utils_url_guard_robotscache_is_allowed",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/utils/url_guard.py",
+      "source_location": "L147",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_utils_url_guard_robotscache_fetch_disallowed",
+      "target": "crawl_agent_utils_url_guard_robotscache_get_client",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/utils/url_guard.py",
+      "source_location": "L145",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_utils_url_guard_rationale_145",
+      "target": "crawl_agent_utils_url_guard_robotscache_fetch_disallowed",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/utils/url_guard.py",
+      "source_location": "L168",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_utils_url_guard_robotscache_is_allowed",
+      "target": "crawl_agent_utils_url_guard_robotscache_fetch_disallowed",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "crawl-agent/utils/url_guard.py",
+      "source_location": "L159",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "crawl_agent_utils_url_guard_rationale_159",
+      "target": "crawl_agent_utils_url_guard_robotscache_is_allowed",
       "confidence_score": 1.0
     },
     {
@@ -32644,5 +34602,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "0b199825ef1b8afd9e42ac45e5da1907214ac3fe"
+  "built_at_commit": "62c8f2ae53a3e0d442858614d27a318af79d7ed3"
 }

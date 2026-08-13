@@ -152,6 +152,15 @@ class CrawlOrchestrator:
         self._record_health(source_code, stats)
         return stats
 
+    def _count_error_kinds(self, all_stats: list[dict]) -> dict:
+        """Gom lỗi theo kind để biết nên xử lý gì tiếp (vd: nhiều 'blocked' = dừng hammer)."""
+        counts: dict[str, int] = {}
+        for stats in all_stats:
+            for err in stats.get("errors", []):
+                kind = err.get("kind", "unknown") if isinstance(err, dict) else "legacy"
+                counts[kind] = counts.get(kind, 0) + 1
+        return counts
+
     def _record_health(self, source_code: str, stats: dict) -> None:
         """
         Cập nhật circuit breaker + baseline sau mỗi run.
@@ -261,6 +270,7 @@ class CrawlOrchestrator:
             "total_leads_extracted": sum(s.get("leads_extracted", 0) for s in all_stats),
             "total_leads_submitted": sum(s.get("leads_submitted", 0) for s in all_stats),
             "degraded_sources": self.degraded_sources,
+            "errors_by_kind": self._count_error_kinds(all_stats),
             "details": all_stats,
         }
 

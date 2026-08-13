@@ -14,6 +14,8 @@ from config import Config
 from engines.scrapling_engine import ScraplingEngine
 from engines.camoufox_engine import CamoufoxEngine
 from utils.workers_client import WorkersClient
+from utils.errors import make_error, classify
+from utils.url_guard import RobotsCache, is_safe_url
 
 
 class BaseSpider(ABC):
@@ -36,6 +38,7 @@ class BaseSpider(ABC):
         self.scrapling = scrapling or ScraplingEngine()
         self.camoufox = camoufox
         self.workers = workers or WorkersClient()
+        self.robots = RobotsCache()
         self._seen_urls: set[str] = set()
 
     # ── Abstract methods (override in subclass) ──────────────────
@@ -67,16 +70,32 @@ class BaseSpider(ABC):
 
     async def fetch_with_retry(self, url: str, **kwargs) -> dict:
         """
-        Fetch với exponential backoff.
-        Chỉ retry khi fetch thất bại (ok=False); KHÔNG retry khi fetch được
-        nhưng parse ra 0 kết quả (đó là việc của baseline reconciliation).
+        Fetch với guard + exponential backoff.
+
+        Guard chạy TRƯỚC khi fetch:
+        - is_safe_url: chặn SSRF (private IP, localhost, metadata)
+        - robots.is_allowed: tôn trọng robots.txt của site
+
+        Retry chỉ khi lỗi được phân loại là retryable; bị block thì dừng
+        ngay (hammer tiếp chỉ bị ban nặng hơn).
         """
+        safe, why = is_safe_url(url)
+        if not safe:
+            return {"ok": False, "url": url, "error": f"url_unsafe: {why}"}
+
+        if not await self.robots.is_allowed(url):
+            return {"ok": False, "url": url, "error": f"robots_disallowed: {url}"}
+
         max_retries = Config.CRAWL_MAX_RETRIES
         base_delay = Config.RETRY_BASE_DELAY_SECONDS
         result = await self.fetch(url, **kwargs)
 
         attempt = 0
         while not result["ok"] and attempt < max_retries - 1:
+            cls = classify(result.get("error"), result.get("status"))
+            if not cls["retryable"]:
+                logger.info(f"[{self.name}] Không retry {url} ({cls['kind']}): {cls['hint']}")
+                break
             attempt += 1
             backoff = min(base_delay * (2 ** attempt), 60.0)
             logger.warning(
@@ -158,7 +177,10 @@ class BaseSpider(ABC):
             try:
                 result = await self.fetch_with_retry(url, **kwargs)
                 if not result["ok"]:
-                    stats["errors"].append({"url": url, "error": result.get("error", "unknown")})
+                    stats["errors"].append(make_error(
+                        "listing", result.get("error", "unknown"),
+                        url=url, status=result.get("status"),
+                    ))
                     continue
 
                 stats["pages_fetched"] += 1
@@ -172,7 +194,7 @@ class BaseSpider(ABC):
 
             except Exception as e:
                 logger.error(f"[{self.name}] Error fetching {url}: {e}")
-                stats["errors"].append({"url": url, "error": str(e)})
+                stats["errors"].append(make_error("listing", e, url=url))
 
         stats["links_found"] = len(all_listings)
         logger.info(f"[{self.name}] Found {len(all_listings)} unique links")
@@ -187,7 +209,10 @@ class BaseSpider(ABC):
 
                 result = await self.fetch_with_retry(detail_url, **kwargs)
                 if not result["ok"]:
-                    stats["errors"].append({"url": detail_url, "error": result.get("error", "unknown")})
+                    stats["errors"].append(make_error(
+                        "detail", result.get("error", "unknown"),
+                        url=detail_url, status=result.get("status"),
+                    ))
                     continue
 
                 stats["details_fetched"] += 1
@@ -202,7 +227,7 @@ class BaseSpider(ABC):
 
             except Exception as e:
                 logger.error(f"[{self.name}] Error fetching detail: {e}")
-                stats["errors"].append({"error": str(e)})
+                stats["errors"].append(make_error("detail", e, url=listing.get("url")))
 
         logger.info(f"[{self.name}] Extracted {stats['leads_extracted']} leads")
 
@@ -216,10 +241,12 @@ class BaseSpider(ABC):
                     stats["leads_deduplicated"] = submit_result.get("duplicates", 0)
                     stats["run_label"] = submit_result.get("run_label")
                 else:
-                    stats["errors"].append({"phase": "submit", "error": submit_result.get("error")})
+                    stats["errors"].append(make_error(
+                        "submit", submit_result.get("error", "unknown"),
+                    ))
             except Exception as e:
                 logger.error(f"[{self.name}] Submit failed: {e}")
-                stats["errors"].append({"phase": "submit", "error": str(e)})
+                stats["errors"].append(make_error("submit", e))
 
         stats["finished_at"] = datetime.now().isoformat()
 
@@ -247,3 +274,4 @@ class BaseSpider(ABC):
             await self.camoufox.close()
         if self.workers:
             await self.workers.close()
+        await self.robots.close()

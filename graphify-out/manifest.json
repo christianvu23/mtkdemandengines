@@ -50,8 +50,8 @@
     "semantic_hash": ""
   },
   "crawl-agent/orchestrator.py": {
-    "mtime": 1786638955.620722,
-    "ast_hash": "edba33fe4bbaa62f4c60dac98bf2e9f6",
+    "mtime": 1786640047.9691625,
+    "ast_hash": "30d30bc11b36e5bad331d011c6f3c43c",
     "semantic_hash": ""
   },
   "crawl-agent/scripts/analyze_html.py": {
@@ -65,8 +65,8 @@
     "semantic_hash": ""
   },
   "crawl-agent/spiders/base.py": {
-    "mtime": 1786638955.620722,
-    "ast_hash": "78ea13b5e0aab2d2231313baa4820c1f",
+    "mtime": 1786640030.8040833,
+    "ast_hash": "734bd51307fe8a9f1a7b9cb1c09caac8",
     "semantic_hash": ""
   },
   "crawl-agent/spiders/forum.py": {
@@ -557,6 +557,26 @@
   "tests/loc-trung.test.js": {
     "mtime": 1786638644.6967568,
     "ast_hash": "bc44deacb509bd4e06a3551bb6c20979",
+    "semantic_hash": ""
+  },
+  "crawl-agent/tests/test_errors.py": {
+    "mtime": 1786640075.9193842,
+    "ast_hash": "9aae7def0b347b39527d09498b5997f2",
+    "semantic_hash": ""
+  },
+  "crawl-agent/tests/test_url_guard.py": {
+    "mtime": 1786640094.7346737,
+    "ast_hash": "9181334dbf2827d5eba016b0537b13c3",
+    "semantic_hash": ""
+  },
+  "crawl-agent/utils/errors.py": {
+    "mtime": 1786639995.826492,
+    "ast_hash": "e730038f2e0c1e9da11e571f5bba311a",
+    "semantic_hash": ""
+  },
+  "crawl-agent/utils/url_guard.py": {
+    "mtime": 1786639995.827492,
+    "ast_hash": "7de61aab94156d134dba260fd8712bfa",
     "semantic_hash": ""
   }
 }
