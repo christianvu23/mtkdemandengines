@@ -24,14 +24,17 @@ before(async () => {
 
 after(async () => { await client?.close(); });
 
-test('server khai báo đủ 6 công cụ với tên có tiền tố demand_', async () => {
+test('server khai báo đủ 12 công cụ (6 demand_ + 6 browser_)', async () => {
   const { tools } = await client.listTools();
   const ten = tools.map((t) => t.name).sort();
   assert.deepEqual(ten, [
+    'browser_click', 'browser_extract_content', 'browser_extract_links',
+    'browser_navigate', 'browser_scrape_pipeline', 'browser_wait',
     'demand_get_lead', 'demand_ingest_lead', 'demand_list_sources',
     'demand_score_text', 'demand_search_leads', 'demand_stats',
   ]);
-  assert.ok(tools.every((t) => t.name.startsWith('demand_')), 'phải có tiền tố dịch vụ');
+  assert.ok(tools.filter((t) => t.name.startsWith('demand_')).length === 6,
+    'phải có đúng 6 công cụ demand_');
 });
 
 test('mọi công cụ đều có mô tả và annotations', async () => {
@@ -43,10 +46,10 @@ test('mọi công cụ đều có mô tả và annotations', async () => {
   }
 });
 
-test('chỉ đúng một công cụ được phép ghi — giữ nguyên tắc máy đề xuất người bấm', async () => {
+test('chỉ hai công cụ được phép ghi (demand_ingest_lead + browser_click) — giữ nguyên tắc máy đề xuất người bấm', async () => {
   const { tools } = await client.listTools();
-  const ghi = tools.filter((t) => t.annotations?.readOnlyHint === false).map((t) => t.name);
-  assert.deepEqual(ghi, ['demand_ingest_lead']);
+  const ghi = tools.filter((t) => t.annotations?.readOnlyHint === false).map((t) => t.name).sort();
+  assert.deepEqual(ghi, ['browser_click', 'demand_ingest_lead']);
   assert.ok(!tools.some((t) => /status|trang_thai|update/.test(t.name)),
     'KHÔNG được có công cụ đổi trạng thái lead');
 });
@@ -99,7 +102,7 @@ test('công cụ cần CSDL báo lỗi có hướng dẫn thay vì sập server'
   assert.match(r.content[0].text, /SUPABASE_URL/);
   // server vẫn sống sau lỗi
   const sau = await client.listTools();
-  assert.equal(sau.tools.length, 6);
+  assert.equal(sau.tools.length, 12);
 });
 
 test('demand_search_leads khai báo đúng tham số phân trang', async () => {

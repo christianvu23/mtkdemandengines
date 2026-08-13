@@ -14,11 +14,11 @@ directory = "./public"
 binding = "ASSETS"
 not_found_handling = "single-page-application"
 
-# Cron — CHỈ bật sau khi:
-#   1. /api/demand/kiem-tra-transport trả ok cho transport đang dùng
-#   2. cau_hinh.regex_link_bai đã điền cho từng nguồn (cần xem HTML thật)
-# [triggers]
-# crons = ["*/30 * * * *"]
+# Cron — tự động quét mỗi 30 phút.
+# Worker gọi scheduled() → fetch nguồn từ DB → dispatch queue.
+# Queue consumer xử lý bất đồng bộ, có retry và cap nhat lỗi.
+[triggers]
+crons = ["*/30 * * * *"]
 
 # Queue — quét KHÔNG đồng bộ: /api/demand/quet và cron chỉ xếp job vào đây,
 # consumer (handler `queue` trong worker.js) xử lý từng nguồn, từng link.

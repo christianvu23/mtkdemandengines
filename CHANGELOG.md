@@ -4,6 +4,10 @@ Tất cả các thay đổi quan trọng của project sẽ được ghi lại t
 
 ## [Unreleased]
 
+### Added
+- **Bật cron tự động quét** `*/30 * * * *` — Worker giờ tự động fetch sources từ DB và dispatch queue mỗi 30 phút
+- **MCP server 6 browser tools mới**: `browser_navigate`, `browser_extract_links`, `browser_extract_content`, `browser_click`, `browser_wait`, `browser_scrape_pipeline`
+
 ### Fixed
 - **FK constraint `demand_leads_source_fkey`**: Thêm `fb_manual` vào `demand_sources` — inbox có lead `source=fb_manual` (nạp thủ công từ Facebook) nhưng DB không có → merge fail
 - **Cron handler**: `scheduled()` giờ fetch sources từ DB rồi dispatch queue (trước đó gọi `xuLyQuetNguon({}, env)` với empty object → luôn skip)
@@ -12,12 +16,12 @@ Tất cả các thay đổi quan trọng của project sẽ được ghi lại t
 - **Dead code**: Xóa `extractJobInfo()` không được gọi trong handlers.js
 - **Redundant call**: `suyRaHinhThuc()` nhận pre-computed `phanLoai` từ `napLead()`, tránh gọi `phanLoaiNhuCau()` 2 lần
 - **Supabase project migration**: Cập nhật tất cả references từ `dlzhcfrojibpscozdmrx` → `emkwknwcyyewevmmoxzj` (app.html, wrangler.toml, HUONG-DAN-DEPLOY.md, mcp/README.md)
+- **MCP tests**: Cập nhật kỳ vọng từ 6 → 12 tools (thêm 6 browser tools)
 
 ### Planned
-- Bật cron tự động quét mỗi 30 phút
-- Fix freelancerviet — đổi sang `browser_run`
+- Fix freelancerviet — đã đổi transport sang `browser_run`, cần test thực tế
 - Tìm URL TopCV khác hoặc dùng crawl-agent Python
-- Config regex cho vlance
+- Config regex cho vlance (hiện dùng suy luận cấu trúc)
 
 ---
 

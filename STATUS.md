@@ -58,7 +58,7 @@ Christian bấm "Nạp" → merge_demand_inbox() → demand_leads
 | Leads đã chấm điểm | 53+ | ✅ |
 | Lần quét thành công | 4+ | ✅ |
 | Sources hoạt động | 1/6 (vieclam24h) | ⚠️ |
-| Cron auto-scan | Đã fix, chưa bật | ⏳ |
+| Cron auto-scan | ✅ Đã bật */30 * * * * | ✅ |
 
 ---
 
@@ -66,7 +66,7 @@ Christian bấm "Nạp" → merge_demand_inbox() → demand_leads
 
 | # | Task | Ưu tiên |
 |---|------|---------|
-| 1 | Bật cron tự động quét mỗi 30 phút | 🔴 HIGH |
+| 1 | Bật cron tự động quét mỗi 30 phút | 🔴 HIGH | ✅ **ĐÃ BẬT** |
 | 2 | Test freelancerviet với browser_run | 🟡 MEDIUM |
 | 3 | Tìm URL TopCV khác hoặc dùng crawl-agent | 🟡 MEDIUM |
 | 4 | Config regex cho vlance | 🟢 LOW |

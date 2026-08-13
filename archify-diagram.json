@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Demand Engine — Kiến trúc hiện tại",
+    "subtitle": "Vấn đề: dữ liệu mới không nạp được sau đổi Supabase project",
+    "quality_profile": "showcase",
+    "visual_preset": "editorial"
+  },
+  "layout": { "mode": "grid", "cols": 8, "gapX": 60, "gapY": 80 },
+  "components": [
+    { "id": "user", "type": "external", "label": "Người dùng", "sublabel": "Trình duyệt", "row": 0, "col": 0, "size": [120, 60] },
+    { "id": "frontend", "type": "frontend", "label": "Dashboard", "sublabel": "public/app.html", "tag": "anon key mới", "row": 0, "col": 2, "size": [160, 70] },
+    { "id": "supabase_new", "type": "database", "label": "Supabase MỚI", "sublabel": "emkwknwcyyewevmmoxzj", "tag": "VẤN ĐỀ ?", "row": 1, "col": 3, "size": [180, 80] },
+    { "id": "supabase_old", "type": "database", "label": "Supabase CŨ", "sublabel": "dlzhcfrojibpscozdmrx", "tag": "Đã tách", "row": 3, "col": 0, "size": [160, 60] },
+    { "id": "worker", "type": "backend", "label": "Worker (Cloudflare)", "sublabel": "service_role key", "row": 2, "col": 6, "size": [150, 70] },
+    { "id": "queue", "type": "messagebus", "label": "Cloudflare Queue", "sublabel": "demand-queue", "row": 2, "col": 4, "size": [130, 60] },
+    { "id": "sources", "type": "external", "label": "Nguồn dữ liệu", "sublabel": "vLance, FreelancerViet, FB", "row": 3, "col": 6, "size": [140, 60] }
+  ],
+  "boundaries": [
+    { "kind": "security-group", "label": "RLS + Auth", "wraps": ["supabase_new", "frontend"] }
+  ],
+  "connections": [
+    { "id": "user-to-fe", "from": "user", "to": "frontend", "label": "Xem giao diện" },
+    { "id": "fe-to-sb", "from": "frontend", "to": "supabase_new", "label": "anon key → RPC merge_demand_inbox()", "variant": "security" },
+    { "id": "sb-old", "from": "supabase_new", "to": "supabase_old", "label": "Đã đổi project 11/08", "variant": "dashed" },
+    { "id": "worker-to-queue", "from": "worker", "to": "queue", "label": "Xếp job quét" },
+    { "id": "sources-to-queue", "from": "sources", "to": "queue", "label": "Dữ liệu thô" },
+    { "id": "queue-to-sb", "from": "queue", "to": "supabase_new", "label": "Nạp inbox → demand_leads", "variant": "dashed" }
+  ],
+  "cards": [
+    { "dot": "rose", "title": "Vấn đề hiện tại", "items": ["Supabase mới (emkwknwcyyewevmmoxzj) chưa có schema/migrations?", "RLS policies chưa cấu hình cho bảng demand_leads?", "Hàm RPC merge_demand_inbox() chưa tồn tại?", "Service role key trong wrangler.toml vẫn trỏ project cũ?"] },
+    { "dot": "emerald", "title": "Đề xuất fix", "items": ["Chạy lại migrations từ db/migrations/ lên project mới", "Kiểm tra và tạo lại hàm merge_demand_inbox()", "Cập nhật SUPABASE_URL + SERVICE_KEY cho đúng", "Test kết nối bằng /api/demand/kiem-tra-transport"] }
+  ]
+}

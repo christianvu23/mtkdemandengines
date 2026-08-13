@@ -1,0 +1,37 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "username": "christianvu23",
+  "default_agent": "deploy",
+  "logLevel": "INFO",
+  "autoupdate": true,
+  "skills": {
+    "paths": [".opencode/skills"]
+  },
+  "references": {
+    "migrations": {
+      "path": "db/migrations",
+      "description": "Sử dụng cho các file SQL migration của Demand Engine"
+    },
+    "project": {
+      "path": ".",
+      "description": "Thư mục gốc dự án mtkdemandengines"
+    }
+  },
+  "agent": {
+    "deploy": {
+      "description": "Tự động deploy database migrations và cập nhật cấu hình Supabase cho project mới emkwknwcyyewevmmoxzj",
+      "mode": "primary",
+      "model": "anthropic/claude-sonnet-4-6"
+    }
+  },
+  "command": {
+    "deploy": {
+      "description": "Chạy luồng tự động deploy: áp migrations, kiểm tra transport, cập nhật secrets và xác nhận trạng thái live site"
+    }
+  },
+  "permission": {
+    "bash": { "git *": "allow", "npm *": "allow", "npx *": "allow", "node *": "allow", "wrangler *": "ask", "*": "ask" },
+    "edit": { "wrangler.toml": "allow", ".opencode/*": "allow", "db/*": "deny", "public/*.html": "allow" },
+    "external_directory": { "~/secrets/**": "deny", "*": "allow" }
+  }
+}
