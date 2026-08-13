@@ -1,10 +1,8 @@
 // src/sources/freelance-crawler.js
 // ============================================================================
-// FREELANCE & FORUM CRAWLER
-// Crawl data từ các sites: vLance, FreelancerVN, BlackHatWorld, WarriorForum
+// FREELANCE & FORUM CRAWLER — Cloudflare Workers compatible
+// Dùng Cloudflare Browser Rendering API thay vì Playwright
 // ============================================================================
-
-import { chromium } from 'playwright';
 
 /**
  * Config cho các nguồn cần crawl
@@ -15,14 +13,13 @@ export const CRAWL_SOURCES = {
     urls: [
       'https://vlance.vn/viec-lam-freelance/marketing',
       'https://vlance.vn/viec-lam-freelance/content-writing',
-      'https://vlance.vn/viec-lam-freelance/design',
     ],
     // Selectors sẽ được update sau khi analyze HTML thật
     selectors: {
-      listing: '.project-item, .job-item, article',
-      title: 'h2, h3, .title',
-      link: 'a[href*="/du-an/"]',
-      description: '.description, .summary',
+      listing: '.project-item, .job-item, article, [class*="project"]',
+      title: 'h2, h3, .title, [class*="title"]',
+      link: 'a[href*="/du-an/"], a[href*="/viec/"]',
+      description: '.description, .summary, p',
     },
   },
 
@@ -30,13 +27,12 @@ export const CRAWL_SOURCES = {
     name: 'BlackHatWorld',
     urls: [
       'https://www.blackhatworld.com/seo/marketplace/',
-      'https://www.blackhatworld.com/seo/social-media/',
     ],
     selectors: {
-      listing: '.discussionListItem, .structItem',
-      title: '.title a, h3 a',
+      listing: '.discussionListItem, .structItem, [class*="thread"]',
+      title: '.title a, h3 a, [class*="title"] a',
       link: 'a[href*="/threads/"]',
-      description: '.snippet, .lastPost',
+      description: '.snippet, .lastPost, [class*="excerpt"]',
     },
   },
 
@@ -46,108 +42,156 @@ export const CRAWL_SOURCES = {
       'https://www.warriorforum.com/main-internet-marketing-discussion-forum/',
     ],
     selectors: {
-      listing: '.threadbit, .discussionListItem',
-      title: '.threadtitle a, h3 a',
+      listing: '.threadbit, .discussionListItem, [class*="thread"]',
+      title: '.threadtitle a, h3 a, [class*="title"] a',
       link: 'a[href*="/thread/"]',
-      description: '.threadmeta, .excerpt',
+      description: '.threadmeta, .excerpt, [class*="meta"]',
     },
   },
 };
 
 /**
+ * Fetch HTML từ URL dùng Cloudflare Browser Rendering API
+ * Hoặc fallback về fetch thường nếu không có API
+ */
+async function fetchWithBrowser(url, env) {
+  // Thử dùng Cloudflare Browser Rendering API
+  if (env?.CLOUDFLARE_ACCOUNT_ID && env?.CLOUDFLARE_API_TOKEN) {
+    try {
+      const api = `https://api.cloudflare.com/client/v4/accounts/${env.CLOUDFLARE_ACCOUNT_ID}/browser-rendering/markdown`;
+      const res = await fetch(api, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${env.CLOUDFLARE_API_TOKEN}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          url,
+          gotoOptions: { waitUntil: 'domcontentloaded', timeout: 30000 },
+        }),
+      });
+
+      if (res.ok) {
+        const json = await res.json();
+        if (json.success) {
+          return { ok: true, content: json.result, format: 'markdown' };
+        }
+      }
+    } catch (e) {
+      console.log('Browser API failed, falling back to fetch:', e.message);
+    }
+  }
+
+  // Fallback: fetch thường
+  try {
+    const res = await fetch(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+        'Accept': 'text/html,application/xhtml+xml',
+      },
+    });
+
+    if (!res.ok) {
+      return { ok: false, error: `HTTP ${res.status}` };
+    }
+
+    const html = await res.text();
+    return { ok: true, content: html, format: 'html' };
+  } catch (e) {
+    return { ok: false, error: e.message };
+  }
+}
+
+/**
+ * Parse HTML và extract items dùng regex (Workers-compatible)
+ */
+function parseHtmlWithRegex(html, selectors) {
+  const items = [];
+
+  // Extract links dựa trên selector patterns
+  const linkPatterns = [
+    /href="(\/du-an\/[^"]+)"/g,      // vLance
+    /href="(\/threads\/[^"]+)"/g,     // BHW
+    /href="(\/thread\/[^"]+)"/g,      // WarriorForum
+    /href="(\/projects\/[^"]+)"/g,    // Freelancer
+  ];
+
+  const foundLinks = new Set();
+
+  for (const pattern of linkPatterns) {
+    let match;
+    while ((match = pattern.exec(html)) !== null) {
+      foundLinks.add(match[1]);
+    }
+  }
+
+  // Extract titles và descriptions
+  const titlePattern = /<h[1-6][^>]*>([^<]+)<\/h[1-6]>/gi;
+  const titles = [];
+  let match;
+  while ((match = titlePattern.exec(html)) !== null) {
+    const title = match[1].trim();
+    if (title.length > 10 && title.length < 200) {
+      titles.push(title);
+    }
+  }
+
+  // Match titles với links
+  for (let i = 0; i < Math.min(titles.length, foundLinks.size); i++) {
+    const link = Array.from(foundLinks)[i];
+    if (link) {
+      items.push({
+        title: titles[i],
+        link: link.startsWith('http') ? link : link,
+        description: '',
+        source: '',
+        crawledAt: new Date().toISOString(),
+      });
+    }
+  }
+
+  return items;
+}
+
+/**
  * Crawl một trang và extract data
  */
-export async function crawlPage(url, sourceConfig) {
-  const browser = await chromium.launch({ headless: true });
+export async function crawlPage(url, sourceConfig, env) {
+  const result = await fetchWithBrowser(url, env);
 
-  try {
-    const page = await browser.newPage();
-    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
-    await page.waitForTimeout(3000); // Wait for lazy load
-
-    const results = await page.evaluate((selectors) => {
-      const items = [];
-
-      // Try multiple selector patterns
-      const listingSelectors = selectors.listing.split(',').map(s => s.trim());
-
-      for (const selector of listingSelectors) {
-        const elements = document.querySelectorAll(selector);
-
-        for (const el of elements) {
-          // Extract title
-          const titleSelectors = selectors.title.split(',').map(s => s.trim());
-          let title = '';
-          for (const ts of titleSelectors) {
-            const titleEl = el.querySelector(ts);
-            if (titleEl) {
-              title = titleEl.textContent.trim();
-              break;
-            }
-          }
-
-          // Extract link
-          const linkSelectors = selectors.link.split(',').map(s => s.trim());
-          let link = '';
-          for (const ls of linkSelectors) {
-            const linkEl = el.querySelector(ls);
-            if (linkEl) {
-              link = linkEl.href || linkEl.getAttribute('href') || '';
-              break;
-            }
-          }
-
-          // Extract description
-          const descSelectors = selectors.description.split(',').map(s => s.trim());
-          let description = '';
-          for (const ds of descSelectors) {
-            const descEl = el.querySelector(ds);
-            if (descEl) {
-              description = descEl.textContent.trim();
-              break;
-            }
-          }
-
-          if (title || link) {
-            items.push({
-              title: title.slice(0, 200),
-              link: link,
-              description: description.slice(0, 500),
-              source: window.location.hostname,
-              crawledAt: new Date().toISOString(),
-            });
-          }
-        }
-
-        if (items.length > 0) break; // Stop if we found items
-      }
-
-      return items;
-    }, sourceConfig.selectors);
-
-    return {
-      ok: true,
-      url,
-      items: results,
-      count: results.length,
-    };
-  } catch (error) {
+  if (!result.ok) {
     return {
       ok: false,
       url,
-      error: error.message,
+      error: result.error,
       items: [],
       count: 0,
     };
-  } finally {
-    await browser.close();
   }
+
+  const items = parseHtmlWithRegex(result.content, sourceConfig.selectors);
+
+  // Add source info
+  const domain = new URL(url).hostname;
+  for (const item of items) {
+    item.source = domain;
+    if (!item.link.startsWith('http')) {
+      item.link = `https://${domain}${item.link}`;
+    }
+  }
+
+  return {
+    ok: true,
+    url,
+    items,
+    count: items.length,
+  };
 }
 
 /**
  * Crawl tất cả URLs của một source
  */
-export async function crawlSource(sourceName) {
+export async function crawlSource(sourceName, env) {
   const config = CRAWL_SOURCES[sourceName];
   if (!config) {
     throw new Error(`Unknown source: ${sourceName}`);
@@ -159,7 +203,7 @@ export async function crawlSource(sourceName) {
 
   for (const url of config.urls) {
     console.log(`  → ${url}`);
-    const result = await crawlPage(url, config);
+    const result = await crawlPage(url, config, env);
 
     if (result.ok) {
       console.log(`    ✓ Found ${result.count} items`);
@@ -169,7 +213,7 @@ export async function crawlSource(sourceName) {
     }
 
     // Delay between pages
-    await new Promise(r => setTimeout(r, 2000));
+    await new Promise(r => setTimeout(r, 1000));
   }
 
   return {
@@ -183,12 +227,12 @@ export async function crawlSource(sourceName) {
 /**
  * Crawl tất cả sources
  */
-export async function crawlAllSources() {
+export async function crawlAllSources(env) {
   const results = [];
 
   for (const sourceName of Object.keys(CRAWL_SOURCES)) {
     try {
-      const result = await crawlSource(sourceName);
+      const result = await crawlSource(sourceName, env);
       results.push(result);
     } catch (error) {
       results.push({

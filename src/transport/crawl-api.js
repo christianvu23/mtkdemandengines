@@ -156,9 +156,9 @@ async function handleRunCrawl(request, env) {
           headers: { 'Content-Type': 'application/json' },
         });
       }
-      results = [await crawlSource(source)];
+      results = [await crawlSource(source, env)];
     } else {
-      results = await crawlAllSources();
+      results = await crawlAllSources(env);
     }
 
     const duration = Date.now() - startTime;

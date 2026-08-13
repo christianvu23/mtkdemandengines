@@ -12,23 +12,39 @@ import { chamDiem } from './rubric-lead.js';
 
 /** Bỏ cú pháp markdown để phần chấm điểm nhìn thấy chữ, không nhìn thấy dấu. */
 export function goMarkdown(md) {
-  return String(md ?? '')
+  let s = String(md ?? '');
+  // Strip HTML tags trước (tránh bị strip dấu > bởi regex bên dưới)
+  s = s.replace(/<[^>]+>/g, ' ');
+  return s
     .replace(/!\[[^\]]*\]\([^)]*\)/g, ' ')      // ảnh
     .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')     // link → giữ nhãn
     .replace(/^\s{0,3}#{1,6}\s+/gm, '')          // heading
-    .replace(/[*_`>]+/g, ' ')                    // nhấn mạnh, code, quote
+    .replace(/[*_`]+/g, ' ')                     // nhấn mạnh, code (bỏ > để không strip HTML)
     .replace(/^\s*[-+*]\s+/gm, '')               // bullet
     .replace(/\n{3,}/g, '\n\n')
     .replace(/[ \t]{2,}/g, ' ')
     .trim();
 }
 
-/** Đoán tiêu đề: heading markdown đầu tiên, nếu không có thì câu đầu. */
+/** Đoán tiêu đề: frontmatter title > heading markdown > câu đầu. */
 export function doanTieuDe(noiDung, tieuDeCho = null) {
   if (tieuDeCho) return String(tieuDeCho).trim().slice(0, 300);
   const raw = String(noiDung ?? '');
+  
+  // 1. Thử parse frontmatter YAML (browser_run hay trả về)
+  const fmMatch = raw.match(/^---\s*\n([\s\S]*?)\n---/);
+  if (fmMatch) {
+    const fm = fmMatch[1];
+    // title: "..." hoặc title: '...' hoặc title: ...
+    const titleMatch = fm.match(/^title:\s*["']?([^"'\n]+)["']?\s*$/m);
+    if (titleMatch) return titleMatch[1].trim().slice(0, 300);
+  }
+  
+  // 2. Thử heading markdown
   const h = raw.match(/^\s{0,3}#{1,6}\s+(.+)$/m);
   if (h) return h[1].trim().slice(0, 300);
+  
+  // 3. Fallback: dòng đầu tiên sau khi strip markdown
   const dong = goMarkdown(raw).split('\n').map((s) => s.trim()).filter(Boolean);
   return (dong[0] ?? '').slice(0, 300) || null;
 }
