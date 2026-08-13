@@ -27,7 +27,7 @@ export async function xuLyQuetNguon(m, env) {
 
   const kq = await lay(m.url_danh_sach, transport, env);
   if (!kq.ok) {
-    await capNghenguon(m.ma_nguon, {
+    await capNghenguon(env, m.ma_nguon, {
       lan_loi_cuoi: new Date().toISOString(),
       so_loi_lien_tiep: (m.so_loi_lien_tiep ?? 0) + 1,
     });
@@ -63,7 +63,7 @@ export async function xuLyQuetNguon(m, env) {
   }
 
   // Cập nhật nguồn đã quét
-  capNghenguon(m.ma_nguon, {
+  capNghenguon(env, m.ma_nguon, {
     lan_quet_cuoi: new Date().toISOString(),
     so_loi_lien_tiep: 0,
   });
