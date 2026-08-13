@@ -264,11 +264,12 @@
 // ===========================================================================
 
 const CAU_HINH = {
-  // Project riêng của Demand Engine (tách khỏi CMCTS)
+  // Project riêng của Demand Engine (tách khỏi CMCTS) — project MỚI 11/08/2026
   supabaseUrl: 'https://emkwknwcyyewevmmoxzj.supabase.co',
   // KHOÁ ANON — đúng loại để nhúng client. RLS mới là lớp bảo vệ thật, không phải khoá này.
   // ⛔ TUYỆT ĐỐI không thay bằng service_role key: nó BỎ QUA toàn bộ RLS.
   //    Service key chỉ được nằm trong secret của Worker phía server, không bao giờ trong file này.
+  // Key anon của project mới (ref: emkwknwcyyewevmmoxzj)
   supabaseKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVta3drbndjeXlld2V2bW1veHpqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUzNTM0MjMsImV4cCI6MjEwMDkyOTQyM30.aKefdbcR0PkDnVEPmpDnFo4T_0SIgd3T15F8A_wdE_o',
   cdn: 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm',
 };

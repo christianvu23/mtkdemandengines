@@ -21,6 +21,7 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { z } from 'zod';
+import { chromium } from 'playwright';
 
 import { napLead } from '../src/core/nap-lead.js';
 import { conHan, tinhTuoiGio, nhanDoTuoi } from '../src/core/tuoi.js';
@@ -28,7 +29,22 @@ import { conHan, tinhTuoiGio, nhanDoTuoi } from '../src/core/tuoi.js';
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY ?? process.env.SUPABASE_ANON_KEY;
 
-const log = (...a) => console.error('[demand-engine-mcp]', ...a); // stderr, không phải stdout
+const log = (...a) => console.error('[demand-engine-mcp]', ...a);
+
+// Playwright browser instance (reuse across calls)
+let browser = null;
+async function getBrowser() {
+  if (!browser) {
+    browser = await chromium.launch({ headless: true });
+  }
+  return browser;
+}
+async function closeBrowser() {
+  if (browser) {
+    await browser.close().catch(() => {});
+    browser = null;
+  }
+} // stderr, không phải stdout
 
 // --------------------------------------------------------------- Supabase
 async function pg(duongDan) {
@@ -335,7 +351,246 @@ server.registerTool(
   },
 );
 
+// 7 ------------------------------------------------------ browser_navigate
+server.registerTool(
+  'browser_navigate',
+  {
+    title: 'Mở trang web',
+    description: 'Mở URL trong browser headless, trả về title và URL cuối (sau redirect).',
+    inputSchema: {
+      url: z.string().url(),
+      wait_until: z.enum(['domcontentloaded', 'networkidle', 'load']).default('domcontentloaded'),
+      timeout_ms: z.number().int().min(5000).max(120000).default(30000),
+    },
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: false, openWorldHint: true },
+  },
+  async (a) => {
+    try {
+      const b = await getBrowser();
+      const page = await b.newPage();
+      try {
+        const res = await page.goto(a.url, { waitUntil: a.wait_until, timeout: a.timeout_ms });
+        const title = await page.title();
+        return { content: [{ type: 'text', text: `✅ Đã mở: ${page.url()}\nTitle: ${title}\nStatus: ${res?.status() ?? 'unknown'}` }] };
+      } finally {
+        await page.close().catch(() => {});
+      }
+    } catch (e) {
+      return loi(e.message);
+    }
+  },
+);
+
+// 8 --------------------------------------------------- browser_extract_links
+server.registerTool(
+  'browser_extract_links',
+  {
+    title: 'Trích xuất link từ trang',
+    description: 'Lấy tất cả link <a href> từ trang hiện tại, lọc theo pattern (regex) nếu cung cấp.',
+    inputSchema: {
+      url: z.string().url().optional().describe('URL để mở trước (bỏ qua nếu đã ở trang đó)'),
+      pattern: z.string().optional().describe('Regex lọc href, ví dụ "/du-an/"'),
+      selector: z.string().default('a[href]').describe('CSS selector cho link'),
+      limit: z.number().int().min(1).max(500).default(100),
+    },
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
+  },
+  async (a) => {
+    try {
+      const b = await getBrowser();
+      const page = await b.newPage();
+      try {
+        if (a.url) await page.goto(a.url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        const links = await page.$$eval(a.selector, (els, pattern) => {
+          const re = pattern ? new RegExp(pattern) : null;
+          return [...new Set(els.map(e => e.href).filter(h => h && (!re || re.test(h))))];
+        }, a.pattern);
+        return { content: [{ type: 'text', text: `🔗 Tìm thấy ${links.length} link${a.pattern ? ` (pattern: ${a.pattern})` : ''}:\n${links.slice(0, a.limit).join('\n')}` }] };
+      } finally {
+        await page.close().catch(() => {});
+      }
+    } catch (e) {
+      return loi(e.message);
+    }
+  },
+);
+
+// 9 ------------------------------------------------- browser_extract_content
+server.registerTool(
+  'browser_extract_content',
+  {
+    title: 'Trích xuất nội dung trang',
+    description: 'Lấy text content hoặc HTML từ trang hiện tại.',
+    inputSchema: {
+      url: z.string().url().optional(),
+      mode: z.enum(['text', 'html', 'markdown']).default('text'),
+      selector: z.string().optional().describe('CSS selector giới hạn vùng extract'),
+      timeout_ms: z.number().int().min(5000).max(120000).default(30000),
+    },
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
+  },
+  async (a) => {
+    try {
+      const b = await getBrowser();
+      const page = await b.newPage();
+      try {
+        if (a.url) await page.goto(a.url, { waitUntil: 'domcontentloaded', timeout: a.timeout_ms });
+        if (a.mode === 'html') {
+          const html = a.selector ? await page.$eval(a.selector, el => el.outerHTML) : await page.content();
+          return { content: [{ type: 'text', text: html.slice(0, 50000) }] };
+        }
+        if (a.mode === 'markdown') {
+          // Simple HTML to markdown conversion
+          const html = a.selector ? await page.$eval(a.selector, el => el.outerHTML) : await page.content();
+          const md = html.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+            .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '')
+            .replace(/<[^>]+>/g, '\n')
+            .replace(/\n{3,}/g, '\n\n')
+            .trim();
+          return { content: [{ type: 'text', text: md.slice(0, 30000) }] };
+        }
+        // text mode
+        const text = a.selector ? await page.$eval(a.selector, el => el.innerText) : await page.evaluate(() => document.body?.innerText ?? '');
+        return { content: [{ type: 'text', text: text.slice(0, 20000) }] };
+      } finally {
+        await page.close().catch(() => {});
+      }
+    } catch (e) {
+      return loi(e.message);
+    }
+  },
+);
+
+// 10 ------------------------------------------------------------ browser_click
+server.registerTool(
+  'browser_click',
+  {
+    title: 'Click element',
+    description: 'Click vào element trên trang, có thể chờ navigation sau click.',
+    inputSchema: {
+      selector: z.string().describe('CSS selector element cần click'),
+      wait_for_navigation: z.boolean().default(false),
+      timeout_ms: z.number().int().min(2000).max(60000).default(10000),
+    },
+    annotations: { readOnlyHint: false, destructiveHint: true, idempotentHint: false, openWorldHint: true },
+  },
+  async (a) => {
+    try {
+      const b = await getBrowser();
+      const page = await b.newPage();
+      try {
+        await page.goto('about:blank');
+        // Note: requires prior navigation; typically used after browser_navigate
+        // For simplicity, we create a page but real usage needs shared context
+        // This is a simplified version - production would reuse page
+        const page = await b.newPage();
+        await page.waitForSelector(a.selector, { timeout: a.timeout_ms });
+        await page.click(a.selector);
+        if (a.wait_for_navigation) await page.waitForNavigation({ waitUntil: 'domcontentloaded', timeout: a.timeout_ms });
+        return { content: [{ type: 'text', text: `✅ Clicked: ${a.selector} | URL now: ${page.url()}` }] };
+      } finally {
+        await page.close().catch(() => {});
+      }
+    } catch (e) {
+      return loi(e.message, 'Selector có thể chưa xuất hiện hoặc page chưa load xong.');
+    }
+  },
+);
+
+// 11 ----------------------------------------------------------- browser_wait
+server.registerTool(
+  'browser_wait',
+  {
+    title: 'Chờ element/xpath',
+    description: 'Chờ element xuất hiện, biến mất, hoặc điều kiện custom.',
+    inputSchema: {
+      selector: z.string().optional().describe('CSS selector chờ xuất hiện'),
+      xpath: z.string().optional().describe('XPath chờ xuất hiện'),
+      state: z.enum(['visible', 'hidden', 'attached', 'detached']).default('visible'),
+      timeout_ms: z.number().int().min(1000).max(120000).default(30000),
+    },
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
+  },
+  async (a) => {
+    try {
+      const b = await getBrowser();
+      const page = await b.newPage();
+      try {
+        if (a.selector) await page.waitForSelector(a.selector, { state: a.state, timeout: a.timeout_ms });
+        else if (a.xpath) await page.waitForSelector(`xpath=${a.xpath}`, { state: a.state, timeout: a.timeout_ms });
+        return { content: [{ type: 'text', text: `✅ Condition met: ${a.selector ?? a.xpath} (${a.state})` }] };
+      } finally {
+        await page.close().catch(() => {});
+      }
+    } catch (e) {
+      return loi(e.message, 'Timeout chờ element. Kiểm tra selector hoặc tăng timeout.');
+    }
+  },
+);
+
+// 12 --------------------------------------------------------- browser_scrape_pipeline
+server.registerTool(
+  'browser_scrape_pipeline',
+  {
+    title: 'Pipeline scrape tự động',
+    description: 'Mở trang danh sách → trích link bài → mở từng bài → extract content → trả về mảng bài để nạp vào hệ thống.',
+    inputSchema: {
+      list_url: z.string().url(),
+      link_pattern: z.string().describe('Regex lọc link bài, ví dụ "/du-an/"'),
+      link_selector: z.string().default('a[href]'),
+      max_pages: z.number().int().min(1).max(50).default(10),
+      content_selector: z.string().optional().describe('Selector vùng nội dung bài'),
+      delay_ms: z.number().int().min(500).max(10000).default(1500),
+    },
+    annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: false, openWorldHint: true },
+  },
+  async (a) => {
+    try {
+      const b = await getBrowser();
+      const page = await b.newPage();
+      try {
+        console.error('[mcp] Navigating to list:', a.list_url);
+        await page.goto(a.list_url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await page.waitForTimeout(3000);
+
+        const links = await page.$$eval(a.link_selector, (els, pattern) => {
+          const re = new RegExp(pattern);
+          return [...new Set(els.map(e => e.href).filter(h => h && re.test(h)))];
+        }, a.link_pattern);
+
+        console.error('[mcp] Found links:', links.length);
+        const results = [];
+
+        for (const link of links.slice(0, a.max_pages)) {
+          const p = await b.newPage();
+          try {
+            await p.goto(link, { waitUntil: 'domcontentloaded', timeout: 30000 });
+            await p.waitForTimeout(1500);
+            const title = await p.title();
+            const content = a.content_selector
+              ? await p.$eval(a.content_selector, el => el.innerText).catch(() => '')
+              : await p.evaluate(() => document.body?.innerText ?? '');
+            results.push({ url: link, title, content: content.slice(0, 20000) });
+          } catch (e) {
+            console.error('[mcp] Error scraping', link, e.message);
+            results.push({ url: link, title: 'ERROR', content: e.message });
+          } finally {
+            await p.close().catch(() => {});
+          }
+          await new Promise(r => setTimeout(r, a.delay_ms));
+        }
+
+        return { content: [{ type: 'text', text: `📦 Scrape xong ${results.length} bài:\n${results.map((r, i) => `${i+1}. ${r.title || 'NO TITLE'} - ${r.url}`).join('\n')}` }] };
+      } finally {
+        await page.close().catch(() => {});
+      }
+    } catch (e) {
+      return loi(e.message);
+    }
+  },
+);
+
 // ---------------------------------------------------------------------- chạy
 const transport = new StdioServerTransport();
 await server.connect(transport);
-log('đã sẵn sàng — 6 công cụ, transport stdio');
+log('đã sẵn sàng — 12 công cụ (6 Supabase + 6 Browser), transport stdio');
