@@ -21,10 +21,10 @@ const traLoi = (data, status = 200) => new Response(JSON.stringify(data, null, 2
 });
 
 /** Cổng nạp là điểm ghi công khai duy nhất — phải có khoá. */
-function duocPhep(request) {
-  if (!request.env?.DEMAND_TOKEN) return { ok: false, loi: 'Worker chưa cấu hình DEMAND_TOKEN' };
+function duocPhep(request, env) {
+  if (!env?.DEMAND_TOKEN) return { ok: false, loi: 'Worker chưa cấu hình DEMAND_TOKEN' };
   const token = request.headers.get('X-Demand-Token') ?? new URL(request.url).searchParams.get('token');
-  if (token !== request.env?.DEMAND_TOKEN) return { ok: false, loi: 'Sai hoặc thiếu token' };
+  if (token !== env.DEMAND_TOKEN) return { ok: false, loi: 'Sai hoặc thiếu token' };
   return { ok: true };
 }
 
