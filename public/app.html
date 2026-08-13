@@ -221,6 +221,7 @@
       </button>
       <button id="connectBtn">Kết nối dữ liệu thật</button>
       <button class="primary" id="mergeBtn">Nạp lead mới</button>
+      <button id="inboxBtn">Xem Inbox</button>
     </div>
   </header>
   <p class="sub" id="subline">Đang xem dữ liệu mẫu để review giao diện — chưa nối Supabase.</p>
@@ -602,6 +603,63 @@ async function napLeadMoi() {
   nutTai(btn, false);
 }
 
+async function taiInbox() {
+  const btn = $('#inboxBtn');
+  nutTai(btn, true, 'Đang tải inbox…');
+  try {
+    // Fetch từ API Worker
+    const res = await fetch('/api/demand/inbox?limit=200');
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.loi || `HTTP ${res.status}`);
+    }
+    const data = await res.json();
+    const leads = data.leads || [];
+    
+    if (leads.length === 0) {
+      baoLoi('Inbox trống — chưa có lead nào được quét. Chạy quét nguồn trước.', 'info');
+      nutTai(btn, false);
+      return;
+    }
+    
+    // Chuyển đổi format để tương thích với dashboard
+    S.leads = leads.map(l => ({
+      id: l.inbox_id || l.lead_key,
+      title: l.title,
+      score: l.score,
+      tier: l.tier,
+      source: l.source,
+      nhu_cau: l.nhu_cau || [],
+      khu_vuc: l.khu_vuc || 'Không rõ',
+      hinh_thuc: l.hinh_thuc || 'unknown',
+      posted_at: l.posted_at,
+      contact_zalo: l.contact_zalo,
+      contact_phone: l.contact_phone,
+      contact_email: l.contact_email,
+      budget_text: l.budget_text,
+      budget_min: l.budget_min,
+      budget_max: l.budget_max,
+      auto_notes: l.auto_notes,
+      source_url: l.source_url,
+      raw_text: l.raw_text,
+      score_breakdown: l.score_breakdown,
+      // Thêm field để phân biệt
+      from_inbox: true,
+      run_label: l.run_label,
+    }));
+    
+    S.mode = 'inbox';
+    $('#modeBadge').textContent = 'Inbox';
+    $('#modeBadge').className = 'badge live';
+    $('#subline').textContent = `Đang xem ${S.leads.length} leads từ inbox (chưa merge). Tài khoản: ${S.user?.email || 'chưa đăng nhập'}`;
+    $('#warnBox').hidden = true;
+    dungBoLoc(); veKpi(); veDanhSach();
+  } catch (err) {
+    baoLoi(`Lỗi tải inbox: ${err.message}`);
+  }
+  nutTai(btn, false);
+}
+
 // ------------------------------------------------------------------- Bộ lọc
 function dungBoLoc() {
   const nguon = [...new Set(S.leads.map((l) => l.source))];
@@ -653,6 +711,7 @@ $('#themeBtn').onclick = () => {
 $('#tableBtn').onclick = () => { S.tableView = !S.tableView; veDanhSach(); };
 $('#connectBtn').onclick = ketNoi;
 $('#mergeBtn').onclick = napLeadMoi;
+$('#inboxBtn').onclick = taiInbox;
 
 // Đồng hồ đếm ngược sống — lead là tài sản có hạn dùng, giao diện phải thể hiện điều đó
 setInterval(() => { if (!$('#drawer').classList.contains('open')) { veKpi(); veDanhSach(); } }, 60000);
