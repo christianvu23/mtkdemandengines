@@ -6,10 +6,29 @@ Engine: Scrapling Stealth (for vLance Cloudflare) + Fast (for others)
 """
 
 import re
+from html import unescape
 from loguru import logger
 from scrapling.parser import Selector
 
 from .base import BaseSpider
+
+# vLance lazy-loads the job list into the listing page via an hx:include
+# block; fetching the block directly returns the job cards as plain HTML.
+VLANCE_JOB_BLOCK_URL = "https://www.vlance.vn/block/job_list?_route_params%5Bfilters%5D="
+
+# Login-wall boilerplate that must not end up in lead content.
+VLANCE_LOGIN_NOISE = re.compile(
+    r"(Để đọc thông tin.{0,300}?cách sau:|đăng nhập bằng một trong hai cách)",
+    re.S | re.IGNORECASE,
+)
+
+
+def _inner_text(el) -> str:
+    """Extract readable text from a Selector element (strips tags/scripts)."""
+    html = el.html_content if hasattr(el, "html_content") else str(el)
+    html = re.sub(r"<script.*?</script>", " ", html, flags=re.S | re.I)
+    html = re.sub(r"<[^>]+>", " ", html)
+    return re.sub(r"\s+", " ", unescape(html)).strip()
 
 
 class VLanceSpider(BaseSpider):
@@ -22,57 +41,63 @@ class VLanceSpider(BaseSpider):
     source_code = "vlance"
     engine_type = "scrapling_stealth"
 
-    async def parse_listing(self, content: str, url: str) -> list[dict]:
-        """Parse vLance listing page → extract job links."""
+    def _extract_cards(self, page: Selector, source_url: str) -> list[dict]:
+        """Extract job cards from vLance HTML (listing page or job_list block).
+
+        Current markup (2026): each job is a `div.fr-info` containing
+        `h3.fr-name a[href*='/viec-freelance/']`. Legacy `/du-an/` URLs are
+        kept as a fallback.
+        """
         listings = []
-        try:
-            page = Selector(content)
 
-            # vLance job cards — try multiple selector strategies
-            # Strategy 1: Known card structure
-            cards = page.css(".project-card, .job-card, .listing-item, article.job-item")
-
-            # Strategy 2: If no cards found, use link pattern matching
-            if not cards:
-                links = page.css("a[href*='/du-an/'], a[href*='/viec/']")
-                for link in links:
-                    href = link.attrib.get("href", "")
-                    title = link.text.strip() if link.text else ""
-                    if title and len(title) > 10 and "/du-an/" in href:
-                        full_url = href if href.startswith("http") else f"https://vlance.vn{href}"
-                        listings.append({"url": full_url, "title": title, "snippet": ""})
-                return listings[:40]
-
+        cards = page.css(".fr-info")
+        if cards:
             for card in cards:
-                # Extract link
-                link_el = card.css("a[href*='/du-an/']")
-                if not link_el:
-                    link_el = card.css("a")
-
+                link_el = card.css("h3.fr-name a") or card.css("a[href*='/viec-freelance/']")
                 href = link_el[0].attrib.get("href", "") if link_el else ""
                 if not href:
                     continue
+                full_url = href if href.startswith("http") else f"https://www.vlance.vn{href}"
+                title = _inner_text(link_el[0]).strip()
 
-                full_url = href if href.startswith("http") else f"https://vlance.vn{href}"
-
-                # Extract title
-                title_el = card.css("h2, h3, .title, .project-title, .job-title")
-                title = title_el[0].text.strip() if title_el and title_el[0].text else ""
-
-                # Extract snippet/description
-                desc_el = card.css(".description, .summary, .excerpt, p")
-                snippet = desc_el[0].text.strip() if desc_el and desc_el[0].text else ""
-
-                # Extract budget if available
-                budget_el = card.css(".budget, .price, .amount")
-                budget = budget_el[0].text.strip() if budget_el and budget_el[0].text else ""
+                summary_el = card.css(".fr-summary")
+                snippet = _inner_text(summary_el[0]) if summary_el else ""
 
                 listings.append({
                     "url": full_url,
                     "title": title,
-                    "snippet": f"{snippet} {budget}".strip(),
-                    "source_query": url,
+                    "snippet": snippet[:500],
+                    "source_query": source_url,
                 })
+            return listings
+
+        # Fallback: bare link matching (covers legacy /du-an/ scheme)
+        for link in page.css("a[href*='/viec-freelance/'], a[href*='/du-an/']"):
+            href = link.attrib.get("href", "")
+            # Skip filter/pagination links, keep only real job detail pages
+            if re.search(r"/(city|cpath|kynang|dichvu|typepay|nganh|location|page)_", href):
+                continue
+            title = _inner_text(link).strip()
+            if not title or len(title) < 10:
+                continue
+            full_url = href if href.startswith("http") else f"https://www.vlance.vn{href}"
+            listings.append({"url": full_url, "title": title, "snippet": "", "source_query": source_url})
+
+        return listings
+
+    async def parse_listing(self, content: str, url: str) -> list[dict]:
+        """Parse vLance listing page → extract job links."""
+        listings = []
+        try:
+            listings = self._extract_cards(Selector(content), url)
+
+            # The listing page lazy-loads job cards via hx:include; when the
+            # static HTML has no cards, fetch the job_list block directly.
+            if not listings and "/block/job_list" not in url:
+                logger.info(f"[vlance] No cards in static HTML — fetching job_list block")
+                block = await self.fetch_with_retry(VLANCE_JOB_BLOCK_URL)
+                if block.get("ok") and block.get("content"):
+                    listings = self._extract_cards(Selector(block["content"]), url)
 
         except Exception as e:
             logger.error(f"[vlance] Parse listing error: {e}")
@@ -84,16 +109,25 @@ class VLanceSpider(BaseSpider):
         try:
             page = Selector(content)
 
-            # Title
-            title_el = page.css("h1, .project-title, .job-title")
-            title = title_el[0].text.strip() if title_el and title_el[0].text else ""
+            # Title (h1.title on job detail pages)
+            title_el = page.css("h1.title") or page.css("h1, .project-title, .job-title")
+            title = _inner_text(title_el[0]).strip() if title_el else ""
 
-            # Full description — try multiple selectors
+            # Category shown without login ("Dịch vụ cần thuê: ...")
+            cat_el = page.css(".service-need-hire")
+            category = _inner_text(cat_el[0]).strip() if cat_el else ""
+
+            # Description — vLance gates the full text behind login; capture
+            # whatever is publicly visible and strip the login boilerplate.
             desc_el = (
-                page.css(".project-description, .job-description, .detail-content")
-                or page.css("article, .content, main")
+                page.css(".description")
+                or page.css(".project-description, .job-description, .detail-content")
+                or page.css("article, main")
             )
-            noi_dung = desc_el[0].text.strip() if desc_el and desc_el[0].text else ""
+            noi_dung = _inner_text(desc_el[0]).strip() if desc_el else ""
+            noi_dung = VLANCE_LOGIN_NOISE.sub("", noi_dung).strip()
+            if category and category not in noi_dung:
+                noi_dung = f"{category}\n{noi_dung}"
 
             if not noi_dung and not title:
                 return None

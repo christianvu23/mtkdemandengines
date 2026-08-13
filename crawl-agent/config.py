@@ -63,12 +63,13 @@ class Config:
             "name": "vLance.vn",
             "engine": "scrapling_stealth",  # vLance blocks non-browser
             "urls": [
-                "https://www.vlance.vn/viec-lam-freelance/marketing",
-                "https://www.vlance.vn/viec-lam-freelance/online-marketing",
-                "https://www.vlance.vn/viec-lam-freelance/content",
+                "https://www.vlance.vn/viec-lam-freelance",
+                "https://www.vlance.vn/viec-lam-freelance/page_2",
+                "https://www.vlance.vn/viec-lam-freelance/cpath_cac-cong-viec-marketing-kinh-doanh",
             ],
             "search_queries": ["marketing", "branding", "thiet ke", "content", "chay ads"],
-            "regex_link_bai": r"/du-an/[\w-]+\d+",
+            # Job detail URLs: /viec-freelance/<slug> (legacy: /du-an/<slug>)
+            "regex_link_bai": r"/(viec-freelance|du-an)/[\w-]+",
         },
         {
             "code": "freelancer_vn",

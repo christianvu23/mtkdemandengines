@@ -12,6 +12,23 @@ from loguru import logger
 from scrapling.fetchers import Fetcher, FetcherSession, StealthyFetcher, StealthySession
 
 
+def _page_html(page) -> str:
+    """Extract the HTML body from a Scrapling fetch response.
+
+    `str(page)` on a Scrapling response does NOT return the document body,
+    so always read `.body` (bytes) or `.html_content` when available.
+    """
+    body = getattr(page, "body", None)
+    if isinstance(body, (bytes, bytearray)):
+        return bytes(body).decode("utf-8", "ignore")
+    if isinstance(body, str) and body:
+        return body
+    html = getattr(page, "html_content", None)
+    if html:
+        return str(html)
+    return str(page)
+
+
 class ScraplingEngine:
     """
     Dual-mode Scrapling engine:
@@ -41,7 +58,7 @@ class ScraplingEngine:
             return {
                 "ok": True,
                 "url": url,
-                "content": str(page),
+                "content": _page_html(page),
                 "format": "html",
                 "engine": "scrapling_fast",
                 "status": getattr(page, "status", 200),
@@ -71,7 +88,7 @@ class ScraplingEngine:
             return {
                 "ok": True,
                 "url": url,
-                "content": str(page),
+                "content": _page_html(page),
                 "format": "html",
                 "engine": "scrapling_stealth",
                 "status": getattr(page, "status", 200),
