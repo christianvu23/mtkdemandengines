@@ -6,7 +6,12 @@ Central configuration for the hybrid Scrapling + Camoufox crawl agent.
 
 import os
 from pathlib import Path
-from dotenv import load_dotenv
+
+try:
+    from dotenv import load_dotenv
+except ImportError:  # dotenv chỉ là tiện ích dev — env thật vẫn đọc qua os.getenv
+    def load_dotenv(*args, **kwargs):
+        return False
 
 # Load .env from project root
 _env_path = Path(__file__).parent / ".env"
@@ -31,6 +36,9 @@ class Config:
     CRAWL_CONCURRENCY: int = int(os.getenv("CRAWL_CONCURRENCY", "5"))
     CRAWL_DELAY_SECONDS: float = float(os.getenv("CRAWL_DELAY_SECONDS", "3"))
     CRAWL_MAX_RETRIES: int = int(os.getenv("CRAWL_MAX_RETRIES", "3"))
+    RETRY_BASE_DELAY_SECONDS: float = float(os.getenv("RETRY_BASE_DELAY_SECONDS", "2"))
+    # Circuit breaker: bao nhiêu run thất bại liên tiếp thì tạm dừng nguồn
+    CIRCUIT_MAX_FAILURES: int = int(os.getenv("CIRCUIT_MAX_FAILURES", "3"))
 
     # ── Source toggles ───────────────────────────────────────────
     ENABLE_FREELANCER_SITES: bool = os.getenv("ENABLE_FREELANCER_SITES", "true").lower() == "true"

@@ -9,7 +9,7 @@
 
 // --- Imports: 3 modules mới thay vì code lẫn lộn ---
 import { xuLyMotMessage, xuLyQuetNguon, chuanBiMessageQuetNguon, xuLyLayBai } from './src/queue/handlers.js';
-import { kiemTraTransport, layNguon, layInbox, napVaoInbox } from './src/services/supabase.js';
+import { kiemTraTransport, layNguon, layInbox, layLeadDaDuyet, napVaoInboxLocTrung } from './src/services/supabase.js';
 import { napNhieuLead } from './src/core/nap-lead.js';
 import { handleCrawlApi } from './src/transport/crawl-api.js';
 
@@ -75,15 +75,17 @@ export default {
 
         const runLabel = `nap-${Date.now()}`;
         const { payloads } = await napNhieuLead(chuanHoa); // from nap-lead.js
-        if (payloads.length) {
-          await napVaoInbox(payloads, runLabel, env);
-        }
+        // Chặn trùng: trong cùng lô + với demand_leads/demand_inbox chưa xử lý
+        const napKetQua = await napVaoInboxLocTrung(payloads, runLabel, env);
+        const soTrung = napKetQua.trungTrongLo + napKetQua.trungDaCo;
         return traLoi({
           tong_vao: dsVao.length,
-          da_day_vao_inbox: payloads?.length ?? 0,
+          da_day_vao_inbox: napKetQua.payloadsDaNap.length,
           bo_qua: dsVao.length - (payloads?.length ?? 0),
+          trung_lead_key: soTrung,
+          loc_trung_kha_dung: napKetQua.locTrungKhaDung,
           run_label: runLabel,
-          xem_truoc: payloads?.map((p) => ({
+          xem_truoc: napKetQua.payloadsDaNap.map((p) => ({
             tieu_de: p.title, hang: p.tier, diem: p.score,
             nhu_cau: p.nhu_cau, lien_he: p.contact_zalo ?? p.contact_phone ?? p.contact_email ?? null,
             ngan_sach: p.budget_text, canh_bao: p.auto_notes,
@@ -158,6 +160,33 @@ export default {
         // Fetch demand_sources + unprocessed inbox
         const nguon = await layNguon(env);
         return traLoi({ nguon: nguon || [], so_nguon: (nguon || []).length });
+      }
+
+      if (p === '/api/demand/phan-hoi') {
+        // Feedback loop: trả về các lead đã được người duyệt để crawl agent
+        // học theo. Máy KHÔNG tự cập nhật prompt — chỉ đọc quyết định của người.
+        const limit = Math.min(parseInt(new URL(request.url).searchParams.get('limit') || '200'), 500);
+        const daDuyet = (await layLeadDaDuyet(env, { limit })) || [];
+        const DUONG = ['quan_tam', 'da_lien_he', 'dang_trao_doi', 'chot'];
+        const am = [];
+        const duong = [];
+        for (const lead of daDuyet) {
+          const muc = {
+            tieu_de: lead.title,
+            nhu_cau: lead.nhu_cau,
+            diem: lead.score,
+            nguon: lead.source,
+            mo_ta: String(lead.raw_text ?? '').slice(0, 200),
+          };
+          if (lead.status === 'bo') am.push(muc);
+          else if (DUONG.includes(lead.status)) duong.push(muc);
+        }
+        return traLoi({
+          tong: daDuyet.length,
+          tin_hieu_duong: duong,
+          tin_hieu_am: am,
+          buoc_tiep: 'Chạy scripts/update_feedback.py trong crawl-agent để nạp vào prompt phân loại.',
+        });
       }
 
       if (p === '/api/demand/inbox') {

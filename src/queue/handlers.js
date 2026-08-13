@@ -3,7 +3,7 @@
 // Nguyên tắc: đơn trách nhiệm duy nhất = xử lý 1 message/theo loại message
 
 import { lay } from '../transport/index.js';
-import { kiemTraTransport, capNghenguon, napVaoInbox } from '../services/supabase.js';
+import { kiemTraTransport, capNghenguon, napVaoInboxLocTrung } from '../services/supabase.js';
 import { napNhieuLead } from '../core/nap-lead.js';
 import { bocLinkBai } from '../core/boc-link.js';
 
@@ -87,12 +87,18 @@ export async function xuLyLayBai(m, env) {
   const ctPayloads = [{ source: m.ma_nguon, url: m.url, noiDung: ct.noiDung, sourceQuery: m.source_query }];
   const { payloads, boQua } = napNhieuLead(ctPayloads);
 
-  // Đẩy vào inbox (sử dụng services/supabase)
+  // Đẩy vào inbox — chặn trùng trong lô + với DB (cron cào lại URL cũ mỗi 30 phút)
   if (payloads.length) {
-    await napVaoInbox(payloads, m.run_label, env);
+    const ketQua = await napVaoInboxLocTrung(payloads, m.run_label, env);
+    return {
+      so_lead: payloads.length,
+      da_nap: ketQua.payloadsDaNap.length,
+      trung: ketQua.trungTrongLo + ketQua.trungDaCo,
+      bo_qua: boQua.length,
+    };
   }
 
-  return { so_lead: payloads.length, bo_qua: boQua.length };
+  return { so_lead: 0, bo_qua: boQua.length };
 }
 
 // --- Chuẩn bị message quet nguon ---

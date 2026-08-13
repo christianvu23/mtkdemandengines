@@ -5,6 +5,8 @@
 // Trong Cloudflare Workers, secrets được inject qua env object, không có process.env hay window
 // Tất cả hàm export đều nhận env làm tham số cuối hoặc đầu
 
+import { locTrungTrongLo, locTrungDaCo } from '../core/loc-trung.js';
+
 /** Lấy Supabase URL và Service Key từ env (Workers) hoặc fallback process.env (Node.js tests) */
 function getSupabaseConfig(env) {
   const url = env?.SUPABASE_URL || (typeof process !== 'undefined' ? process.env?.SUPABASE_URL : null);
@@ -45,6 +47,45 @@ export async function napVaoInbox(payloads, runLabel, env) {
   });
 }
 
+/** Gọi RPC dm_loc_keys_da_co — trả về các lead_key đã tồn tại trong DB.
+ *  Yêu cầu migration 20260814_loc_trung_inbox.sql đã được áp dụng. */
+export async function layKeysDaCo(env, keys) {
+  if (!keys?.length) return [];
+  const rows = await req(env, 'rpc/dm_loc_keys_da_co', {
+    method: 'POST',
+    body: { p_keys: keys },
+  });
+  return (rows ?? []).map((r) => r.khoa).filter(Boolean);
+}
+
+/** Nạp payloads vào inbox NHƯNG chặn trùng trước (trong lô + với DB).
+ *  Nếu RPC lọc trùng chưa có (chưa chạy migration), thoái hoá về insert thường
+ *  và ghi chú trong kết quả — không để cổng nạp chết vì thiếu migration.
+ *  @returns {{payloadsDaNap: object[], trungTrongLo: number, trungDaCo: number, locTrungKhaDung: boolean}}
+ */
+export async function napVaoInboxLocTrung(payloads, runLabel, env) {
+  const { moi: duyNhat, trung: trungTrongLo } = locTrungTrongLo(payloads);
+
+  let moi = duyNhat;
+  let trungDaCo = 0;
+  let locTrungKhaDung = false;
+
+  if (duyNhat.length) {
+    try {
+      const keysDaCo = await layKeysDaCo(env, duyNhat.map((p) => p.lead_key));
+      locTrungKhaDung = true;
+      ({ moi, trung: trungDaCo } = locTrungDaCo(duyNhat, keysDaCo));
+    } catch (e) {
+      // RPC chưa tồn tại hoặc DB lỗi — insert như cũ, báo rõ trong kết quả
+      console.log('locTrungDaCo không chạy được (đã insert không lọc):', e.message);
+    }
+  }
+
+  if (moi.length) await napVaoInbox(moi, runLabel, env);
+
+  return { payloadsDaNap: moi, trungTrongLo, trungDaCo, locTrungKhaDung };
+}
+
 // --- demand_sources ---
 
 export async function layNguon(env, đkSelect = '*') {
@@ -54,6 +95,15 @@ export async function layNguon(env, đkSelect = '*') {
 /** Lấy leads từ demand_inbox (chưa merge) */
 export async function layInbox(env, { limit = 100, order = 'created_at.desc' } = {}) {
   return req(env, `demand_inbox?select=*&order=${order}&limit=${limit}`);
+}
+
+/** Lấy các lead ĐÃ ĐƯỢC NGƯỜI DUYỆT (có status khác 'moi') — dùng cho feedback loop.
+ *  Quyết định của người là ground truth: quan_tam/da_lien_he/chot = tín hiệu dương,
+ *  bo = tín hiệu âm. */
+export async function layLeadDaDuyet(env, { limit = 200 } = {}) {
+  return req(env,
+    `demand_leads?select=title,raw_text,nhu_cau,score,status,source` +
+    `&status=neq.moi&status=not.is.null&order=reviewed_at.desc.nullslast&limit=${limit}`);
 }
 
 export async function capNghenguon(env, ma, dữLý) {

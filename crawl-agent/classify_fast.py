@@ -1,7 +1,12 @@
 #!/usr/bin/env python3
 """
 Fast Lead Classifier - Batch processing + disable reasoning
-Phân loại jobs nhanh hơn 10-20x so với逐个 classify.
+Phân loại jobs nhanh hơn 10-20x so với classify từng job.
+
+Hardening (2026-08):
+- Match kết quả LLM theo marker JOB-xx duy nhất, validate 1:1; lệch → rule-based CẢ batch.
+- Bỏ confidence 0.8 hardcode — derive từ score.
+- Inject feedback từ quyết định duyệt lead của người (data/feedback.json).
 """
 
 import json
@@ -16,8 +21,8 @@ ALIBABA_API_KEY = os.getenv("ALIBABA_API_KEY", "")
 ALIBABA_ENDPOINT = "https://token-plan.ap-southeast-1.maas.aliyuncs.com/compatible-mode/v1/chat/completions"
 ALIBABA_MODEL = "qwen3.8-max"
 
-# Batch size
-BATCH_SIZE = 10  # Process 10 jobs per API call
+# Batch size mặc định (override qua --batch-size)
+DEFAULT_BATCH_SIZE = 10
 
 BATCH_CLASSIFY_PROMPT = """You are a job classification expert for marketing/branding services.
 
@@ -29,32 +34,46 @@ Classify each job posting into one of these categories:
 
 Jobs to classify:
 {jobs_text}
-
-Respond with ONLY a JSON array (no markdown, no explanation):
+{preference}
+Respond with ONLY a JSON array (no markdown, no explanation). Each item MUST echo
+back the exact marker of the job it classifies:
 [
-  {{"id": 0, "category": "HOT_LEAD", "score": 90, "reason": "brief reason"}},
-  {{"id": 1, "category": "WARM_LEAD", "score": 75, "reason": "brief reason"}},
+  {{"job": "JOB-0", "category": "HOT_LEAD", "score": 90, "reason": "brief reason"}},
+  {{"job": "JOB-1", "category": "WARM_LEAD", "score": 75, "reason": "brief reason"}},
   ...
 ]"""
 
 
-def classify_batch(jobs: list, api_key: str, batch_start: int = 0) -> list:
-    """Classify a batch of jobs in one API call."""
-    
+def _llm_confidence(score: int) -> float:
+    """Confidence trung thực: derive từ score, không hardcode.
+    Score càng cực đoan (rất cao/rất thấp) càng dễ tin; giữa khoảng thì kém chắc chắn hơn."""
+    distance_from_mid = abs(score - 50) / 50.0  # 0..1
+    return round(0.5 + 0.45 * distance_from_mid, 2)
+
+
+def classify_batch(jobs: list, api_key: str, batch_start: int = 0,
+                   preference: str = "") -> list:
+    """Classify a batch of jobs in one API call.
+
+    An toàn: nếu LLM trả về thiếu/thừa/lệch marker thì fallback rule-based
+    CHO CẢ BATCH — không trộn lẫn kết quả lệch dòng với kết quả đúng.
+    """
+
     if not api_key:
         return [classify_rule_based(job) for job in jobs]
-    
-    # Build jobs text
+
+    # Build jobs text với marker duy nhất cho từng job
     jobs_text = ""
     for i, job in enumerate(jobs):
-        idx = batch_start + i
-        jobs_text += f"\n[{idx}] Title: {job.get('title', '')}"
+        marker = f"JOB-{batch_start + i}"
+        jobs_text += f"\n[{marker}] Title: {job.get('title', '')}"
         desc = job.get('description', '')[:200]
         if desc:
             jobs_text += f"\n    Description: {desc}"
         jobs_text += f"\n    Source: {job.get('source', 'unknown')}"
-    
-    prompt = BATCH_CLASSIFY_PROMPT.format(jobs_text=jobs_text)
+
+    preference_block = f"\n{preference}\n" if preference else ""
+    prompt = BATCH_CLASSIFY_PROMPT.format(jobs_text=jobs_text, preference=preference_block)
     
     try:
         import httpx
@@ -81,7 +100,7 @@ def classify_batch(jobs: list, api_key: str, batch_start: int = 0) -> list:
         
         result = response.json()
         content = result['choices'][0]['message']['content'].strip()
-        
+
         # Parse JSON array
         # Remove markdown code blocks if present
         if content.startswith('```'):
@@ -89,28 +108,36 @@ def classify_batch(jobs: list, api_key: str, batch_start: int = 0) -> list:
             if content.startswith('json'):
                 content = content[4:]
             content = content.strip()
-        
+
         classifications = json.loads(content)
-        
-        # Match back to jobs
-        results = []
+
+        # Validate 1:1 theo marker — KHÔNG match theo thứ tự hay index mù
+        expected_markers = {f"JOB-{batch_start + i}" for i in range(len(jobs))}
+        by_marker = {}
         for cls in classifications:
-            idx = cls.get('id', 0)
-            if 0 <= idx < len(jobs):
-                results.append({
-                    'category': cls.get('category', 'DISCUSSION'),
-                    'confidence': 0.8,
-                    'score': cls.get('score', 50),
-                    'reason': cls.get('reason', ''),
-                    'method': 'alibaba_batch',
-                })
-        
-        # Fill missing with rule-based
-        while len(results) < len(jobs):
-            results.append(classify_rule_based(jobs[len(results)]))
-        
-        return results[:len(jobs)]
-        
+            marker = cls.get('job') or (f"JOB-{cls['id']}" if isinstance(cls.get('id'), int) else None)
+            if marker in expected_markers and marker not in by_marker:
+                by_marker[marker] = cls
+
+        if set(by_marker.keys()) != expected_markers:
+            missing = sorted(expected_markers - set(by_marker.keys()))
+            print(f"  [WARN] LLM trả thiếu/lệch marker {missing} — fallback rule-based cả batch")
+            return [classify_rule_based(job) for job in jobs]
+
+        results = []
+        for i in range(len(jobs)):
+            cls = by_marker[f"JOB-{batch_start + i}"]
+            score = max(0, min(100, int(cls.get('score', 50))))
+            results.append({
+                'category': cls.get('category', 'DISCUSSION'),
+                'confidence': _llm_confidence(score),
+                'score': score,
+                'reason': cls.get('reason', ''),
+                'method': 'alibaba_batch',
+            })
+
+        return results
+
     except Exception as e:
         print(f"  [Error] {e}")
         return [classify_rule_based(job) for job in jobs]
@@ -145,31 +172,34 @@ def classify_rule_based(job: dict) -> dict:
     return {'category': 'DISCUSSION', 'confidence': 0.6, 'score': 30, 'reason': 'No strong signals', 'method': 'rule'}
 
 
-def classify_jobs_fast(jobs_file: str, api_key: str = "", output_file: str = None):
+def classify_jobs_fast(jobs_file: str, api_key: str = "", output_file: str = None,
+                        batch_size: int = DEFAULT_BATCH_SIZE, preference: str = ""):
     """Classify all jobs using batch processing."""
-    
+
     # Load jobs
     with open(jobs_file, 'r', encoding='utf-8') as f:
         jobs = json.load(f)
-    
+
     print(f"Loaded {len(jobs)} jobs from {jobs_file}")
     print(f"Using: {'Alibaba API (batch)' if api_key else 'Rule-based fallback'}")
-    print(f"Batch size: {BATCH_SIZE}")
+    print(f"Batch size: {batch_size}")
+    if preference:
+        print(f"Feedback: đã inject preference từ {preference.count(chr(10))} dòng lịch sử duyệt")
     print()
-    
+
     # Classify in batches
     all_results = []
     start_time = time.time()
-    
-    for i in range(0, len(jobs), BATCH_SIZE):
-        batch = jobs[i:i + BATCH_SIZE]
-        batch_num = i // BATCH_SIZE + 1
-        total_batches = (len(jobs) + BATCH_SIZE - 1) // BATCH_SIZE
-        
+
+    for i in range(0, len(jobs), batch_size):
+        batch = jobs[i:i + batch_size]
+        batch_num = i // batch_size + 1
+        total_batches = (len(jobs) + batch_size - 1) // batch_size
+
         print(f"[Batch {batch_num}/{total_batches}] Classifying {len(batch)} jobs...")
-        
-        classifications = classify_batch(batch, api_key, batch_start=i)
-        
+
+        classifications = classify_batch(batch, api_key, batch_start=i, preference=preference)
+
         for job, cls in zip(batch, classifications):
             all_results.append({
                 **job,
@@ -179,10 +209,11 @@ def classify_jobs_fast(jobs_file: str, api_key: str = "", output_file: str = Non
                 'reason': cls['reason'],
                 'method': cls['method'],
             })
-    
+
     elapsed = time.time() - start_time
-    print(f"\n[OK] Classified {len(all_results)} jobs in {elapsed:.1f}s")
-    print(f"     Average: {elapsed/len(all_results):.2f}s per job")
+    if all_results:
+        print(f"\n[OK] Classified {len(all_results)} jobs in {elapsed:.1f}s")
+        print(f"     Average: {elapsed/len(all_results):.2f}s per job")
     
     # Summary
     from collections import Counter
@@ -216,8 +247,8 @@ def classify_jobs_fast(jobs_file: str, api_key: str = "", output_file: str = Non
         print(f"HOT LEADS ({len(hot_leads)})")
         print(f"{'=' * 60}")
         for lead in hot_leads[:5]:
-            print(f"\n  Title: {lead['title'][:70]}")
-            print(f"  Link: {lead['link'][:80]}")
+            print(f"\n  Title: {lead.get('title', '')[:70]}")
+            print(f"  Link: {lead.get('link', '')[:80]}")
             print(f"  Score: {lead['score']}")
     
     if warm_leads:
@@ -239,26 +270,35 @@ def main():
     parser.add_argument('jobs_file', help='Path to jobs JSON file')
     parser.add_argument('--output', '-o', help='Output file path')
     parser.add_argument('--api-key', help='Alibaba API key')
-    parser.add_argument('--batch-size', type=int, default=10, help='Jobs per batch (default: 10)')
-    
+    parser.add_argument('--batch-size', type=int, default=DEFAULT_BATCH_SIZE, help='Jobs per batch (default: 10)')
+    parser.add_argument('--no-feedback', action='store_true',
+                        help='Không inject lịch sử duyệt lead vào prompt')
+
     args = parser.parse_args()
-    
-    global BATCH_SIZE
-    BATCH_SIZE = args.batch_size
-    
+
     if not Path(args.jobs_file).exists():
         print(f"[ERROR] File not found: {args.jobs_file}")
         sys.exit(1)
-    
+
     # Get API key
     api_key = args.api_key or os.getenv('ALIBABA_API_KEY', '')
-    
+
     if not api_key:
         print("[WARN] No API key. Using rule-based fallback.")
         print("       Set ALIBABA_API_KEY or use --api-key for AI classification.")
         print()
-    
-    classify_jobs_fast(args.jobs_file, api_key, args.output)
+
+    # Feedback loop: học từ quyết định duyệt lead của người (nếu có)
+    preference = ""
+    if not args.no_feedback:
+        try:
+            from utils.feedback import load_feedback, build_preference_prompt
+            preference = build_preference_prompt(load_feedback())
+        except ImportError:
+            pass  # chạy ngoài thư mục crawl-agent — bỏ qua feedback
+
+    classify_jobs_fast(args.jobs_file, api_key, args.output,
+                       batch_size=args.batch_size, preference=preference)
 
 
 if __name__ == "__main__":

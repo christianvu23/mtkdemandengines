@@ -70,12 +70,23 @@ class WorkersClient:
 
             if resp.status_code == 200:
                 data = resp.json()
-                logger.info(f"Submitted {len(formatted)} leads → {data.get('da_day_vao_inbox', 0)} accepted")
+                trung = data.get("trung_lead_key", 0)
+                logger.info(
+                    f"Submitted {len(formatted)} leads → {data.get('da_day_vao_inbox', 0)} accepted"
+                    + (f", {trung} trùng đã chặn" if trung else "")
+                )
+                if not data.get("loc_trung_kha_dung", True):
+                    logger.warning(
+                        "Server chưa chạy migration 20260814_loc_trung_inbox.sql — "
+                        "dedup phía DB đang TẮT, lead trùng có thể vào inbox."
+                    )
                 return {
                     "ok": True,
                     "submitted": len(formatted),
                     "accepted": data.get("da_day_vao_inbox", 0),
                     "rejected": data.get("bo_qua", 0),
+                    "duplicates": trung,
+                    "dedup_available": data.get("loc_trung_kha_dung", False),
                     "run_label": data.get("run_label"),
                     "preview": data.get("xem_truoc", []),
                 }

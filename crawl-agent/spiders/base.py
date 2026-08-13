@@ -10,6 +10,7 @@ from abc import ABC, abstractmethod
 from datetime import datetime
 from loguru import logger
 
+from config import Config
 from engines.scrapling_engine import ScraplingEngine
 from engines.camoufox_engine import CamoufoxEngine
 from utils.workers_client import WorkersClient
@@ -63,6 +64,29 @@ class BaseSpider(ABC):
             return await self.camoufox.scrape(url, **kwargs)
         else:
             return await self.scrapling.fetch(url, engine=self.engine_type, **kwargs)
+
+    async def fetch_with_retry(self, url: str, **kwargs) -> dict:
+        """
+        Fetch với exponential backoff.
+        Chỉ retry khi fetch thất bại (ok=False); KHÔNG retry khi fetch được
+        nhưng parse ra 0 kết quả (đó là việc của baseline reconciliation).
+        """
+        max_retries = Config.CRAWL_MAX_RETRIES
+        base_delay = Config.RETRY_BASE_DELAY_SECONDS
+        result = await self.fetch(url, **kwargs)
+
+        attempt = 0
+        while not result["ok"] and attempt < max_retries - 1:
+            attempt += 1
+            backoff = min(base_delay * (2 ** attempt), 60.0)
+            logger.warning(
+                f"[{self.name}] Retry {attempt}/{max_retries - 1} cho {url} "
+                f"sau {backoff:.0f}s (lỗi: {result.get('error', 'unknown')})"
+            )
+            await asyncio.sleep(backoff)
+            result = await self.fetch(url, **kwargs)
+
+        return result
 
     # ── Dedup ────────────────────────────────────────────────────
     def _url_key(self, url: str) -> str:
@@ -132,7 +156,7 @@ class BaseSpider(ABC):
         logger.info(f"[{self.name}] Phase 1: Crawling {len(start_urls)} listing pages")
         for url in start_urls[:max_pages]:
             try:
-                result = await self.fetch(url, **kwargs)
+                result = await self.fetch_with_retry(url, **kwargs)
                 if not result["ok"]:
                     stats["errors"].append({"url": url, "error": result.get("error", "unknown")})
                     continue
@@ -161,7 +185,7 @@ class BaseSpider(ABC):
                 if not detail_url:
                     continue
 
-                result = await self.fetch(detail_url, **kwargs)
+                result = await self.fetch_with_retry(detail_url, **kwargs)
                 if not result["ok"]:
                     stats["errors"].append({"url": detail_url, "error": result.get("error", "unknown")})
                     continue
@@ -189,6 +213,7 @@ class BaseSpider(ABC):
                 submit_result = await self.workers.submit_leads(all_leads, source=self.source_code)
                 if submit_result.get("ok"):
                     stats["leads_submitted"] = submit_result.get("accepted", 0)
+                    stats["leads_deduplicated"] = submit_result.get("duplicates", 0)
                     stats["run_label"] = submit_result.get("run_label")
                 else:
                     stats["errors"].append({"phase": "submit", "error": submit_result.get("error")})
@@ -197,6 +222,20 @@ class BaseSpider(ABC):
                 stats["errors"].append({"phase": "submit", "error": str(e)})
 
         stats["finished_at"] = datetime.now().isoformat()
+
+        # Reconciliation tín hiệu: phân biệt "không có lead" với "spider hỏng"
+        if stats["pages_fetched"] == 0:
+            stats["parse_confidence"] = 0.0
+            stats["degraded"] = True
+        elif stats["links_found"] == 0:
+            # Fetch được trang nhưng không trích được link nào:
+            # selector hỏng HOẶC bị chặn HOẶC trang thực sự rỗng
+            stats["parse_confidence"] = 0.2
+            stats["degraded"] = True
+        else:
+            stats["parse_confidence"] = 1.0
+            stats["degraded"] = False
+
         logger.info(f"[{self.name}] Crawl complete: {stats['leads_submitted']} leads submitted")
 
         return stats

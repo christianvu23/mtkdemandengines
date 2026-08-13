@@ -16,6 +16,8 @@ from config import Config
 from engines.scrapling_engine import ScraplingEngine
 from engines.camoufox_engine import CamoufoxEngine
 from utils.workers_client import WorkersClient
+from utils import baseline as baseline_mod
+from utils import circuit_breaker as circuit_mod
 from spiders import (
     SPIDER_REGISTRY,
     VLanceSpider,
@@ -60,6 +62,9 @@ class CrawlOrchestrator:
         self.camoufox: CamoufoxEngine | None = None
         self.workers = WorkersClient()
         self._results: list[dict] = []
+        self._circuit_state = circuit_mod.load_state()
+        self._baseline = baseline_mod.load_baseline()
+        self.degraded_sources: list[dict] = []
 
     async def _init_camoufox(self):
         """Lazy-init Camoufox only when needed (resource-heavy)."""
@@ -85,6 +90,7 @@ class CrawlOrchestrator:
         max_pages: int = 3,
         max_details: int = 20,
         submit: bool = True,
+        force: bool = False,
     ) -> dict:
         """
         Run a single spider by source code.
@@ -93,6 +99,23 @@ class CrawlOrchestrator:
         spider_cls = SPIDER_REGISTRY.get(source_code)
         if not spider_cls:
             return {"error": f"Unknown source: {source_code}", "available": list(SPIDER_REGISTRY.keys())}
+
+        # Circuit breaker: nguồn thất bại liên tục thì tạm dừng, đừng hammer
+        if not force and circuit_mod.is_open(
+            self._circuit_state, source_code, self.config.CIRCUIT_MAX_FAILURES
+        ):
+            entry = self._circuit_state.get(source_code, {})
+            logger.warning(
+                f"⚡ Circuit OPEN cho '{source_code}' — bỏ qua "
+                f"({entry.get('failures_in_a_row')} run lỗi liên tiếp, "
+                f"lần cuối: {entry.get('last_failure_at')}). Dùng force=True để ép chạy."
+            )
+            return {
+                "source": source_code,
+                "circuit_open": True,
+                "skipped": True,
+                "error": "Circuit breaker mở — nguồn đang thất bại liên tục",
+            }
 
         # Init Camoufox if this spider needs it
         source_config = None
@@ -126,7 +149,42 @@ class CrawlOrchestrator:
         )
 
         self._results.append(stats)
+        self._record_health(source_code, stats)
         return stats
+
+    def _record_health(self, source_code: str, stats: dict) -> None:
+        """
+        Cập nhật circuit breaker + baseline sau mỗi run.
+        Circuit: quan tâm "có fetch được không". Baseline: quan tâm
+        "có trích được link không". Hai câu hỏi khác nhau, hai cơ chế khác nhau.
+        """
+        fetch_ok = stats.get("pages_fetched", 0) > 0
+        self._circuit_state = circuit_mod.record_run(self._circuit_state, source_code, fetch_ok)
+        circuit_mod.save_state(self._circuit_state)
+
+        if circuit_mod.is_open(self._circuit_state, source_code, self.config.CIRCUIT_MAX_FAILURES):
+            logger.error(
+                f"🚨 Circuit breaker MỞ cho '{source_code}' — sẽ bị bỏ qua các run sau "
+                f"cho tới khi có run thành công hoặc xoá state. CẦN NGƯỜI XEM."
+            )
+
+        new_baseline, status = baseline_mod.update_baseline(self._baseline, source_code, stats)
+        self._baseline = new_baseline
+        baseline_mod.save_baseline(self._baseline)
+
+        if status == "degraded":
+            entry = self._baseline[source_code]
+            logger.warning(
+                f"📉 '{source_code}' DEGRADED: từng ra {entry['last_good_links']} links, "
+                f"nay {entry['zero_streak']} run liên tiếp ra 0. "
+                f"Khả năng cao selector hỏng hoặc bị chặn — CẦN NGƯỜI XEM."
+            )
+            self.degraded_sources.append({
+                "source": source_code,
+                "last_good_links": entry["last_good_links"],
+                "zero_streak": entry["zero_streak"],
+                "parse_confidence": stats.get("parse_confidence", 0.0),
+            })
 
     # ── Run all spiders ──────────────────────────────────────────
     async def run_all(
@@ -199,8 +257,10 @@ class CrawlOrchestrator:
             "total_sources": len(sources),
             "successful": sum(1 for s in all_stats if "error" not in s),
             "failed": sum(1 for s in all_stats if "error" in s),
+            "circuit_open": sum(1 for s in all_stats if s.get("circuit_open")),
             "total_leads_extracted": sum(s.get("leads_extracted", 0) for s in all_stats),
             "total_leads_submitted": sum(s.get("leads_submitted", 0) for s in all_stats),
+            "degraded_sources": self.degraded_sources,
             "details": all_stats,
         }
 
@@ -209,6 +269,11 @@ class CrawlOrchestrator:
             f"{summary['total_leads_submitted']} leads submitted "
             f"({summary['successful']}/{summary['total_sources']} sources OK)"
         )
+        if self.degraded_sources:
+            logger.warning(
+                f"📉 {len(self.degraded_sources)} nguồn DEGRADED "
+                f"(0 link dù từng có dữ liệu): {[d['source'] for d in self.degraded_sources]}"
+            )
 
         return summary
 
@@ -305,6 +370,7 @@ async def main():
     parser.add_argument("--max-pages", type=int, default=3, help="Max listing pages per source")
     parser.add_argument("--max-details", type=int, default=20, help="Max detail pages per source")
     parser.add_argument("--no-submit", action="store_true", help="Don't submit to Workers API")
+    parser.add_argument("--force", action="store_true", help="Bỏ qua circuit breaker, ép chạy nguồn đang bị chặn")
     parser.add_argument("--engines", type=str, help="Comma-separated engine filter")
     parser.add_argument("--output", "-o", type=str, help="Output directory for results")
 
@@ -342,6 +408,7 @@ async def main():
                 max_pages=args.max_pages,
                 max_details=args.max_details,
                 submit=not args.no_submit,
+                force=args.force,
             )
             print(json.dumps(result, indent=2, ensure_ascii=False, default=str))
 

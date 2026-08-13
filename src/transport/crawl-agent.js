@@ -81,11 +81,17 @@ async function handleSubmitCrawl(request, env) {
     // Run through scoring pipeline
     const { payloads, boQua, tongVao } = napNhieuLead(normalizedLeads);
 
-    // Store in demand_inbox via Supabase
+    // Store in demand_inbox via Supabase — chặn trùng trong lô + với DB
+    let trungTrongLo = 0;
+    let trungDaCo = 0;
+    let soDaNap = 0;
     if (payloads.length && env?.SUPABASE_URL && env?.SUPABASE_SERVICE_KEY) {
-      const { napVaoInbox } = await import('../services/supabase.js');
+      const { napVaoInboxLocTrung } = await import('../services/supabase.js');
       try {
-        await napVaoInbox(payloads, runLabel, env);
+        const ketQua = await napVaoInboxLocTrung(payloads, runLabel, env);
+        trungTrongLo = ketQua.trungTrongLo;
+        trungDaCo = ketQua.trungDaCo;
+        soDaNap = ketQua.payloadsDaNap.length;
       } catch (e) {
         console.error('Failed to store crawl leads:', e.message);
       }
@@ -96,6 +102,8 @@ async function handleSubmitCrawl(request, env) {
       run_label: runLabel,
       tong_nhan: leads.length,
       hop_le: payloads.length,
+      da_day_vao_inbox: soDaNap,
+      trung_lead_key: trungTrongLo + trungDaCo,
       bo_qua: boQua.length,
       xem_truoc: payloads.slice(0, 5).map((p) => ({
         tieu_de: p.title,
