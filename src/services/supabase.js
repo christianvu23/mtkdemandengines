@@ -51,6 +51,11 @@ export async function layNguon(env, đkSelect = '*') {
   return req(env, `demand_sources?${đkSelect}`);
 }
 
+/** Lấy leads từ demand_inbox (chưa merge) */
+export async function layInbox(env, { limit = 100, order = 'created_at.desc' } = {}) {
+  return req(env, `demand_inbox?select=*&order=${order}&limit=${limit}`);
+}
+
 export async function capNghenguon(env, ma, dữLý) {
   return req(env, `demand_sources?ma=eq.${ma}`, {
     method: 'PATCH',

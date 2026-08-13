@@ -9,7 +9,7 @@
 
 // --- Imports: 3 modules mới thay vì code lẫn lộn ---
 import { xuLyMotMessage, xuLyQuetNguon, chuanBiMessageQuetNguon, xuLyLayBai } from './src/queue/handlers.js';
-import { kiemTraTransport, layNguon } from './src/services/supabase.js';
+import { kiemTraTransport, layNguon, layInbox } from './src/services/supabase.js';
 import { napNhieuLead } from './src/core/nap-lead.js';
 import { handleCrawlAgent } from './src/transport/crawl-agent.js';
 
@@ -155,6 +155,26 @@ export default {
         // Fetch demand_sources + unprocessed inbox
         const nguon = await layNguon(env);
         return traLoi({ nguon: nguon || [], so_nguon: (nguon || []).length });
+      }
+
+      if (p === '/api/demand/inbox') {
+        // Lấy leads từ demand_inbox (chưa merge vào demand_leads)
+        const limit = parseInt(new URL(request.url).searchParams.get('limit') || '100');
+        const inbox = await layInbox(env, { limit });
+        // Flatten payloads thành danh sách leads đơn lẻ
+        const leads = (inbox || []).flatMap(item => {
+          const payloads = Array.isArray(item.payload) ? item.payload : [item.payload];
+          return payloads.map(lead => ({
+            ...lead,
+            inbox_id: item.id,
+            run_label: item.run_label,
+            inbox_created_at: item.created_at,
+          }));
+        });
+        return traLoi({
+          tong: leads.length,
+          leads: leads.sort((a, b) => (b.score || 0) - (a.score || 0)),
+        });
       }
 
       return traLoi({ loi: 'Không có route này' }, 404);
