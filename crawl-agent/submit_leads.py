@@ -22,6 +22,16 @@ def submit_leads(leads_file, token):
         print("[WARN] No leads to submit")
         return
     
+    # Filter only HOT_LEAD and WARM_LEAD if classification exists
+    if 'category' in leads[0]:
+        hot_warm = [l for l in leads if l.get('category') in ['HOT_LEAD', 'WARM_LEAD']]
+        print(f"Found {len(hot_warm)} HOT/WARM leads (out of {len(leads)} total)")
+        leads = hot_warm
+    
+    if not leads:
+        print("[WARN] No HOT_LEAD or WARM_LEAD to submit")
+        return
+    
     print(f"Submitting {len(leads)} leads to Workers API...")
     print(f"URL: {WORKERS_URL}/api/crawl/submit")
     

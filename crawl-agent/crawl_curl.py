@@ -213,46 +213,55 @@ def main():
         all_jobs.extend(jobs)
         print()
     
-    # Filter leads
-    leads = filter_lead_signals(all_jobs)
-    
-    # Summary
-    print("\n" + "=" * 70)
-    print("SUMMARY")
-    print("=" * 70)
-    print(f"  Total jobs: {len(all_jobs)}")
-    print(f"  Leads (with signals): {len(leads)}")
-    
-    # Save results
+    # Save raw jobs
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    
-    # Save all jobs
     jobs_file = data_dir / f"jobs_{timestamp}.json"
     with open(jobs_file, 'w', encoding='utf-8') as f:
         json.dump(all_jobs, f, indent=2, ensure_ascii=False)
     print(f"\n[OK] Saved {len(all_jobs)} jobs to {jobs_file}")
     
-    # Save leads
-    leads_file = data_dir / f"leads_{timestamp}.json"
-    with open(leads_file, 'w', encoding='utf-8') as f:
-        json.dump(leads, f, indent=2, ensure_ascii=False)
-    print(f"[OK] Saved {len(leads)} leads to {leads_file}")
-    
-    # Show sample leads
-    if leads:
-        print("\n" + "=" * 70)
-        print("SAMPLE LEADS")
+    # Auto-classify if classify_leads is available
+    try:
+        from classify_leads import classify_jobs
+        import os
+        
+        api_key = os.getenv('OPENAI_API_KEY', '')
+        print(f"\n{'=' * 70}")
+        print("AUTO-CLASSIFYING LEADS")
         print("=" * 70)
-        for lead in leads[:5]:
-            print(f"\n  Title: {lead['title'][:60]}")
-            print(f"  Link: {lead['link'][:80]}")
-            print(f"  Source: {lead['source']}")
+        
+        classified = classify_jobs(
+            str(jobs_file),
+            api_key=api_key,
+            output_file=str(data_dir / f"leads_{timestamp}.json")
+        )
+        
+        # Summary
+        hot_leads = [j for j in classified if j['category'] == 'HOT_LEAD']
+        warm_leads = [j for j in classified if j['category'] == 'WARM_LEAD']
+        
+        print(f"\n{'=' * 70}")
+        print("FINAL SUMMARY")
+        print("=" * 70)
+        print(f"  Total jobs: {len(all_jobs)}")
+        print(f"  HOT_LEAD: {len(hot_leads)} ({len(hot_leads)/len(all_jobs)*100:.1f}%)")
+        print(f"  WARM_LEAD: {len(warm_leads)} ({len(warm_leads)/len(all_jobs)*100:.1f}%)")
+        print(f"  Total leads: {len(hot_leads) + len(warm_leads)} ({(len(hot_leads) + len(warm_leads))/len(all_jobs)*100:.1f}%)")
+        
+    except ImportError:
+        print("\n[WARN] classify_leads not found, skipping classification")
+        # Fallback: filter with old method
+        leads = filter_lead_signals(all_jobs)
+        leads_file = data_dir / f"leads_{timestamp}.json"
+        with open(leads_file, 'w', encoding='utf-8') as f:
+            json.dump(leads, f, indent=2, ensure_ascii=False)
+        print(f"[OK] Saved {len(leads)} leads to {leads_file}")
     
     print("\n" + "=" * 70)
     print("NEXT STEPS:")
     print("1. Review leads in data/ directory")
-    print("2. Submit leads to Workers API")
-    print("3. Setup cron job for regular crawling")
+    print("2. Submit leads to Workers API: python submit_leads.py data/leads_*.json YOUR_TOKEN")
+    print("3. Setup OpenAI API for better classification: export OPENAI_API_KEY=your_key")
     print("=" * 70)
 
 
