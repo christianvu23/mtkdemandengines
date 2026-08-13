@@ -275,3 +275,192 @@ class VozMarketingSpider(BaseSpider):
         except Exception as e:
             logger.error(f"[voz] Parse detail error: {e}")
             return None
+
+
+# ═══════════════════════════════════════════════════════════════════════
+# NEW FORUM SPIDERS — Vietnamese Marketing Communities (Aug 2026)
+# ═══════════════════════════════════════════════════════════════════════
+
+
+class BrandsVietnamSpider(BaseSpider):
+    """
+    Spider for BrandsVietnam.com — Premier Vietnamese marketing & branding community.
+    Platform for sharing marketing knowledge, industry data, and networking.
+    Has forum, articles, and community discussions about marketing needs.
+    """
+
+    name = "brands_vietnam_spider"
+    source_code = "brands_vietnam"
+    engine_type = "scrapling_fast"
+
+    async def parse_listing(self, content: str, url: str) -> list[dict]:
+        listings = []
+        try:
+            page = Selector(content)
+
+            # BrandsVietnam uses a CMS/forum structure
+            threads = page.css(
+                ".discussionListItem, .structItem, "
+                "a[href*='/threads/'], a[href*='/bai-viet/'], "
+                "[class*='thread'], [class*='article']"
+            )
+
+            if not threads:
+                # Fallback: find article/thread links
+                links = page.css("a[href*='/threads/'], a[href*='/bai-viet/'], a[href*='/dien-dan/']")
+                for link in links:
+                    href = link.attrib.get("href", "")
+                    title = link.text.strip() if link.text else ""
+                    if title and len(title) > 8 and href:
+                        full_url = href if href.startswith("http") else f"https://www.brandsvietnam.com{href}"
+                        combined = title.lower()
+                        if is_lead_signal(combined) or any(
+                            kw in combined
+                            for kw in ["marketing", "branding", "ads", "tvc", "content", "agency", "freelancer", "chiến dịch"]
+                        ):
+                            listings.append({
+                                "url": full_url, "title": title,
+                                "snippet": "", "source_query": url,
+                            })
+                return listings[:40]
+
+            for thread in threads:
+                link_el = thread.css("a[href*='/threads/'], a[href*='/bai-viet/'], a[href]")
+                href = link_el[0].attrib.get("href", "") if link_el else ""
+                title_el = thread.css("h2, h3, .title, [class*='title']")
+                title = title_el[0].text.strip() if title_el and title_el[0].text else ""
+                if not title:
+                    title = link_el[0].text.strip() if link_el[0].text else ""
+
+                snippet_el = thread.css(".snippet, .excerpt, .lastPost, p")
+                snippet = snippet_el[0].text.strip() if snippet_el and snippet_el[0].text else ""
+
+                combined = f"{title} {snippet}"
+                if is_lead_signal(combined) or any(
+                    kw in combined.lower()
+                    for kw in ["marketing", "branding", "ads", "tvc", "content", "agency", "freelancer", "chiến dịch", "quảng cáo"]
+                ):
+                    full_url = href if href.startswith("http") else f"https://www.brandsvietnam.com{href}"
+                    listings.append({
+                        "url": full_url,
+                        "title": title,
+                        "snippet": snippet[:200],
+                        "source_query": url,
+                    })
+
+        except Exception as e:
+            logger.error(f"[brands_vietnam] Parse listing error: {e}")
+
+        return listings[:40]
+
+    async def parse_detail(self, content: str, url: str) -> dict | None:
+        try:
+            page = Selector(content)
+            title_el = page.css("h1, .p-title-value, [class*='title']")
+            title = title_el[0].text.strip() if title_el and title_el[0].text else ""
+
+            post_el = page.css(".bbWrapper, .message-body, .content, article, main")
+            noi_dung = post_el[0].text.strip() if post_el and post_el[0].text else ""
+
+            if not noi_dung:
+                return None
+
+            return {
+                "url": url,
+                "tieuDe": title,
+                "noiDung": f"{title}\n\n{noi_dung}"[:8000],
+            }
+        except Exception as e:
+            logger.error(f"[brands_vietnam] Parse detail error: {e}")
+            return None
+
+
+class VietnamMarketingSpider(BaseSpider):
+    """
+    Spider for VietnamMarketing.com.vn — Vietnamese marketing community.
+    Has articles comparing freelancer vs agency, marketing discussions.
+    """
+
+    name = "vn_marketing_spider"
+    source_code = "vn_marketing"
+    engine_type = "scrapling_fast"
+
+    async def parse_listing(self, content: str, url: str) -> list[dict]:
+        listings = []
+        try:
+            page = Selector(content)
+
+            # Find article/thread links
+            threads = page.css(
+                "article, .post-item, .thread-item, "
+                "a[href*='/dien-dan/'], a[href*='/hoi-dap/'], "
+                "a[href*='/bai-viet/']"
+            )
+
+            if not threads:
+                links = page.css("a[href]")
+                for link in links:
+                    href = link.attrib.get("href", "")
+                    title = link.text.strip() if link.text else ""
+                    if title and len(title) > 10 and href and not href.startswith("http"):
+                        combined = title.lower()
+                        if is_lead_signal(combined) or any(
+                            kw in combined
+                            for kw in ["marketing", "freelancer", "agency", "quảng cáo", "ads", "branding", "fanpage"]
+                        ):
+                            full_url = f"https://vietnammarketing.com.vn{href}"
+                            listings.append({
+                                "url": full_url, "title": title,
+                                "snippet": "", "source_query": url,
+                            })
+                return listings[:40]
+
+            for thread in threads:
+                link_el = thread.css("a[href]")
+                href = link_el[0].attrib.get("href", "") if link_el else ""
+                title_el = thread.css("h2, h3, .title, [class*='title']")
+                title = title_el[0].text.strip() if title_el and title_el[0].text else ""
+                if not title:
+                    title = link_el[0].text.strip() if link_el[0].text else ""
+
+                if not title or len(title) < 10:
+                    continue
+
+                combined = title.lower()
+                if is_lead_signal(combined) or any(
+                    kw in combined
+                    for kw in ["marketing", "freelancer", "agency", "quảng cáo", "ads", "branding", "fanpage", "tvc", "content"]
+                ):
+                    full_url = href if href.startswith("http") else f"https://vietnammarketing.com.vn{href}"
+                    listings.append({
+                        "url": full_url,
+                        "title": title,
+                        "snippet": "",
+                        "source_query": url,
+                    })
+
+        except Exception as e:
+            logger.error(f"[vn_marketing] Parse listing error: {e}")
+
+        return listings[:40]
+
+    async def parse_detail(self, content: str, url: str) -> dict | None:
+        try:
+            page = Selector(content)
+            title_el = page.css("h1, [class*='title']")
+            title = title_el[0].text.strip() if title_el and title_el[0].text else ""
+
+            post_el = page.css(".content, article, main, .post-content, .entry-content")
+            noi_dung = post_el[0].text.strip() if post_el and post_el[0].text else ""
+
+            if not noi_dung:
+                return None
+
+            return {
+                "url": url,
+                "tieuDe": title,
+                "noiDung": f"{title}\n\n{noi_dung}"[:8000],
+            }
+        except Exception as e:
+            logger.error(f"[vn_marketing] Parse detail error: {e}")
+            return None

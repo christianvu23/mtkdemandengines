@@ -97,9 +97,87 @@
     color: var(--ink-muted); font-size: 14px;
   }
   .loading { text-align: center; padding: 48px; color: var(--ink-muted); }
+
+  /* ── Crawl Panel ─────────────────────────────────────────── */
+  .crawl-panel {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 20px; margin-bottom: 20px;
+  }
+  .crawl-panel h2 {
+    font: 600 16px var(--font-head); margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .crawl-controls {
+    display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+    margin-bottom: 12px;
+  }
+  .crawl-controls select {
+    padding: 8px 12px; border: 1px solid var(--border);
+    border-radius: 8px; background: var(--surface);
+    font: 14px var(--font-body); cursor: pointer;
+    min-width: 200px;
+  }
+  .btn-crawl {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 8px 18px; border: none; border-radius: 8px;
+    font: 600 14px var(--font-head); cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-crawl-primary { background: var(--accent); color: var(--accent-ink); }
+  .btn-crawl-primary:hover { background: #1d4ed8; }
+  .btn-crawl-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-crawl-secondary { background: #F1F5F9; color: var(--ink-2); border: 1px solid var(--border); }
+  .btn-crawl-secondary:hover { background: #E2E8F0; }
+  .crawl-status {
+    padding: 12px 16px; border-radius: 8px; font-size: 13px;
+    display: none; margin-top: 8px;
+  }
+  .crawl-status.show { display: block; }
+  .crawl-status.running { background: #EFF6FF; color: var(--accent); border: 1px solid #BFDBFE; }
+  .crawl-status.success { background: #F0FDF4; color: var(--good); border: 1px solid #BBF7D0; }
+  .crawl-status.error { background: #FEF2F2; color: #DC2626; border: 1px solid #FECACA; }
+  .crawl-result {
+    margin-top: 12px; padding: 12px 16px;
+    background: #F8FAFC; border: 1px solid var(--border);
+    border-radius: 8px; font-size: 13px; display: none;
+  }
+  .crawl-result.show { display: block; }
+  .crawl-result-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 8px; margin-top: 8px;
+  }
+  .crawl-result-item {
+    padding: 8px; background: var(--surface); border-radius: 6px;
+    text-align: center;
+  }
+  .crawl-result-item .num { font: 700 20px var(--font-head); color: var(--accent); }
+  .crawl-result-item .label { font-size: 11px; color: var(--ink-muted); }
+  .spinner {
+    display: inline-block; width: 14px; height: 14px;
+    border: 2px solid #BFDBFE; border-top-color: var(--accent);
+    border-radius: 50%; animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .source-groups { margin-top: 8px; }
+  .source-group-label {
+    font: 500 11px var(--font-head); color: var(--ink-muted);
+    text-transform: uppercase; letter-spacing: 0.5px;
+    margin: 8px 0 4px;
+  }
+  .source-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+  .source-chip {
+    padding: 4px 10px; border-radius: 6px; font-size: 12px;
+    background: #F1F5F9; color: var(--ink-2); cursor: pointer;
+    border: 1px solid transparent; transition: all 0.15s;
+  }
+  .source-chip:hover { border-color: var(--accent); color: var(--accent); }
+  .source-chip.selected { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+
   @media (max-width: 640px) {
     .lead { flex-direction: column; }
     .tier { width: 100%; height: auto; padding: 8px; flex-direction: row; gap: 8px; }
+    .crawl-controls { flex-direction: column; }
+    .crawl-controls select { width: 100%; }
   }
 </style>
 </head>
@@ -109,6 +187,45 @@
     <h1>Demand Engine</h1>
     <span class="badge" id="modeBadge">Đang tải...</span>
   </header>
+
+  <!-- Crawl Panel -->
+  <div class="crawl-panel">
+    <h2>🕷️ Thu thập Lead mới</h2>
+    <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;font-size:12px;color:var(--ink-muted)">
+      <label for="tokenInput">Token:</label>
+      <input type="password" id="tokenInput" placeholder="DEMAND_TOKEN" 
+        style="padding:4px 8px;border:1px solid var(--border);border-radius:6px;font-size:12px;width:200px;background:var(--surface)">
+      <button onclick="localStorage.setItem('demand_token', document.getElementById('tokenInput').value); this.textContent='✓ Đã lưu'; setTimeout(()=>this.textContent='Lưu',1500)" 
+        style="padding:4px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;cursor:pointer;background:var(--surface)">Lưu</button>
+    </div>
+    <div class="crawl-controls">
+      <select id="crawlSource">
+        <option value="">Tất cả nguồn (21 nguồn)</option>
+      </select>
+      <button class="btn-crawl btn-crawl-primary" id="crawlBtn" onclick="runCrawl()">
+        ▶ Thu thập ngay
+      </button>
+      <button class="btn-crawl btn-crawl-secondary" onclick="toggleCrawlPanel()">
+        ⚙ Chọn nguồn
+      </button>
+    </div>
+
+    <div class="source-groups" id="sourceGroups" style="display:none">
+      <div class="source-group-label">Nền tảng Freelancer VN</div>
+      <div class="source-chips" id="chipsFreelancerVn"></div>
+      <div class="source-group-label">Nền tảng Quốc tế (VN)</div>
+      <div class="source-chips" id="chipsFreelancerIntl"></div>
+      <div class="source-group-label">Trang tuyển dụng</div>
+      <div class="source-chips" id="chipsJobboard"></div>
+      <div class="source-group-label">Diễn đàn / Cộng đồng</div>
+      <div class="source-chips" id="chipsForum"></div>
+      <div class="source-group-label">Mạng xã hội</div>
+      <div class="source-chips" id="chipsSocial"></div>
+    </div>
+
+    <div class="crawl-status" id="crawlStatus"></div>
+    <div class="crawl-result" id="crawlResult"></div>
+  </div>
 
   <div class="stats" id="stats"></div>
 
@@ -265,6 +382,192 @@ document.getElementById('refreshBtn').onclick = loadLeads;
 
 // Initial load
 loadLeads();
+loadCrawlSources();
+
+// Load saved token
+document.getElementById('tokenInput').value = localStorage.getItem('demand_token') || '';
+
+// ═══════════════════════════════════════════════════════════════
+// CRAWL FUNCTIONALITY
+// ═══════════════════════════════════════════════════════════════
+
+const CRAWL_SOURCE_MAP = {
+  // Freelancer VN
+  vlance: { name: 'vLance.vn', cat: 'freelancer_vn' },
+  freelancer_vn: { name: 'FreelancerViet.vn', cat: 'freelancer_vn' },
+  fastlance: { name: 'Fastlance.vn', cat: 'freelancer_vn' },
+  vietgigs: { name: 'VietGigs.vn', cat: 'freelancer_vn' },
+  gighit: { name: 'GigHit.vn', cat: 'freelancer_vn' },
+  jobboard_vn: { name: 'JobBoard.vn', cat: 'freelancer_vn' },
+  jobsgo: { name: 'JobsGo.vn', cat: 'freelancer_vn' },
+  // Freelancer Intl
+  upwork_vn: { name: 'Upwork Vietnam', cat: 'freelancer_intl' },
+  freelancer_com_vn: { name: 'Freelancer.com VN', cat: 'freelancer_intl' },
+  truelancer_vn: { name: 'Truelancer VN', cat: 'freelancer_intl' },
+  behance_vn: { name: 'Behance Vietnam', cat: 'freelancer_intl' },
+  contra_vn: { name: 'Contra.com VN', cat: 'freelancer_intl' },
+  peopleperhour: { name: 'PeoplePerHour', cat: 'freelancer_intl' },
+  // Job boards
+  careerviet: { name: 'CareerViet.vn', cat: 'jobboard' },
+  topcv: { name: 'TopCV.vn', cat: 'jobboard' },
+  job123: { name: '123Job.vn', cat: 'jobboard' },
+  // Forums
+  bhw: { name: 'BlackHatWorld', cat: 'forum' },
+  warriorforum: { name: 'WarriorForum', cat: 'forum' },
+  voz_marketing: { name: 'VOZ Marketing', cat: 'forum' },
+  brands_vietnam: { name: 'Brands Vietnam', cat: 'forum' },
+  vn_marketing: { name: 'VietnamMarketing', cat: 'forum' },
+  // Social
+  tiktok_business: { name: 'TikTok Business', cat: 'social' },
+  fb_groups: { name: 'Facebook Groups', cat: 'social' },
+};
+
+let selectedSources = new Set();
+
+function loadCrawlSources() {
+  // Populate dropdown
+  const sel = document.getElementById('crawlSource');
+  const groups = {};
+  for (const [code, info] of Object.entries(CRAWL_SOURCE_MAP)) {
+    if (!groups[info.cat]) groups[info.cat] = [];
+    groups[info.cat].push({ code, name: info.name });
+  }
+  for (const [cat, items] of Object.entries(groups)) {
+    const optgroup = document.createElement('optgroup');
+    optgroup.label = cat.replace('_', ' ').replace(/\b\w/g, c => c.toUpperCase());
+    for (const item of items) {
+      const opt = document.createElement('option');
+      opt.value = item.code;
+      opt.textContent = item.name;
+      optgroup.appendChild(opt);
+    }
+    sel.appendChild(optgroup);
+  }
+
+  // Populate chips
+  const chipContainers = {
+    freelancer_vn: 'chipsFreelancerVn',
+    freelancer_intl: 'chipsFreelancerIntl',
+    jobboard: 'chipsJobboard',
+    forum: 'chipsForum',
+    social: 'chipsSocial',
+  };
+  for (const [cat, containerId] of Object.entries(chipContainers)) {
+    const container = document.getElementById(containerId);
+    if (!container) continue;
+    const items = Object.entries(CRAWL_SOURCE_MAP).filter(([_, v]) => v.cat === cat);
+    container.innerHTML = items.map(([code, info]) =>
+      `<span class="source-chip" data-code="${code}" onclick="toggleSourceChip(this, '${code}')">${info.name}</span>`
+    ).join('');
+  }
+}
+
+function toggleSourceChip(el, code) {
+  if (selectedSources.has(code)) {
+    selectedSources.delete(code);
+    el.classList.remove('selected');
+  } else {
+    selectedSources.add(code);
+    el.classList.add('selected');
+  }
+}
+
+function toggleCrawlPanel() {
+  const panel = document.getElementById('sourceGroups');
+  panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+}
+
+function showCrawlStatus(msg, type) {
+  const el = document.getElementById('crawlStatus');
+  el.className = `crawl-status show ${type}`;
+  el.innerHTML = msg;
+}
+
+function hideCrawlStatus() {
+  document.getElementById('crawlStatus').className = 'crawl-status';
+}
+
+function showCrawlResult(data) {
+  const el = document.getElementById('crawlResult');
+  el.className = 'crawl-result show';
+
+  const sources = data.summary?.sources || [];
+  const sourceRows = sources.map(s =>
+    `<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border)">
+      <span>${esc(s.name)}</span>
+      <span><strong style="color:var(--good)">${s.leads}</strong> leads / ${s.items} items${s.error ? ` <span style="color:#DC2626">(${esc(s.error)})</span>` : ''}</span>
+    </div>`
+  ).join('');
+
+  el.innerHTML = `
+    <div style="font-weight:600;margin-bottom:8px">Kết quả thu thập</div>
+    <div class="crawl-result-grid">
+      <div class="crawl-result-item">
+        <div class="num">${data.summary?.totalItems || 0}</div>
+        <div class="label">Tổng items</div>
+      </div>
+      <div class="crawl-result-item">
+        <div class="num" style="color:var(--good)">${data.summary?.totalLeads || 0}</div>
+        <div class="label">Job Leads</div>
+      </div>
+      <div class="crawl-result-item">
+        <div class="num">${data.duration || '—'}</div>
+        <div class="label">Thời gian</div>
+      </div>
+    </div>
+    <div style="margin-top:12px">${sourceRows}</div>
+  `;
+}
+
+async function runCrawl() {
+  const btn = document.getElementById('crawlBtn');
+  const sourceSelect = document.getElementById('crawlSource');
+  const source = sourceSelect.value;
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Đang thu thập...';
+  hideCrawlStatus();
+  document.getElementById('crawlResult').className = 'crawl-result';
+
+  showCrawlStatus(
+    `<span class="spinner"></span> Đang thu thập lead từ ${source ? CRAWL_SOURCE_MAP[source]?.name || source : 'tất cả 21 nguồn'}...`,
+    'running'
+  );
+
+  try {
+    const token = localStorage.getItem('demand_token') || '';
+    const body = {};
+    if (source) body.source = source;
+
+    const res = await fetch('/api/crawl/run', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Demand-Token': token,
+      },
+      body: JSON.stringify(body),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      showCrawlStatus(`Lỗi: ${esc(data.error || data.loi || 'Không xác định')}`, 'error');
+    } else {
+      showCrawlStatus(
+        `✓ Thu thập hoàn thành! ${data.summary?.totalLeads || 0} job leads từ ${data.summary?.totalItems || 0} items`,
+        'success'
+      );
+      showCrawlResult(data);
+      // Reload leads after crawl
+      setTimeout(() => loadLeads(), 1000);
+    }
+  } catch (err) {
+    showCrawlStatus(`Lỗi kết nối: ${esc(err.message)}`, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '▶ Thu thập ngay';
+  }
+}
 </script>
 </body>
 </html>

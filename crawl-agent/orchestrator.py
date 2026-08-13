@@ -21,9 +21,28 @@ from spiders import (
     VLanceSpider,
     FreelancerVNSpider,
     PeoplePerHourSpider,
+    # New freelancer spiders (Aug 2026)
+    FastlanceSpider,
+    VietGigsSpider,
+    GigHitSpider,
+    JobBoardVNSpider,
+    JobsGoSpider,
+    UpworkVNSpider,
+    FreelancerComVNSpider,
+    TruelancerVNSpider,
+    BehanceVNSpider,
+    ContraVNSpider,
+    CareerVietSpider,
+    TopCVSpider,
+    Job123Spider,
+    # Forum spiders
     BlackHatWorldSpider,
     WarriorForumSpider,
     VozMarketingSpider,
+    # New forum spiders (Aug 2026)
+    BrandsVietnamSpider,
+    VietnamMarketingSpider,
+    # Social spiders
     TikTokSpider,
     FacebookGroupSpider,
 )

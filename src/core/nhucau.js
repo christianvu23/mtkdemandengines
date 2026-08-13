@@ -37,19 +37,47 @@ export const TU_KHOA_NHU_CAU = {
 
 /**
  * Nhu cầu NGOÀI phạm vi dịch vụ — dùng để loại, không phải để chấm điểm.
- * Ví dụ lập trình, kế toán, dịch thuật thuần.
+ * Ví dụ lập trình, kế toán, dịch thuật thuần, sales, kinh doanh.
  */
 export const TU_KHOA_NGOAI_PHAM_VI = [
+  // IT/Programming
   'lap trinh', 'developer', 'backend', 'frontend', 'fullstack', 'react', 'nodejs',
   'flutter', 'android', 'ios', 'devops', 'kiem thu', 'tester', 'qa qc',
-  'ke toan', 'kiem toan', 'thu kho', 'lai xe', 'tai xe', 'bao ve', 'giup viec',
-  'dich thuat', 'phien dich', 'gia su', 'nhap lieu', 'telesale bao hiem',
-  // Sales/Kinh doanh - KHÔNG phải marketing freelancer
+  'software engineer', 'programmer', 'coder',
+  
+  // Finance/Admin
+  'ke toan', 'kiem toan', 'thu kho', 'tai chinh', 'finance', 'accountant',
+  
+  // Manual labor/Services
+  'lai xe', 'tai xe', 'bao ve', 'giup viec', 'driver', 'security guard',
+  
+  // Translation/Education
+  'dich thuat', 'phien dich', 'gia su', 'translator', 'interpreter', 'tutor',
+  
+  // Data entry
+  'nhap lieu', 'data entry',
+  
+  // Telesales/Insurance
+  'telesale bao hiem', 'insurance sales',
+  
+  // Sales/Business - KHÔNG phải marketing freelancer
   'giam doc kinh doanh', 'truong phong kinh doanh', 'nhan vien kinh doanh',
   'chuyen vien kinh doanh', 'sales', 'ban hang', 'kinh doanh', 'sales admin',
-  'sales executive', 'sales manager', 'sales representative', 'telesale',
-  'tele sales', 'ban hang online', 'nhan vien ban hang', 'cham soc khach hang',
-  'tư vấn khách hàng', 'tư vấn bán hàng',
+  'sales executive', 'sales manager', 'sales representative', 'sales supervisor',
+  'telesale', 'tele sales', 'ban hang online', 'nhan vien ban hang',
+  'cham soc khach hang', 'customer service', 'tư vấn khách hàng', 'tư vấn bán hàng',
+  'account manager', 'business development', 'bd executive', 'bd manager',
+  'pg sales', 'pb sales', 'sales thu nhap', 'sales khu vuc',
+  
+  // HR/Admin
+  'nhan su', 'hr executive', 'hr manager', 'human resources', 'recruitment',
+  'hanh chinh', 'admin staff', 'receptionist', 'le tan',
+  
+  // Operations/Logistics
+  'van hanh', 'logistics', 'supply chain', 'giao hang', 'shipper', 'warehouse',
+  
+  // Manufacturing
+  'san xuat', 'manufacturing', 'factory', 'cong nhan', 'operator',
 ];
 
 /**
@@ -67,6 +95,19 @@ export const TU_KHOA_RETAINER = [
   'duy tri', 'goi thang', 'dong hanh',
 ];
 
+/**
+ * Dấu hiệu freelancer/project-based — ưu tiên cộng điểm.
+ * Christian cần marketing freelancer, không phải full-time employee.
+ */
+export const TU_KHOA_FREELANCER = [
+  'freelance', 'freelancer', 'project', 'du an', 'theo du an', 'thoi vu',
+  'ngan han', 'part time', 'ban thoi gian', 'linh hoat', 'tu do',
+  'remote', 'lam tu xa', 'work from home', 'wfh',
+  'cong tac vien', 'ctv', 'collaborator', 'contractor',
+  'bao gia', 'chao gia', 'bid', 'proposal',
+  'theo gio', 'theo project', 'mot lan', 'ngan han',
+];
+
 function demTrung(textDaChuan, danhSach) {
   const trung = [];
   for (const tk of danhSach) if (textDaChuan.includes(tk)) trung.push(tk);
@@ -77,7 +118,7 @@ function demTrung(textDaChuan, danhSach) {
  * Phân loại nhu cầu từ text.
  * @param {string} text tiêu đề + nội dung
  * @returns {{nhuCau: string[], ngoaiPhamVi: string[], toanThoiGian: boolean,
- *            retainer: boolean, tuKhoaTrung: Record<string,string[]>}}
+ *            retainer: boolean, freelancer: boolean, tuKhoaTrung: Record<string,string[]>}}
  */
 export function phanLoaiNhuCau(text) {
   const t = chuanHoaText(text);
@@ -97,17 +138,28 @@ export function phanLoaiNhuCau(text) {
     ngoaiPhamVi: demTrung(t, TU_KHOA_NGOAI_PHAM_VI),
     toanThoiGian: demTrung(t, TU_KHOA_TOAN_THOI_GIAN).length > 0,
     retainer: demTrung(t, TU_KHOA_RETAINER).length > 0,
+    freelancer: demTrung(t, TU_KHOA_FREELANCER).length > 0,
     tuKhoaTrung,
   };
 }
 
-/** Suy ra hình thức hợp tác. */
+/** Suy ra hình thức hợp tác, ưu tiên freelancer/project-based. */
 export function suyRaHinhThuc(text) {
   const pl = phanLoaiNhuCau(text);
+  
+  // Ưu tiên freelancer signals
+  if (pl.freelancer) return 'freelance';
+  
+  // Full-time employee signals
   if (pl.toanThoiGian) return 'tuyen_dung';
+  
+  // Retainer signals
   if (pl.retainer) return 'retainer';
+  
+  // Project-based signals
   const t = chuanHoaText(text);
   if (/(du an|project|freelance|thoi vu|part time|cong nhat|theo dau viec)/.test(t)) return 'du_an';
+  
   return 'khong_ro';
 }
 

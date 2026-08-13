@@ -101,10 +101,12 @@ export function diemTinHieuNganSach(ns) {
 }
 
 export function diemHinhThuc(hinhThuc) {
+  // Ưu tiên freelancer/project-based - đúng nhu cầu Christian
+  if (hinhThuc === 'freelance') return TRONG_SO.hinhThuc; // 8
   if (hinhThuc === 'retainer') return TRONG_SO.hinhThuc; // 8
   if (hinhThuc === 'du_an') return 6;
   if (hinhThuc === 'tuyen_dung') return 1; // tuyển toàn thời gian — không hợp freelance
-  return 4;
+  return 4; // khong_ro
 }
 
 /** Trừ điểm theo mức cạnh tranh (số người đã ứng tuyển/bình luận). */

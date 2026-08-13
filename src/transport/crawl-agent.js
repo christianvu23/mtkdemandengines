@@ -121,13 +121,16 @@ async function handleCrawlStatus(env) {
   // Read crawl state from KV or D1 if available
   const state = {
     agent: 'crawl-agent-python',
-    version: '0.1.0',
+    version: '0.2.0',
     engines: ['scrapling_fast', 'scrapling_stealth', 'camoufox'],
     sources: {
-      freelancer: ['vlance', 'freelancer_vn', 'peopleperhour'],
-      forums: ['bhw', 'warriorforum', 'voz_marketing'],
+      freelancer_vn: ['vlance', 'freelancer_vn', 'fastlance', 'vietgigs', 'gighit', 'jobboard_vn', 'jobsgo'],
+      freelancer_intl: ['upwork_vn', 'freelancer_com_vn', 'truelancer_vn', 'behance_vn', 'contra_vn', 'peopleperhour'],
+      jobboard: ['careerviet', 'topcv', 'job123'],
+      forum: ['bhw', 'warriorforum', 'voz_marketing', 'brands_vietnam', 'vn_marketing'],
       social: ['tiktok_business', 'fb_groups'],
     },
+    total_sources: 21,
     last_run: null, // TODO: store in KV
     next_scheduled: null,
   };
@@ -185,70 +188,34 @@ async function handleTriggerCrawl(request, env) {
  */
 async function handleCrawlSources(env) {
   const sources = [
-    {
-      code: 'vlance',
-      name: 'vLance.vn',
-      engine: 'scrapling_stealth',
-      category: 'freelancer',
-      urls: ['https://vlance.vn/viec-lam-freelance/marketing'],
-      status: 'active',
-    },
-    {
-      code: 'freelancer_vn',
-      name: 'Freelancer.vn',
-      engine: 'scrapling_stealth',
-      category: 'freelancer',
-      urls: ['https://www.freelancer.vn/projects/marketing/'],
-      status: 'active',
-    },
-    {
-      code: 'peopleperhour',
-      name: 'PeoplePerHour',
-      engine: 'scrapling_fast',
-      category: 'freelancer',
-      urls: ['https://www.peopleperhour.com/freelance-marketing-jobs'],
-      status: 'active',
-    },
-    {
-      code: 'bhw',
-      name: 'BlackHatWorld',
-      engine: 'scrapling_fast',
-      category: 'forum',
-      urls: ['https://www.blackhatworld.com/seo/marketplace/'],
-      status: 'active',
-    },
-    {
-      code: 'warriorforum',
-      name: 'WarriorForum',
-      engine: 'scrapling_fast',
-      category: 'forum',
-      urls: ['https://www.warriorforum.com/main-internet-marketing-discussion-forum/'],
-      status: 'active',
-    },
-    {
-      code: 'voz_marketing',
-      name: 'VOZ Marketing',
-      engine: 'scrapling_stealth',
-      category: 'forum',
-      urls: ['https://voz.vn/f/marketing-pr.34/'],
-      status: 'active',
-    },
-    {
-      code: 'tiktok_business',
-      name: 'TikTok Business',
-      engine: 'camoufox',
-      category: 'social',
-      urls: ['https://www.tiktok.com/search?q=marketing+agency+needed'],
-      status: 'requires_camoufox',
-    },
-    {
-      code: 'fb_groups',
-      name: 'Facebook Groups',
-      engine: 'camoufox',
-      category: 'social',
-      urls: ['https://www.facebook.com/groups/congdongmarketing'],
-      status: 'requires_camoufox',
-    },
+    // Vietnamese Freelancer Platforms
+    { code: 'vlance', name: 'vLance.vn', engine: 'scrapling_stealth', category: 'freelancer_vn', status: 'active' },
+    { code: 'freelancer_vn', name: 'FreelancerViet.vn', engine: 'scrapling_stealth', category: 'freelancer_vn', status: 'active' },
+    { code: 'fastlance', name: 'Fastlance.vn', engine: 'scrapling_stealth', category: 'freelancer_vn', status: 'active' },
+    { code: 'vietgigs', name: 'VietGigs.vn', engine: 'scrapling_stealth', category: 'freelancer_vn', status: 'active' },
+    { code: 'gighit', name: 'GigHit.vn', engine: 'scrapling_stealth', category: 'freelancer_vn', status: 'active' },
+    { code: 'jobboard_vn', name: 'JobBoard.vn', engine: 'scrapling_fast', category: 'freelancer_vn', status: 'active' },
+    { code: 'jobsgo', name: 'JobsGo.vn', engine: 'scrapling_fast', category: 'freelancer_vn', status: 'active' },
+    // International Platforms (VN Market)
+    { code: 'upwork_vn', name: 'Upwork Vietnam', engine: 'scrapling_fast', category: 'freelancer_intl', status: 'active' },
+    { code: 'freelancer_com_vn', name: 'Freelancer.com VN', engine: 'scrapling_fast', category: 'freelancer_intl', status: 'active' },
+    { code: 'truelancer_vn', name: 'Truelancer VN', engine: 'scrapling_fast', category: 'freelancer_intl', status: 'active' },
+    { code: 'behance_vn', name: 'Behance Vietnam', engine: 'scrapling_fast', category: 'freelancer_intl', status: 'active' },
+    { code: 'contra_vn', name: 'Contra.com VN', engine: 'scrapling_fast', category: 'freelancer_intl', status: 'active' },
+    { code: 'peopleperhour', name: 'PeoplePerHour', engine: 'scrapling_fast', category: 'freelancer_intl', status: 'active' },
+    // Job Boards
+    { code: 'careerviet', name: 'CareerViet.vn', engine: 'scrapling_fast', category: 'jobboard', status: 'active' },
+    { code: 'topcv', name: 'TopCV.vn', engine: 'scrapling_fast', category: 'jobboard', status: 'active' },
+    { code: 'job123', name: '123Job.vn', engine: 'scrapling_fast', category: 'jobboard', status: 'active' },
+    // Forums & Communities
+    { code: 'bhw', name: 'BlackHatWorld', engine: 'scrapling_fast', category: 'forum', status: 'active' },
+    { code: 'warriorforum', name: 'WarriorForum', engine: 'scrapling_fast', category: 'forum', status: 'active' },
+    { code: 'voz_marketing', name: 'VOZ Marketing', engine: 'scrapling_stealth', category: 'forum', status: 'active' },
+    { code: 'brands_vietnam', name: 'Brands Vietnam', engine: 'scrapling_fast', category: 'forum', status: 'active' },
+    { code: 'vn_marketing', name: 'VietnamMarketing', engine: 'scrapling_fast', category: 'forum', status: 'active' },
+    // Social Media (requires Camoufox)
+    { code: 'tiktok_business', name: 'TikTok Business', engine: 'camoufox', category: 'social', status: 'requires_camoufox' },
+    { code: 'fb_groups', name: 'Facebook Groups', engine: 'camoufox', category: 'social', status: 'requires_camoufox' },
   ];
 
   return Response.json({ sources, total: sources.length });
