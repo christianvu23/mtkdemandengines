@@ -86,6 +86,33 @@ export default {
         }
         const chiNguon = new URL(request.url).searchParams.get('nguon');
         const ket = await xuLyQuetNguon({ ma_nguon: chiNguon }, env);
+          ```javascript
+      if (p === '/api/demand/quet' && request.method === 'POST') {
+        if (!env?.QUEUE_QUET) {
+          return traLoi({ loi: 'Worker chưa có binding QUEUE_QUET — cần bật Cloudflare Queues' }, 500);
+        }
+        const chiNguon = new URL(request.url).searchParams.get('nguon');
+        const ket = await xuLyQuetNguon({ ma_nguon: chiNguon }, env);
+
+        // --- THÊM CODE DƯA VẪN DƯỚI ĐÂY ---
+        const jobInfo = extractJobInfo(ket.noiDung || '');
+
+        return traLoi({
+          ...ket,
+          buoc_tiep: 'Đã xếp vào queue — Worker xử lý từng nguồn, từng link ngoài request này.',
+          jobInfo: {
+            company: jobInfo.company,
+            position: jobInfo.position,
+            location: jobInfo.location,
+            salary: jobInfo.salary,
+            benefits: jobInfo.benefits,
+            datePosted: jobInfo.datePosted,
+            source: jobInfo.source,
+            image: jobInfo.image
+          }
+        });
+      }
+    ```
         return traLoi({ ...ket, buoc_tiep: 'Đã xếp vào queue — Worker xử lý từng nguồn, từng link ngoài request này.' });
       }
 

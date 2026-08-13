@@ -1,3 +1,91 @@
+`javascript
+   // --- Trích xuất thông tin việc làm từ HTML thugather ---
+
+   /** Trích xuất thông tin việc làm từ nội dung HTML thucollect
+    * - Sử dụng DOMParser để phân tích structured data
+    * - Trích xuất từ meta tags (og:title, og:description) và DOM elements
+    * - Trả về object có cấu trúc sẵn sàng hiển thị UI
+    *
+    * @param {string} html - Nội dung HTML từ quá trình scrape
+    * @returns {object} Thông tin việc làm đã format
+    */
+   export function extractJobInfo(html) {
+     try {
+       const parser = new DOMParser();
+       const doc = parser.parseFromString(html, 'text/html');
+
+       const ogTitle = doc.querySelector('meta[property="og:title"]');
+       const title = ogTitle ? ogTitle.getAttribute('content') : (doc.querySelector('title') ?
+ doc.querySelector('title').innerText : '');
+
+       const ogDesc = doc.querySelector('meta[property="og:description"]');
+       const description = ogDesc ? ogDesc.getAttribute('content') : '';
+
+       const ogImage = doc.querySelector('meta[property="og:image"]');
+       const image = ogImage ? ogImage.getAttribute('content') : '';
+
+       let company = null;
+       if (title) {
+         const parts = title.split('-');
+         if (parts.length > 0) {
+           company = parts[0].trim();
+         }
+       }
+
+       let location = null;
+       if (company && company.includes('City Branch')) {
+         location = company;
+       }
+
+       let datePosted = null;
+       const dateMatch = description.match/(Aug|Jan|Feb|Mar|Apr|May|Jun|Jul|Oct|Nov|Dec)\s*,\s*\d{4}/i);
+       if (dateMatch) {
+         datePosted = dateMatch[0];
+       }
+
+       const hasHighSalary = description.toLowerCase().includes('high salary') ||
+ description.toLowerCase().includes('lương cao');
+       const hasGoodBenefits = description.toLowerCase().includes('good benefits') ||
+ description.toLowerCase().includes('quyền lợi tốt');
+
+       return {
+         company: company || 'Công ty chưa xác định',
+         position: title ? title.split('-')[0].trim() : 'Vị trí chưa rõ',
+         location: location || extractLocationFromText(description),
+         salary: hasHighSalary ? 'Cao' : 'Không rõ',
+         benefits: hasGoodBenefits ? 'Tốt' : 'Không rõ',
+         datePosted: datePosted || null,
+         source: 'VietnamWorks',
+         url: null,
+         image: image || null,
+         rawDescription: description.slice(0, 500)
+       };
+     } catch (e) {
+       console.error('Lỗi extractJobInfo:', e);
+       return {
+         company: 'Lỗi trích xuất',
+         position: 'Lỗi',
+         location: null,
+         salary: 'Lỗi',
+         benefits: 'Lỗi',
+         datePosted: null,
+         source: 'Lỗi',
+         url: null,
+         image: null,
+         rawDescription: ''
+       };
+     }
+   }
+
+   /** Trích xuất địa điểm từ text mô tả */
+   function extractLocationFromText(text) {
+     const vnCityPatterns = /(Hà Nội|Ho Chi Minh|Da Nang|Hai Phong|Can Tho|Binh Duong|Long An|Binh Thanh|Cu Chi)/i;
+     const match = text.match(vnCityPatterns);
+     return match ? match[0] : null;
+   }
+
+   // --- Export: helper dùng bởi worker.js (thay vì import trực tiếp từ file lớn) ---
+   
 // queue/handlers.js — Tất cả logic xử lý queue job
 // Không có I/O trực tiếp — chỉ gọi các hàm từ services/supabase.js
 // Nguyên tắc: đơn trách nhiệm duy nhất = xử lý 1 message/thuộc loại message
