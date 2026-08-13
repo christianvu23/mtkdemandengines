@@ -11,6 +11,7 @@
 import { xuLyMotMessage, xuLyQuetNguon, chuanBiMessageQuetNguon, xuLyLayBai } from './src/queue/handlers.js';
 import { kiemTraTransport, layNguon } from './src/services/supabase.js';
 import { napNhieuLead } from './src/core/nap-lead.js';
+import { handleCrawlAgent } from './src/transport/crawl-agent.js';
 
 // --- Supply helpers previously inline (bộ dùng chung) ---
 // (đã di chuyển ra services/supabase.js; đây là alias ngắn để giữ backwards compatibility)
@@ -36,6 +37,13 @@ export default {
 
     if (!p.startsWith('/api/')) {
       return env.ASSETS ? env.ASSETS.fetch(request) : new Response('Not found', { status: 404 });
+    }
+
+    // Crawl Agent routes — separate auth (uses same DEMAND_TOKEN)
+    if (p.startsWith('/api/crawl/')) {
+      const quyenCA = duocPhep(request, env);
+      if (!quyenCA.ok) return traLoi({ loi: quyenCA.loi }, 401);
+      return handleCrawlAgent(request, env);
     }
 
     const quyen = duocPhep(request, env);
