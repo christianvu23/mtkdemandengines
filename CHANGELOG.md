@@ -12,6 +12,22 @@ Tất cả các thay đổi quan trọng của project sẽ được ghi lại t
 
 ---
 
+## [2026-08-13-fix2] - Fix filtering logic
+
+### Fixed
+- **Filtering logic**: Loại bỏ sales/business jobs, chỉ giữ marketing-related leads
+- Thêm `sales`, `kinh doanh`, `giam doc kinh doanh` vào `TU_KHOA_NGOAI_PHAM_VI`
+- Thêm `marketing` vào `TU_KHOA_NHU_CAU.content`
+- `napLead` giờ reject leads có `ngoaiPhamVi` keywords
+- `napLead` giờ reject leads không có nhu cầu marketing nào
+- Cập nhật regex vieclam24h để chỉ match marketing-related URLs
+
+### Changed
+- Regex vieclam24h: `/(marketing|content|video|design|quay|chup|tvc|banner|branding|ads|media|digital).+id[0-9]+.html`
+- Kết quả: 8 links → 3 marketing leads (vs 20 links → 1 lead trước đó)
+
+---
+
 ## [2026-08-13] - Pipeline hoạt động端到端
 
 ### Added

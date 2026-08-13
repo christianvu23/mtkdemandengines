@@ -81,17 +81,30 @@ POST /api/demand/quet?nguon=vieclam24h
 | **Tổng leads đã chấm điểm** | 55+ |
 | **Lần quét thành công** | 5+ |
 
-### Ví dụ leads
+### Ví dụ leads (SAU KHI FIX)
 
+**✅ Được giữ lại (marketing-related):**
 ```
-[C|54] Tuyển Nhân Viên Tư Vấn / Kinh Doanh / Chăm Sóc Khách Hàng
-  Source: vieclam24h | Budget: 15-20 triệu | Contact: Zalo + Email
-
 [D|44] Tuyển Nhân Viên Quay Phim tại Phòng Khám Chuyên Khoa Thẩm Mỹ Kyoto Nhật Bản
-  Source: vieclam24h | Location: Hà Nội
+  Nhu cầu: content, video, pr | Source: vieclam24h
 
-[D|36] Tuyển Giám Đốc Kinh Doanh Khu Vực Đông Bắc tại Công Ty Cổ Phần Đầu Tư Máy Xây Dựng Hải Âu
-  Source: vieclam24h | Budget: 20-30 triệu
+[D|40] Tuyển Nhân Viên Content Creator tại Công Ty Cổ Phần Fandi Việt Nam
+  Nhu cầu: content, video, branding, ads | Source: vieclam24h
+
+[D|40] Tuyển Chuyên Viên Digital Marketing tại Công Ty TNHH Nha Khoa An Phước
+  Nhu cầu: content, video, branding, ads | Source: vieclam24h
+```
+
+**❌ Bị loại (sales/business - không liên quan):**
+```
+Tuyển Giám Đốc Kinh Doanh Khu Vực Đông Bắc
+  → Lý do: Ngoài phạm vi: giam doc kinh doanh, kinh doanh
+
+Tuyển Nhân Viên Sales Thu Nhập Lên Đến 20 Triệu
+  → Lý do: Ngoài phạm vi: sales
+
+Tuyển Nhân Viên Kinh Doanh Xe Ô Tô
+  → Lý do: Ngoài phạm vi: nhan vien kinh doanh, kinh doanh
 ```
 
 ---
@@ -267,6 +280,17 @@ CLOUDFLARE_API_TOKEN=<api_token>
 
 ## 📊 Lead Scoring
 
+### Filtering Logic (2 lớp)
+
+**Lớp 1: Regex ở tầng source**
+- Chỉ lấy URLs có từ khóa marketing: `marketing|content|video|design|quay|chup|tvc|banner|branding|ads|media|digital`
+- Giảm noise từ sales/business jobs ngay từ đầu
+
+**Lớp 2: Keyword filtering ở tầng scoring**
+- Loại bỏ thẳng tay jobs có từ khóa: `sales`, `kinh doanh`, `giam doc kinh doanh`, `ban hang`, etc.
+- Loại bỏ jobs không có nhu cầu marketing nào được phát hiện
+- Giữ lại jobs có: `content`, `video`, `design`, `branding`, `ads`, `marketing`, etc.
+
 ### Rubric (0-100 điểm)
 
 | Tiêu chí | Trọng số | Mô tả |
@@ -302,6 +326,7 @@ CLOUDFLARE_API_TOKEN=<api_token>
 11. ✅ Regex không khớp relative URLs
 12. ✅ HTML tags bị strip sai cách → fix `goMarkdown`
 13. ✅ Title hiển thị `<!DOCTYPE html...` → parse frontmatter
+14. ✅ **Filtering logic**: Loại bỏ sales/business jobs, chỉ giữ marketing-related leads
 
 ---
 
