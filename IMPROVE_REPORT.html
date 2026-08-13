@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Architecture review — mtkdemandengines</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module">
+      import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+      mermaid.initialize({ startOnLoad: true, theme: "neutral", securityLevel: "loose" });
+    </script>
+    <style>
+      .seam { stroke-dasharray: 4 4; }
+      .leak { stroke: #dc2626; }
+      .deep { background: linear-gradient(135deg, #0f172a, #1e293b); }
+    </style>
+  </head>
+  <body class="bg-stone-50 text-slate-900 font-sans">
+    <main class="max-w-5xl mx-auto px-6 py-12 space-y-12">
+      <!-- Header -->
+      <header class="border-b border-slate-200 pb-4">
+        <div class="flex items-center gap-4">
+          <div class="text-3xl font-bold">mtkdemandengines</div>
+          <div class="text-sm text-slate-500">
+            <span>Generated: 2026-08-13</span>
+            <span class="mx-2">|</span>
+            <span>Codebase-design vocabulary applied</span>
+          </div>
+        </div>
+        <div class="mt-2 grid grid-cols-3 gap-2">
+          <span class="px-2 py-1 text-xs border border-slate-300 rounded badge">Strong</span>
+          <span class="px-2 py-1 text-xs border border-slate-300 rounded badge">Worth exploring</span>
+          <span class="px-2 py-1 text-xs border border-slate-300 rounded badge">Speculative</span>
+        </div>
+        <p class="text-xs mt-2 srm">Legend: <span class="font-mono block margin">solid box = module</span> <span class="font-mono block margin">dashed line = seam</span> <span class="font-mono block leak">red arrow = leakage</span> <span class="font-mono block deep">thick dark box = deep module</span></p>
+      </header>
+
+      <!-- Candidates Section -->
+      <section id="candidates" class="space-y-10">
+        <!-- Candidate 1: worker.js split -->
+        <article>
+          <h2 class="text-2xl font-semibold tracking-tighter mb-3">Collapse the Worker pipeline: split HTTP from queue handlers</h2>
+          <div class="flex items-center gap-2 mb-2">
+            <span class="px-2 py-1 text-xs border border-emerald-300 rounded badge">Strong</span>
+            <span class="text-xs uppercase tracking-wider srm">in-process</span>
+          </div>
+          <div class="font-mono text-sm text-slate-600 mb-3">Files:<br>
+            src/worker.js (316 lines, combined HTTP + Queue + Supabase)<br>
+            src/api/routes.js (new, HTTP routes only)<br>
+            src/queue/handlers.js (new, queue processing)<br>
+            src/services/supabase.js (new, Supabase operations)
+          </div>
+          <!-- Before/After Mermaid diagram -->
+          <div class="rounded-lg border border-slate-200 bg-white p-4 mb-4">
+            <pre class="mermaid">
+flowchart LR
+    %% BEFORE
+    workerOld[worker.js (316 lines)]
+    workerOld -->|HTTP routes|http[HTTP endpoints]
+    workerOld -->|Queue jobs|queue[Queue handler]
+    workerOld -->|Supabase calls|supabase[Supabase ops]
+    http -.leak.|timeout risk|queue
+    queue -.leak.|SRP violation|supabase
+    classDef leak stroke:#dc2626,stroke-width:2px;
+    class http,queue,supabase leak
+            </pre>
+          </div>
+          <!-- After diagram -->
+          <div class="rounded-lg border border-slate-200 bg-white p-4 mb-4">
+            <pre class="mermaid">
+flowchart LR
+    %% AFTER
+    apiRoutes[api/routes.js]
+    queueHandlers[queue/handlers.js]
+    supabaseSvc[services/supabase.js]
+    %% New interfaces
+    transportInt[Transport interface]
+    leadInt[LeadIngester interface]
+    apiRoutes -->|defines|transportInt
+    queueHandlers -->|implements|transportInt
+    supabaseSvc -->|implements|leadInt
+    %% Locality: each module has single responsibility
+    apiRoutes:::deep[api/routes.js]:::deep
+    queueHandlers:::deep[queue/handlers.js]:::deep
+    supabaseSvc:::deep[services/supabase.js]:::deep
+    classDef deep background:linear-gradient(135deg, #0f172a, #1e293b);
+    classDef leak stroke:#dc2626,stroke-width:2px;
+            </pre>
+          </div>
+          <p class="srm"><strong>Problem:</strong> Worker combines 3 concerns (HTTP routes, Queue handler, Supabase calls) in 316 lines — single responsibility principle violated; any change risks breaking unrelated concerns; worker timeout under concurrent scrape load.</p>
+          <p class="srm"><strong>Solution:</strong> Split into 3 modules each with one reason to change: api/routes.js (HTTP only), queue/handlers.js (queue processing only), services/supabase.js (Supabase operations only). New Transport interface enables dependency injection.</p>
+          <ul class="list-disc list-inside space-y-1 text-slate-700 space-y-0.5">
+            <li>Locality: bugs concentrate in one module</li>
+            <li>Leverage: one interface, N call sites</li>
+            <li>Interface shrinks; implementation absorbs the wrappers</li>
+            <li>Tests hit one interface</li>
+            <li>Delete 4 shallow wrappers</li>
+          </ul>
+          <div class="mt-4 p-3 border-l-4 border-emerald-500 bg-emerald-50 text-sm">
+            <p class="srm">ADR callout: Split worker.js before adding Learner module — otherwise concurrency and timeout risks compound.</p>
+          </div>
+        </article>
+
+        <!-- Candidate 2: Transport interface -->
+        <article>
+          <h2 class="text-2xl font-semibold tracking-tighter mb-3">Deepen the Transport layer: formal interface with 4 adapters</h2>
+          <div class="flex items-center gap-2 mb-2">
+            <span class="px-2 py-1 text-xs border border-emerald-300 rounded badge">Strong</span>
+            <span class="text-xs uppercase tracking-wider srm">ports & adapters</span>
+          </div>
+          <div class="font-mono text-sm text-slate-600 mb-3">Files:<br>
+            src/transport/index.js (4 adapters, no formal interface)<br>
+            src/transport/transport-interface.js (new, Transport interface)<br>
+            src/transport/trucTiep.js (adapt: truc_tiep)<br>
+            src/transport/browserRun.js (adapt: browser_run)<br>
+            src/transport/unlocker.js (adapt: unlocker)<br>
+            src/transport/napTay.js (adapt: nap_tay)
+          </div>
+          <!-- Before/After Mermaid diagram -->
+          <div class="rounded-lg border border-slate-200 bg-white p-4 mb-4">
+            <pre class="mermaid">
+flowchart LR
+    %% BEFORE
+    transport[transport/index.js]
+    trucTiep[truc_tiep adapter]
+    browserRun[browser_run adapter]
+    unlocker[unlocker adapter]
+    napTay[nap_tay adapter]
+    transport -->|fallback chain|trucTiep
+    transport -->|fallback chain|browserRun
+    transport -->|fallback chain|unlocker
+    transport -->|fallback chain|napTay
+    classDef leak stroke:#dc2626,stroke-width:2px;
+    class trucTiep,browserRun,unlocker,napTay leak
+            </pre>
+          </div>
+          <!-- After diagram -->
+          <div class="rounded-lg border border-slate-200 bg-white p-4 mb-4">
+            <pre class="mermaid">
+flowchart LR
+    %% AFTER
+    transportInt[Transport interface]
+    trucTiep[truc_tiep adapter: implements Transport]
+    browserRun[browser_run adapter: implements Transport]
+    unlocker[unlocker adapter: implements Transport]
+    napTay[nap_tay adapter: implements Transport]
+    demandSources[demand_sources config]
+    transportInt -->|adapters implement|trucTiep
+    transportInt -->|adapters implement|browserRun
+    transportInt -->|adapters implement|unlocker
+    transportInt -->|adapters implement|napTay
+    demandSources -->|configures fallback order|transportInt
+    classDef deep background:linear-gradient(135deg, #0f172a, #1e293b);
+            </pre>
+          </div>
+          <p class="srm"><strong>Problem:</strong> 4 transport adapters embedded directly in transport/index.js with hardcoded fallback chain — adding new transport requires modifying core logic; hard to test adapters in isolation.</strong></p>
+          <p class="srm"><strong>Solution:</strong> Define Transport interface with lay() method signature. Each adapter (truc_tiep, browser_run, unlocker, nap_tay) implements it. Fallback chain configured via demand_sources table, not hardcoded.</strong></p>
+          <ul class="list-disc list-inside space-y-1 text-slate-700 space-y-0.5">
+            <li>Leverage: one interface, N call sites</li>
+            <li>New transports add without modifying core logic</li>
+            <li>Adapters testable with mock implementations</li>
+            <li>Interface shrinks; implementation absorbs the wrappers</li>
+            <li>Locality: fallback config separated from adapter logic</li>
+          </ul>
+          <div class="mt-4 p-3 border-l-4 border-emerald-500 bg-emerald-50 text-sm">
+            <p class="srm">ADR callout: Transport interface enables future transports (e.g. Learner ingestion) without touching core routing.</p>
+          </div>
+        </article>
+
+        <!-- Candidate 3: LeadIngester interface -->
+        <article>
+          <h2 class="text-2xl font-semibold tracking-tighter mb-3">Deepen lead napping: extract LeadIngester interface</h2>
+          <div class="flex items-center gap-2 mb-2">
+            <span class="px-2 py-1 text-xs border border-amber-300 rounded badge">Worth exploring</span>
+            <span class="text-xs uppercase tracking-wider srm">mock</span>
+          </div>
+          <div class="font-mono text-sm text-slate-600 mb-3">Files:<br>
+            src/core/nap-lead.js (convergence point, hand + auto napping)<br>
+            src/core/lead-ingester.js (new, LeadIngester interface)<br>
+            src/core/hand-nap.js (implements LeadIngester, manual napping)<br>
+            src/core/auto-nap.js (implements LeadIngester, auto napping)
+          </div>
+          <!-- Before/After Mermaid diagram -->
+          <div class="rounded-lg border border-slate-200 bg-white p-4 mb-4">
+            <pre class="mermaid">
+flowchart LR
+    %% BEFORE
+    napLead[nap-lead.js]
+    handNap[hand-nap (manual)]
+    autoNap[auto-nap (Playwright)]
+    demandInbox[demand_inbox]
+    napLead -->|feeds| demandInbox
+    handNap -.leak.|RLS trigger|demandInbox
+    autoNap -.leak.|timeout risk|demandInbox
+    classDef leak stroke:#dc2626,stroke-width:2px;
+            </pre>
+          </div>
+          <!-- After diagram -->
+          <div class="rounded-lg border border-slate-200 bg-white p-4 mb-4">
+            <pre class="mermaid">
+flowchart LR
+    %% AFTER
+    leadInt[LeadIngester interface: napLead()]
+    handNap[hand-nap: implements LeadIngester]
+    autoNap[auto-nap: implements LeadIngester]
+    demandInbox[demand_inbox]
+    leadInt -->|delegates to|handNap
+    leadInt -->|delegates to|autoNap
+    handNap -->|feeds| demandInbox
+    autoNap -->|feeds| demandInbox
+    classDef deep background:linear-gradient(135deg, #0f172a, #1e293b);
+            </pre>
+          </div>
+          <p class="srm"><strong>Problem:</strong> nap-lead.js is convergence point for all lead napping (hand-moded + autoplay scraper) — single point of change; hard to test hand-napped vs auto-napped differences; both feed into same demand_inbox entry point.</strong></p>
+          <p class="srm"><strong>Solution:</strong> Extract LeadIngester interface with single napLead() method. Hand-napping implementation vs auto-napping implementation. Both feed into same demand_inbox via single entry point, preserving conservation law.</strong></p>
+          <ul class="list-disc list-inside space-y-1 text-slate-700 space-y-0.5">
+            <li>Interface shrinks; implementation absorbs the wrappers</li>
+            <li>Locality: hand vs auto processing separated</li>
+            <li>Leverage: one interface, two implementations</li>
+            <li>Tests hit one interface, N strategies</li>
+            <li>Prepare for Learner phase (≥2 weeks data)</li>
+          </ul>
+          <div class="mt-4 p-3 border-l-4 border-amber-500 bg-amber-50 text-sm">
+            <p class="srm">ADR callout: Extract LeadIngester before adding Learner module — ensures clean separation of hand vs auto processing from day one.</p>
+          </div>
+        </article>
+      </section>
+
+      <!-- Top Recommendation -->
+      <section id="top-recommendation" class="mt-12 p-6 border-t border-slate-200">
+        <h2 class="text-xl font-semibold tracking-tighter mb-3">Top Recommendation</h2>
+        <div class="flex items-center gap-2">
+          <div class="px-3 py-1 text-xs border border-emerald-300 rounded bg-emerald-50">
+            🥇 FIRST: Split worker.js
+          </div>
+          <div>
+            <p class="srm font-medium">Why: Largest locality gain, fixes timeout risk, enables concurrency, prepares codebase for Learner phase. Three modules each with one responsibility — api/routes.js, queue/handlers.js, services/supabase.js — plus Transport interface for future extensibility.</p>
+          </div>
+        </div>
+        <a href="#candidates" class="srm underline">See candidate cards below</a>
+      </section>
+    </main>
+  </body>
+</html>
