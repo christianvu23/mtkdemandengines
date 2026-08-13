@@ -2,6 +2,28 @@
 
 Tất cả các thay đổi quan trọng của project sẽ được ghi lại trong file này.
 
+## [2026-08-14] Crawl Agent Hardening
+
+Chi tiết: [`crawl-agent/HARDENING.md`](./crawl-agent/HARDENING.md)
+
+### Added
+- **Idempotent submit (CRITICAL)**: RPC `dm_loc_keys_da_co` + `napVaoInboxLocTrung()` chặn lead trùng tại cả 3 cổng nạp (`/api/demand/nap`, `/api/crawl/submit`, queue cron) — đã smoke test trên production
+- **Reconciliation baseline**: source từng có links mà 2 run liên tiếp ra 0 → flag `DEGRADED`; `BaseSpider` trả `parse_confidence`
+- **Circuit breaker + exponential backoff**: 3 run fail liên tiếp → ngừng hammer nguồn; `fetch_with_retry()` hiện thực hóa `CRAWL_MAX_RETRIES` (trước là config chết); CLI thêm `--force`
+- **Feedback loop**: `GET /api/demand/phan-hoi` + `scripts/update_feedback.py` — bộ phân loại học từ quyết định duyệt lead trên dashboard
+- **URL guard**: chặn SSRF (private IP, localhost, 169.254.169.254) + tôn trọng robots.txt trước mọi fetch
+- **Error recovery contract**: mọi lỗi có `kind`/`retryable`/`hint`; lỗi `blocked` không retry
+- Migration `20260814_loc_trung_inbox.sql` (đã áp dụng lên production)
+
+### Fixed
+- **classify_fast.py**: match kết quả LLM theo marker `JOB-xx` 1:1 (lệch → fallback cả batch), bỏ `confidence: 0.8` hardcode, bỏ `global BATCH_SIZE` mutation
+- **`/api/demand/nap` response**: thêm `trung_lead_key` + `loc_trung_kha_dung` để biết dedup phía DB có đang bật không
+
+### Verified
+- JS 117 tests pass · Python 75 tests pass
+- robots.txt thực tế: vlance, blackhatworld, peopleperhour, freelancerviet, topcv đều cho phép crawl
+- Worker deployed: version `00e911bc`
+
 ## [Unreleased]
 
 ### Added

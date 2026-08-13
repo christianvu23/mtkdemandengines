@@ -2,6 +2,11 @@
 
 Hybrid **Scrapling + Camoufox** agent for crawling job opportunities from freelancer sites, marketing forums, and social media platforms.
 
+> 🛡️ **Resilience & Safety (2026-08):** dedup phía server, reconciliation
+> baseline, circuit breaker + backoff, feedback loop từ quyết định duyệt,
+> error recovery contract, SSRF + robots.txt guard.
+> Chi tiết: [HARDENING.md](./HARDENING.md)
+
 ## Architecture
 
 ```
@@ -93,7 +98,31 @@ python main.py run-all --no-submit -o data
 
 # Social media only
 python main.py run-social
+
+# Force-run a source blocked by the circuit breaker
+python main.py run -s vlance --force
 ```
+
+### 4. Feedback loop (sau mỗi đợt duyệt lead trên dashboard)
+
+```bash
+# Nạp quyết định duyệt/bỏ của người vào prompt phân loại
+python scripts/update_feedback.py
+```
+
+## Resilience & Safety
+
+| Cơ chế | Làm gì | State |
+|---|---|---|
+| **Dedup 2 tầng** | Chặn lead trùng trong lô + với DB (RPC `dm_loc_keys_da_co`) trước khi vào inbox | phía server |
+| **Baseline reconciliation** | Source từng có links mà 2 run liên tiếp ra 0 → flag `DEGRADED` | `data/source_baseline.json` |
+| **Circuit breaker** | 3 run fail liên tiếp → ngừng hammer nguồn đó; `--force` để ép chạy | `data/circuit_state.json` |
+| **Retry backoff** | 2s → 4s → … cap 60s, chỉ retry lỗi `retryable` | — |
+| **Feedback loop** | Học từ quyết định duyệt lead qua `/api/demand/phan-hoi` | `data/feedback.json` |
+| **Error envelope** | Mỗi lỗi có `kind`/`retryable`/`hint`; `blocked` không retry | — |
+| **URL guard** | Chặn SSRF (private IP, metadata) + tôn trọng robots.txt | cache theo domain |
+
+Xem chi tiết và hướng dẫn vận hành trong [HARDENING.md](./HARDENING.md).
 
 ## Source Configuration
 
@@ -193,8 +222,16 @@ crawl-agent/
 │   ├── forum.py           # BHW, WarriorForum, VOZ
 │   └── social.py          # TikTok, Facebook
 ├── utils/
-│   └── workers_client.py  # Workers API client
-└── data/                  # Crawl results (gitignored)
+│   ├── workers_client.py  # Workers API client
+│   ├── baseline.py        # Reconciliation: phát hiện spider chết lặng lẽ
+│   ├── circuit_breaker.py # Ngừng hammer nguồn thất bại liên tục
+│   ├── feedback.py        # Học từ quyết định duyệt lead
+│   ├── errors.py          # Error envelope: kind/retryable/hint
+│   └── url_guard.py       # SSRF allowlist + robots.txt
+├── scripts/
+│   └── update_feedback.py # Nạp feedback từ Workers API
+├── classify_fast.py       # Batch LLM classifier (marker JOB-xx, feedback)
+└── data/                  # Crawl results + state (gitignored)
 ```
 
 ## Integration with Workers.dev
