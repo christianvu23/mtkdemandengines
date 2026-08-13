@@ -9,7 +9,7 @@
 
 // --- Imports: 3 modules mới thay vì code lẫn lộn ---
 import { xuLyMotMessage, xuLyQuetNguon, chuanBiMessageQuetNguon, xuLyLayBai } from './src/queue/handlers.js';
-import { kiemTraTransport, layNguon, layInbox } from './src/services/supabase.js';
+import { kiemTraTransport, layNguon, layInbox, napVaoInbox } from './src/services/supabase.js';
 import { napNhieuLead } from './src/core/nap-lead.js';
 import { handleCrawlApi } from './src/transport/crawl-api.js';
 
@@ -73,14 +73,11 @@ export default {
           sourceQuery: 'nap_tay',
         }));
 
+        const runLabel = `nap-${Date.now()}`;
         const { payloads } = await napNhieuLead(chuanHoa); // from nap-lead.js
         if (payloads.length) {
-          // Sử dụng supabase napVaoInbox (đã di chuyển ra module riêng)
-          // await napVaoInbox(payloads, runLabel);
-          // FIXME: enable when supabase env ready — tạm track thôi
+          await napVaoInbox(payloads, runLabel, env);
         }
-
-        const runLabel = `nap-${Date.now()}`;
         return traLoi({
           tong_vao: dsVao.length,
           da_day_vao_inbox: payloads?.length ?? 0,
@@ -202,14 +199,30 @@ export default {
     return ketQua;
   },
 
-  // Cron — chỉ bật sau khi kiem-tra-transport xanh và regex_link_bai đã điền.
-  // Chỉ xếp queue, không quét đồng bộ nên không lo vượt timeout.
+  // Cron — fetch sources từ DB, xếp vào queue để xử lý bất đồng bộ.
   async scheduled(event, env, ctx) {
-    ctx.waitUntil(
-      xuLyQuetNguon({}, env).catch((e) =>
-        console.log('Cron xếp queue lỗi:', e.message),
-      ),
-    );
+    ctx.waitUntil((async () => {
+      try {
+        const runLabel = `cron-${Date.now()}`;
+        const tatCaNguon = await layNguon(env);
+        const nguonBat = (tatCaNguon || []).filter(n => n.dang_bat && n.cau_hinh?.url_danh_sach);
+        if (!nguonBat.length) {
+          console.log('Cron: không có nguồn nào đang bật');
+          return;
+        }
+        const messages = chuanBiMessageQuetNguon(nguonBat, runLabel);
+        if (!env?.QUEUE_QUET) {
+          console.log('Cron: thiếu QUEUE_QUET binding');
+          return;
+        }
+        for (const msg of messages) {
+          await env.QUEUE_QUET.send(msg);
+        }
+        console.log(`Cron: đã xếp ${messages.length} nguồn vào queue (${runLabel})`);
+      } catch (e) {
+        console.log('Cron lỗi:', e.message);
+      }
+    })());
   },
 };
 

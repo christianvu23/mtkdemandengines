@@ -106,7 +106,7 @@ Cách này chỉ deploy phần giao diện. Khi thêm Worker backend sau này th
 Sau khi có URL thật, phải khai báo nó với Supabase, nếu không đăng nhập GitHub sẽ
 quay về sai chỗ:
 
-Supabase dashboard → project `dlzhcfrojibpscozdmrx` (mtkdemandengines) → **Authentication** → **URL Configuration**
+Supabase dashboard → project `emkwknwcyyewevmmoxzj` (mtkdemandengines) → **Authentication** → **URL Configuration**
 → thêm URL Worker vào **Redirect URLs**.
 
 ---
@@ -141,7 +141,7 @@ Supabase dashboard → project `dlzhcfrojibpscozdmrx` (mtkdemandengines) → **A
 ## Nạp secret cho Worker (sau khi deploy lần đầu)
 
 ```bash
-npx wrangler secret put SUPABASE_URL            # https://dlzhcfrojibpscozdmrx.supabase.co
+npx wrangler secret put SUPABASE_URL            # https://emkwknwcyyewevmmoxzj.supabase.co
 npx wrangler secret put SUPABASE_SERVICE_KEY    # service_role — CHỈ ở đây, không bao giờ trong public/
 npx wrangler secret put DEMAND_TOKEN            # khoá bạn tự đặt, bảo vệ cổng nạp
 npx wrangler secret put CLOUDFLARE_ACCOUNT_ID   # cho transport browser_run

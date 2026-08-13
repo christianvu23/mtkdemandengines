@@ -33,7 +33,7 @@ Có test chặn: `tests/mcp.test.js` sẽ đỏ nếu ai đó thêm công cụ g
       "command": "node",
       "args": ["/duong/dan/toi/mtkdemandengines/mcp/server.js"],
       "env": {
-        "SUPABASE_URL": "https://dlzhcfrojibpscozdmrx.supabase.co",
+        "SUPABASE_URL": "https://emkwknwcyyewevmmoxzj.supabase.co",
         "SUPABASE_SERVICE_KEY": "<service_role key>"
       }
     }

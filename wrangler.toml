@@ -34,7 +34,7 @@ max_batch_size = 20
 max_retries = 3
 
 # Secret (nạp bằng `npx wrangler secret put <TEN>`, KHÔNG commit):
-#   SUPABASE_URL              https://dlzhcfrojibpscozdmrx.supabase.co
+#   SUPABASE_URL              https://emkwknwcyyewevmmoxzj.supabase.co
 #   SUPABASE_SERVICE_KEY      service_role key — bỏ qua RLS, chỉ để ở đây
 #   DEMAND_TOKEN              khoá tự đặt, bảo vệ cổng nạp
 #   CLOUDFLARE_ACCOUNT_ID     cho transport browser_run

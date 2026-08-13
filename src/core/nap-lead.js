@@ -107,7 +107,7 @@ export function napLead(dauVao, now = new Date()) {
   
   const lienHe = trichLienHe(vanBan);
   const nganSach = docNganSach(vanBan);
-  const hinhThuc = suyRaHinhThuc(`${tieuDeCuoi ?? ''}\n${vanBan}`);
+  const hinhThuc = suyRaHinhThuc(`${tieuDeCuoi ?? ''}\n${vanBan}`, phanLoai);
   const khuVuc = doanKhuVuc(`${tieuDeCuoi ?? ''}\n${vanBan}`);
   const canhTranh = doDoCanhTranh(vanBan);
 

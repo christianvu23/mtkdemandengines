@@ -143,9 +143,12 @@ export function phanLoaiNhuCau(text) {
   };
 }
 
-/** Suy ra hình thức hợp tác, ưu tiên freelancer/project-based. */
-export function suyRaHinhThuc(text) {
-  const pl = phanLoaiNhuCau(text);
+/** Suy ra hình thức hợp tác, ưu tiên freelancer/project-based.
+ *  @param {string} text
+ *  @param {object} [preComputed] kết quả phanLoaiNhuCau() đã tính sẵn (tránh gọi 2 lần)
+ */
+export function suyRaHinhThuc(text, preComputed) {
+  const pl = preComputed ?? phanLoaiNhuCau(text);
   
   // Ưu tiên freelancer signals
   if (pl.freelancer) return 'freelance';

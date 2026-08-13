@@ -32,8 +32,9 @@ alter table public.demand_sources
   add column if not exists so_loi_lien_tiep int not null default 0;
 
 -- Seed transport + cấu hình cho từng nguồn (khớp kiến trúc src/transport + boc-link)
+-- freelancerviet: JS-rendered site → cần browser_run (không dùng truc_tiep)
 update public.demand_sources set
-  transport = 'truc_tiep',
+  transport = 'browser_run',
   cau_hinh = cau_hinh || jsonb_build_object(
     'url_danh_sach', 'https://freelancerviet.vn/viec-lam-freelance.html',
     'regex_link_bai', 'freelancerviet\\.vn/thong-tin-viec-freelance/')
