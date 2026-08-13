@@ -1,54 +1,64 @@
 # Session State - mtkdemandengines Project
 
-**Opened:** New session after completing critical/important tasks via skills system
+**Opened:** 2026-08-13 | **Last updated:** 2026-08-13
 
-## 📊 STATUS 3 LỰA CHỌN ĐANG HOẠT ĐỘNG
+## 📊 TRẠNG THÁI HIỆN TẠI
 
-### **Lựa chọn 1: Fix live site issue**
-- **Trạng thái:** ⏳ Chờ manual check browser
-- **Vấn đề:** `curl` gặp SSL/shannel error trên local (CRYPT_E_REVOCATION_OFFLINE)
-- **Cần làm:** Mở browser vào `https://mtkdemandengines.christianvu23.workers.dev/app`, F12 -> Console/Network, báo lỗi ra
-- **Status skill agent:** Symlink created tại `.pi/skills/live-site-investigation` nhưng cần tạo nội dung skill thực tế
+### ✅ Live site hoạt động
+- **URL:** https://mtkdemandengines.christianvu23.workers.dev
+- **Trang chủ:** HTTP 200, 12,961 chars HTML
+- **Dashboard /app:** HTTP 200, 37,095 chars HTML
+- **API endpoints:**
+  - `/api/demand/trang-thai` → 200 OK, trả về 6 nguồn từ Supabase
+  - `/api/demand/kiem-tra-transport` → 200 OK, `ket_qua: true`
+  - `/api/demand/nap` → cần DEMAND_TOKEN
+  - `/api/demand/quet` → cần DEMAND_TOKEN + QUEUE_QUET binding
 
-### **Lựa chọn 2: Tạo skill agent đầy đủ**
-- **Trạng thái:** ⏳ Đang tạo file skill `.md`
-- **Nội dung cần tạo:**
-  - Name: `live-site-investigation`
-  - Description: Agent cho việc check live site và chạy diagnose
-  - Quick start: Cách check Console/Network errors
-  - Workflow: Bước 1: curl/check browser, Bước 2: analyze errors, Bước 3: fix hoặc report
-  - Anti-patterns: Đàoán lỗi giả định, bỏ qua robots.txt, forget cấu hình transport
-- **Kết quả mong muốn:** File skill `.md` đầy đủ để user có thể.invoke
+### 🔑 Secrets đã cấu hình
+| Secret | Trạng thái |
+|--------|-----------|
+| `SUPABASE_URL` | ✅ `https://emkwknwcyyewevmmoxzj.supabase.co` |
+| `SUPABASE_SERVICE_KEY` | ✅ JWT service_role (valid) |
+| `DEMAND_TOKEN` | ✅ `mkt-demangen-2026` |
+| `CLOUDFLARE_ACCOUNT_ID` | ✅ Đã set (cho browser_run) |
+| `CLOUDFLARE_API_TOKEN` | ✅ Đã set (cho browser_run) |
 
-### **Lựa chọn 3: Tiếp tục project mtkdemandengines**
-- **Trạng thái:** ⏳ Chưa tiếp tục
-- **Mục đang pending (từ roadmap):**
-  1. Add `vlance.js` source scraper theo roadmap (chỉ `freelancerviet.js` đã có)
-  2. Fine-tune `transport_fallback` cho toàn bộ sources (đã configs cho alcuni sources)
-  3. Mở rộng test coverage cho rubric scoring và lead routing logic
-  4. Update documentation phản ánh cấu hình mới
+### 📦 6 Demand Sources trong DB
+| Mã | Tên | Transport | URL danh sách | Bật? |
+|----|-----|-----------|---------------|------|
+| `topcv` | TopCV | truc_tiep | ❌ chưa config | ✅ |
+| `vietnamworks` | VietnamWorks | truc_tiep | ❌ chưa config | ✅ |
+| `vieclam24h` | Vieclam24h | truc_tiep | ❌ chưa config | ✅ |
+| `freelancerviet` | FreelancerViet.vn | truc_tiep | ✅ có regex | ✅ |
+| `vlance` | vLance.vn | browser_run | ✅ | ✅ |
+| `fb_group` | Facebook Groups | nap_tay | ❌ | ❌ (mặc định tắt) |
 
-## 🧠 KEY DECISIONS - RECENT
+## 🧪 TESTS
+- **92/92 tests pass** ✅
+- Coverage: boc-link, chuanhoa, mcp, nap-lead, rubric-router, transport, trich-xuat, worker-queue
 
-| **Quyết định** | **Ngày** | **Kết quả** |
-|--------------|----------|-------------|
-| Merge worker.js keeping remote version | 09/08/2026 | Day đủ hàm Supabase, refactoring API routes |
-| Configure transport_fallback per-source | 09/08/2026 | Ưu tiên `['browser_run', 'unlocker']` cho sources quan trọng |
-| Push code + update README lên GitHub | 09/08/2026 | Commit `f0b0586` xong, 4 commits deploy |
-| Completed CRITICAL/Important via skills system | 09/08/2026 | 6/6 tasks pass (5/5 transport tests, 9/9 classification tests) |
+## 🐛 BUGS FIXED TRONG SESSION NÀY
+1. `worker.js` có markdown fence nhúng trong JS code → removed
+2. `nhanPhien()` gọi nhưng không define → thay bằng inline runLabel
+3. `handlers.js` bắt đầu bằng markdown fence → viết lại clean
+4. `extractJobInfo` dùng `DOMParser` (không có trong Workers) → rewrite bằng regex
+5. `duocPhep(request)` đọc `request.env` (undefined) → truyền `env` param
+6. `supabase.js` đọc `process.env` (Node.js) → đọc từ `env` (Workers)
+7. `/api/demand/trang-thai` là stub → query thật từ Supabase
 
-## 🔄 NEXT SESSION RECALL GUIDE
+## 📋 PENDING TASKS
+| # | Task | Ưu tiên |
+|---|------|---------|
+| 1 | Config `url_danh_sach` cho topcv, vietnamworks, vieclam24h | 🔴 HIGH |
+| 2 | Fine-tune `transport_fallback` cho toàn bộ sources | 🟡 MEDIUM |
+| 3 | Bật cron trigger (hiện đang comment trong wrangler.toml) | 🟡 MEDIUM |
+| 4 | Mở rộng test coverage cho extractJobInfo | 🟢 LOW |
+| 5 | Phase 3: Split worker.js thành modules nhỏ hơn | 🟢 LOW |
 
-Khi mở session mới, dùng tìm kiếm để recall:
-- `recall "mtkdemandengines transport"` - để lấy lại kết quả test transport
-- `recall "skills system completion"` - để lấy lại bảng trạng thái 6 tasks
-- `recall "live site issue"` - để lấy lại cấu hình live site debug
-
-## ⚠️ LƯU Ý CHO SESSION SAU
-
-1. **Live site:** Cần check thủ công browser do constraint curl trên Windows
-2. **Skill agents:** Đã tạo framework, cần điền nội dung `.md` thực tế
-3. **Project tasks:** 4 mục pending từ roadmap chưa xong
+## 🔒 BẢO MẬT
+- Supabase service_role key đã set trên Workers secret — **KHÔNG commit vào repo**
+- GitHub OAuth Client ID/Secret đã cung cấp — cần xem xét rotate nếu bị lộ
+- DEMAND_TOKEN `mkt-demangen-2026` — nên đổi nếu bị lộ
 
 ---
-*File này được lưu truẩn cho session mới - có thể dùng `recall` để lấy lại context*
+*Session resumed from previous work. Previous state archived.*
