@@ -4,6 +4,15 @@ Tất cả các thay đổi quan trọng của project sẽ được ghi lại t
 
 ## [Unreleased]
 
+### Fixed
+- **FK constraint `demand_leads_source_fkey`**: Thêm `fb_manual` vào `demand_sources` — inbox có lead `source=fb_manual` (nạp thủ công từ Facebook) nhưng DB không có → merge fail
+- **Cron handler**: `scheduled()` giờ fetch sources từ DB rồi dispatch queue (trước đó gọi `xuLyQuetNguon({}, env)` với empty object → luôn skip)
+- **`/api/demand/nap`**: Uncomment `napVaoInbox()` — endpoint giờ lưu lead vào DB thay vì chỉ trả preview
+- **freelancerviet transport**: `truc_tiep` → `browser_run` (site JS-rendered)
+- **Dead code**: Xóa `extractJobInfo()` không được gọi trong handlers.js
+- **Redundant call**: `suyRaHinhThuc()` nhận pre-computed `phanLoai` từ `napLead()`, tránh gọi `phanLoaiNhuCau()` 2 lần
+- **Supabase project migration**: Cập nhật tất cả references từ `dlzhcfrojibpscozdmrx` → `emkwknwcyyewevmmoxzj` (app.html, wrangler.toml, HUONG-DAN-DEPLOY.md, mcp/README.md)
+
 ### Planned
 - Bật cron tự động quét mỗi 30 phút
 - Fix freelancerviet — đổi sang `browser_run`
